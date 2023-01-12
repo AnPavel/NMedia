@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">НМедиа</string>
-    <string name="app_name_on_screen">НМедиа</string>
+    <string name="app_name">NMedia</string>
+    <string name="logo_descript">Лого</string>
+    <string name="field_name_on_screen">НМедиа11</string>
+    <string name="field_name_on_screen_second">Нмедия22</string>
 </resources>

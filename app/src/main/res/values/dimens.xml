@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimen_layout_activity">4sp</dimen>
+    <dimen name="dimen_marginStart">5sp</dimen>
+    <dimen name="dimen_marginTop">10sp</dimen>
+</resources>

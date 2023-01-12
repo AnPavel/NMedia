@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">NMedia</string>
-    <string name="app_name_on_screen">NMedia</string>
+    <string name="logo_descript">Logo</string>
+    <string name="imageView_descript" translatable="false">imageView</string>
+    <string name="field_name_on_screen">NMedia11</string>
+    <string name="field_name_on_screen_second">Nmedia22</string>
+    <string name="image_buttom_more_vert" translatable="false">Menu</string>
 </resources>
