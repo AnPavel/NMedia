@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dimen_layout_activity"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/logoNetology"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_layout_activity"
+        android:contentDescription="@string/logo_descript"
+        app:srcCompat="@drawable/netology"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textPoleAuthor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_layout_activity"
+        android:layout_marginEnd="@dimen/dimen_layout_activity"
+        android:ellipsize="end"
+        android:lines="1"
+        app:layout_constraintBottom_toTopOf="@id/textPolePublished"
+        app:layout_constraintEnd_toStartOf="@id/imageMenu"
+        app:layout_constraintStart_toEndOf="@id/logoNetology"
+        app:layout_constraintTop_toTopOf="@id/logoNetology"
+        tools:text="@sample/posts.json/data/author" />
+
+    <TextView
+        android:id="@+id/textPolePublished"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/logoNetology"
+        app:layout_constraintStart_toStartOf="@id/textPoleAuthor"
+        app:layout_constraintTop_toBottomOf="@id/textPoleAuthor"
+        tools:text="@sample/posts.json/data/published" />
+
+    <ImageButton
+        android:id="@+id/imageMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_layout_activity"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/image_buttom_more_vert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textPoleAuthor"
+        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_marginTop"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="logoNetology, textPoleAuthor, textPolePublished, imageMenu" />
+
+    <TextView
+        android:id="@+id/textPoleHeading"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Адрес сайта: google.ru"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:layout_marginTop="@dimen/dimen_marginTop"
+        app:layout_constraintTop_toBottomOf="@id/barrier_heading"
+        tools:text="@sample/posts.json/data/textPublic" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="textPoleHeading" />
+
+    <ImageView
+        android:id="@+id/imageFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_marginTop"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/imageView_descript"
+        app:layout_constraintTop_toBottomOf="@id/barrier_body"
+        app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+    <TextView
+        android:id="@+id/textFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_layout_activity"
+        android:text="2K"
+        app:layout_constraintStart_toEndOf="@id/imageFavorite"
+        app:layout_constraintTop_toTopOf="@id/imageFavorite" />
+
+    <ImageView
+        android:id="@+id/imageShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_layout_activity"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/imageView_descript"
+        app:layout_constraintStart_toEndOf="@id/textFavorite"
+        app:layout_constraintTop_toBottomOf="@id/barrier_body"
+        app:layout_constraintTop_toTopOf="@id/imageFavorite"
+        app:srcCompat="@drawable/ic_baseline_share_24" />
+
+    <TextView
+        android:id="@+id/textShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_layout_activity"
+        android:text="22222"
+        app:layout_constraintStart_toEndOf="@id/imageShare"
+        app:layout_constraintTop_toTopOf="@id/imageShare" />
+
+    <ImageView
+        android:id="@+id/imageRedEye"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_layout_activity"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/imageView_descript"
+        app:layout_constraintEnd_toStartOf="@id/textRedEye"
+        app:layout_constraintTop_toTopOf="@id/imageFavorite"
+        app:srcCompat="@drawable/ic_baseline_remove_red_eye_24" />
+
+    <TextView
+        android:id="@+id/textRedEye"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="22,2K"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imageRedEye" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="imageFavorite, textFavorite, imageShare, textShare, imageRedEye, textRedEye" />
+
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/barrier_footer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
