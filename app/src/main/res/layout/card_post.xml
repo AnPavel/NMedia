@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="@dimen/dimen_layout_activity"
@@ -62,10 +63,10 @@
         android:id="@+id/textPoleHeading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Адрес сайта: google.ru"
+        android:layout_marginTop="@dimen/dimen_marginTop"
         android:autoLink="web"
         android:linksClickable="true"
-        android:layout_marginTop="@dimen/dimen_marginTop"
+        android:text="Адрес сайта: google.ru"
         app:layout_constraintTop_toBottomOf="@id/barrier_heading"
         tools:text="@sample/posts.json/data/textPublic" />
 
@@ -148,5 +149,6 @@
         android:layout_height="2dp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/barrier_footer" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

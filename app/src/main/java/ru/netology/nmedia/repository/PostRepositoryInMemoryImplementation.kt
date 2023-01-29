@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 
 class PostRepositoryInMemoryImplementation : PostRepository {
+    private var nextId = 1L
+    //private var timestamp = getDataTime()
     private var posts = listOf(
         Post(
-            1, "Нетология-1. Университет интернет-профессий. Источник знаний для роста в профессии",
-            "10 января 2023 в 10:00",
+            nextId++, "Нетология-1. Университет интернет-профессий. Источник знаний для роста в профессии",
+            "10 января 2023 10:00",
             "Нетология - российская компания и образовательная онлайн-платформа, запущенная в 2011 году. Одна из ведущих российских компаний онлайн-образования. Входит в IT-холдинг TalentTech, объединяющий компании по трём направлениям: EdTech, HRTech и Freelance.",
             false,
             999,
@@ -16,8 +18,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             300
         ),
         Post(
-            2, "Нетология-2. Источник знаний для роста в профессии",
-            "12 января 2023 в 12:00",
+            nextId++, "Нетология-2. Источник знаний для роста в профессии",
+            "12 января 2023 12:00",
             "Нетология - Одна из ведущих российских компаний онлайн-образования. Входит в IT-холдинг TalentTech, объединяющий компании по трём направлениям: EdTech, HRTech и Freelance.",
             false,
             999,
@@ -25,8 +27,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             300
         ),
         Post(
-            3, "Нетология-3. Источник знаний для роста в профессии",
-            "13 января 2023 в 13:00",
+            nextId++, "Нетология-3. Источник знаний для роста в профессии",
+            "13 января 2023 13:00",
             "Нетология - Одна из ведущих российских компаний онлайн-образования. Входит в IT-холдинг TalentTech, объединяющий компании по трём направлениям: EdTech, HRTech и Freelance.",
             false,
             99,
@@ -34,8 +36,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             700
         ),
         Post(
-            4, "Нетология-4. Источник знаний для роста в профессии",
-            "14 января 2023 в 14:00",
+            nextId++, "Нетология-4. Источник знаний для роста в профессии",
+            "14 января 2023 14:00",
             "Нетология - Одна из ведущих российских компаний онлайн-образования. Входит в IT-холдинг TalentTech, объединяющий компании по трём направлениям: EdTech, HRTech и Freelance.",
             false,
             99,
@@ -46,6 +48,36 @@ class PostRepositoryInMemoryImplementation : PostRepository {
     private val data = MutableLiveData(posts)
 
     override fun getAll(): LiveData<List<Post>> = data
+    override fun save(post: Post) {
+        if (post.id == 0L) {
+            //добавление нового поста
+            posts = listOf(
+                post.copy(
+                    id = nextId++,
+                    author = "Me",
+                    publisher = "",
+                    content = post.content,
+                    likedByMe = false,
+                    countFavorite = 0,
+                    countShare = 0,
+                    countRedEye = 0
+                )
+            ) + posts
+        } else {
+            //редактирование
+            posts = posts.map {
+                if (it.id != post.id) it else it.copy(content = post.content)
+            }
+        }
+        data.value = posts
+    }
+
+    override fun edit(post: Post) {
+        posts = posts.map {
+            if (it.id != post.id) it else it.copy(content = post.content)
+        }
+    }
+
     override fun likeById(id: Long) {
         posts = posts.map {
             if (it.id != id) {
@@ -67,6 +99,11 @@ class PostRepositoryInMemoryImplementation : PostRepository {
         data.value = posts
     }
 
+    override fun removeById(id: Long) {
+        posts = posts.filter { it.id != id }
+        data.value = posts
+    }
+
     override fun likeByShareId(id: Long) {
         posts = posts.map {
             if (it.id != id) it else it.copy(countShare = it.countShare + 100)
@@ -80,4 +117,5 @@ class PostRepositoryInMemoryImplementation : PostRepository {
         }
         data.value = posts
     }
+
 }

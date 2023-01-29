@@ -3,6 +3,12 @@
     <string name="logo_descript">Logo</string>
     <string name="imageView_descript" translatable="false">imageView</string>
     <string name="field_name_on_screen">NMedia11</string>
-    <string name="field_name_on_screen_second">Nmedia22</string>
+    <string name="field_name_on_screen_second">NMedia22</string>
     <string name="image_buttom_more_vert" translatable="false">Menu</string>
+    <string name="error_empty_content">The data cannot be empty</string>
+    <string name="post_text">Enter a post</string>
+    <string name="button_cancel">Button cancel</string>
+    <string name="button_save">Botton save</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
 </resources>

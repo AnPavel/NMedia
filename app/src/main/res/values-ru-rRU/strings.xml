@@ -4,4 +4,10 @@
     <string name="logo_descript">Лого</string>
     <string name="field_name_on_screen">НМедиа11</string>
     <string name="field_name_on_screen_second">Нмедия22</string>
+    <string name="error_empty_content">Данные не могут быть пустыми</string>
+    <string name="post_text">Введите пост</string>
+    <string name="button_cancel">Кнопка отмена</string>
+    <string name="button_save">Кнопка сохранить</string>
+    <string name="menu_edit">Редактировать</string>
+    <string name="menu_delete">Удалить</string>
 </resources>
