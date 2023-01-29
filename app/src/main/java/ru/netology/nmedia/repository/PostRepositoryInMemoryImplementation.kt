@@ -6,7 +6,6 @@ import ru.netology.nmedia.dto.Post
 
 class PostRepositoryInMemoryImplementation : PostRepository {
     private var nextId = 1L
-    //private var timestamp = getDataTime()
     private var posts = listOf(
         Post(
             nextId++, "Нетология-1. Университет интернет-профессий. Источник знаний для роста в профессии",
@@ -55,7 +54,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
                 post.copy(
                     id = nextId++,
                     author = "Me",
-                    publisher = "",
+                    publisher = "now",
                     content = post.content,
                     likedByMe = false,
                     countFavorite = 0,
