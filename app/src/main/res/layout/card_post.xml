@@ -79,14 +79,13 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageFavorite"
+        style="@style/Widget.App.LikeCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_marginTop"
         android:background="@android:color/transparent"
         android:contentDescription="@string/imageView_descript"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
-        android:button="@drawable/ic_like_selector"
-        app:buttonTint="#FF0000"
         tools:ignore="MissingClass" />
 
     <TextView
