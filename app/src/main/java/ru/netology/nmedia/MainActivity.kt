@@ -57,11 +57,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        //viewModel.data.observe(this) { posts ->
-        //    adapter.submitList(posts)
-        //}
+
         //binding.content.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-        binding.cancel.setOnClickListener{
+        binding.cancel.setOnClickListener {
             viewModel.cancel()
         }
 
@@ -70,13 +68,13 @@ class MainActivity : AppCompatActivity() {
                 with(binding.content) {
                     requestFocus()
                     setText(post.content)
-                    //AndroidUtils.showKeyboard(this)
+                    AndroidUtils().showKeyboard(this)
                 }
             } else {
-                with(binding.content){
+                with(binding.content) {
                     setText("")
                     clearFocus()
-                    //AndroidUtils.hideKeyboardFrom(this)
+                    AndroidUtils().hideKeyboard(this)
                 }
             }
         }
@@ -96,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
                     setText("")
                     clearFocus()
-                    //AndroidUtils.hideKeyboard(this)
+                    AndroidUtils().hideKeyboard(this)
                 }
             }
         }
