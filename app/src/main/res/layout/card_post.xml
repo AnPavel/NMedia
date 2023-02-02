@@ -77,7 +77,7 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="textPoleHeading" />
 
-    <ImageView
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,7 +85,9 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/imageView_descript"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
-        app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+        android:button="@drawable/ic_like_selector"
+        app:buttonTint="#FF0000"
+        tools:ignore="MissingClass" />
 
     <TextView
         android:id="@+id/textFavorite"

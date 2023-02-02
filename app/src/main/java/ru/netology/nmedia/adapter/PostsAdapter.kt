@@ -41,9 +41,9 @@ class PostViewHolder(
             textPoleAuthor.text = post.author
             textPolePublished.text = post.publisher
             textPoleHeading.text = post.content
-            if (post.likedByMe) imageFavorite.setImageResource(R.drawable.ic_baseline_favorite_24) else imageFavorite.setImageResource(
-                R.drawable.ic_baseline_favorite_border_24
-            )
+            //if (post.likedByMe) imageFavorite.setImageResource(R.drawable.ic_baseline_favorite_24) else imageFavorite.setImageResource(
+            //    R.drawable.ic_baseline_favorite_border_24
+            //)
             textFavorite.text = transferToScreen(post.countFavorite)
             textShare.text = transferToScreen(post.countShare)
             textRedEye.text = transferToScreen(post.countRedEye)
@@ -67,9 +67,10 @@ class PostViewHolder(
                 }.show()
             }
 
-            imageFavorite.setOnClickListener {
-                onInteractionListener.onLike(post)
-            }
+            imageFavorite.isChecked = post.likedByMe
+            //imageFavorite.setOnClickListener {
+            //    onInteractionListener.onLike(post)
+            //}
 
             imageShare.setOnClickListener {
                 onInteractionListener.onShare(post)
