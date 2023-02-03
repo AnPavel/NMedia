@@ -4,4 +4,9 @@
         <item name="buttonTint">@color/color_like</item>
         <item name="android:button">@drawable/ic_like_selector</item>
     </style>
+
+    <style name="Widget.App.ShareButton" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/color_share</item>
+        <item name="android:button">@drawable/ic_share_selector</item>
+    </style>
 </resources>

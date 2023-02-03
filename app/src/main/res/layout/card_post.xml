@@ -86,28 +86,22 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/imageView_descript"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
+        tools:text="@sample/posts.json/data/count_like"
         tools:ignore="MissingClass" />
 
-    <ImageView
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageShare"
+        style="@style/Widget.App.ShareButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_layout_activity"
+        android:layout_marginLeft="@dimen/dimen_marginTop"
         android:background="@android:color/transparent"
         android:contentDescription="@string/imageView_descript"
         app:layout_constraintStart_toEndOf="@id/imageFavorite"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         app:layout_constraintTop_toTopOf="@id/imageFavorite"
-        app:srcCompat="@drawable/ic_baseline_share_24" />
-
-    <TextView
-        android:id="@+id/textShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_layout_activity"
-        android:text="22222"
-        app:layout_constraintStart_toEndOf="@id/imageShare"
-        app:layout_constraintTop_toTopOf="@id/imageShare" />
+        tools:text="@sample/posts.json/data/count_share"
+        tools:ignore="MissingClass" />
 
     <ImageView
         android:id="@+id/imageRedEye"
@@ -133,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="imageFavorite, textFavorite, imageShare, textShare, imageRedEye, textRedEye" />
+        app:constraint_referenced_ids="imageFavorite, imageShare, imageRedEye, textRedEye" />
 
     <View
         android:id="@+id/viewLine"
