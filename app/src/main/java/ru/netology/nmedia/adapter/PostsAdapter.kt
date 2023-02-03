@@ -44,7 +44,8 @@ class PostViewHolder(
             //if (post.likedByMe) imageFavorite.setImageResource(R.drawable.ic_baseline_favorite_24) else imageFavorite.setImageResource(
             //    R.drawable.ic_baseline_favorite_border_24
             //)
-            textFavorite.text = transferToScreen(post.countFavorite)
+            imageFavorite.text = transferToScreen(post.countFavorite)
+            //textFavorite.text = transferToScreen(post.countFavorite)
             textShare.text = transferToScreen(post.countShare)
             textRedEye.text = transferToScreen(post.countRedEye)
 
@@ -68,9 +69,9 @@ class PostViewHolder(
             }
 
             imageFavorite.isChecked = post.likedByMe
-            //imageFavorite.setOnClickListener {
-            //    onInteractionListener.onLike(post)
-            //}
+            imageFavorite.setOnClickListener {
+                onInteractionListener.onLike(post)
+            }
 
             imageShare.setOnClickListener {
                 onInteractionListener.onShare(post)
