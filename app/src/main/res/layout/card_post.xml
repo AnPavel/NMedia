@@ -86,6 +86,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/imageView_descript"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
+        android:textColor = "?attr/colorControlNormal"
         tools:text="@sample/posts.json/data/count_like"
         tools:ignore="MissingClass" />
 
@@ -100,6 +101,7 @@
         app:layout_constraintStart_toEndOf="@id/imageFavorite"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         app:layout_constraintTop_toTopOf="@id/imageFavorite"
+        android:textColor = "?attr/colorControlNormal"
         tools:text="@sample/posts.json/data/count_share"
         tools:ignore="MissingClass" />
 
