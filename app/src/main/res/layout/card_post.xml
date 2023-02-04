@@ -40,16 +40,18 @@
         app:layout_constraintTop_toBottomOf="@id/textPoleAuthor"
         tools:text="@sample/posts.json/data/published" />
 
-    <ImageButton
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageMenu"
+        style="@style/Widget.App.MenuVert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dimen_layout_activity"
-        android:background="@android:color/transparent"
         android:contentDescription="@string/image_buttom_more_vert"
+        android:minWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/textPoleAuthor"
         app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_heading"
@@ -83,53 +85,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_marginTop"
-        android:background="@android:color/transparent"
         android:contentDescription="@string/imageView_descript"
+        android:minWidth="0dp"
+        android:textColor="?attr/colorControlNormal"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
-        android:textColor = "?attr/colorControlNormal"
-        tools:text="@sample/posts.json/data/count_like"
-        tools:ignore="MissingClass" />
+        tools:ignore="MissingClass"
+        tools:text="@sample/posts.json/data/count_like" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageShare"
         style="@style/Widget.App.ShareButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_marginTop"
-        android:background="@android:color/transparent"
+        android:layout_marginStart="@dimen/dimen_marginTop"
         android:contentDescription="@string/imageView_descript"
+        android:minWidth="0dp"
+        android:textColor="?attr/colorControlNormal"
         app:layout_constraintStart_toEndOf="@id/imageFavorite"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         app:layout_constraintTop_toTopOf="@id/imageFavorite"
-        android:textColor = "?attr/colorControlNormal"
-        tools:text="@sample/posts.json/data/count_share"
-        tools:ignore="MissingClass" />
+        tools:ignore="MissingClass"
+        tools:text="@sample/posts.json/data/count_share" />
 
-    <ImageView
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageRedEye"
+        style="@style/Widget.App.RedEyeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dimen_layout_activity"
-        android:background="@android:color/transparent"
         android:contentDescription="@string/imageView_descript"
-        app:layout_constraintEnd_toStartOf="@id/textRedEye"
-        app:layout_constraintTop_toTopOf="@id/imageFavorite"
-        app:srcCompat="@drawable/ic_baseline_remove_red_eye_24" />
-
-    <TextView
-        android:id="@+id/textRedEye"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="22,2K"
+        android:minWidth="0dp"
+        android:textColor="?attr/colorControlNormal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imageRedEye" />
+        app:layout_constraintTop_toBottomOf="@id/barrier_body"
+        app:layout_constraintTop_toTopOf="@id/imageFavorite"
+        tools:ignore="MissingClass"
+        tools:text="@sample/posts.json/data/count_redeye" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="imageFavorite, imageShare, imageRedEye, textRedEye" />
+        app:constraint_referenced_ids="imageFavorite, imageShare, imageRedEye" />
 
     <View
         android:id="@+id/viewLine"

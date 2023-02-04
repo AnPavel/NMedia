@@ -5,8 +5,19 @@
         <item name="android:button">@drawable/ic_like_selector</item>
     </style>
 
-    <style name="Widget.App.ShareButton" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+    <style name="Widget.App.ShareButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="buttonTint">@color/color_share</item>
         <item name="android:button">@drawable/ic_share_selector</item>
     </style>
+
+    <style name="Widget.App.RedEyeButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="buttonTint">@color/color_redeye</item>
+        <item name="android:button">@drawable/ic_redeye_selector</item>
+    </style>
+
+    <style name="Widget.App.MenuVert" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="buttonTint">@color/color_share</item>
+        <item name="android:button">@drawable/ic_menu_vert_selector</item>
+    </style>
+
 </resources>

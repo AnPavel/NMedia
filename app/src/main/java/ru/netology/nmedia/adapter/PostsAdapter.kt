@@ -48,7 +48,8 @@ class PostViewHolder(
             //textFavorite.text = transferToScreen(post.countFavorite)
             imageShare.text = transferToScreen(post.countShare)
             //textShare.text = transferToScreen(post.countShare)
-            textRedEye.text = transferToScreen(post.countRedEye)
+            imageRedEye.text = transferToScreen(post.countRedEye)
+            //textRedEye.text = transferToScreen(post.countRedEye)
 
             imageMenu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
