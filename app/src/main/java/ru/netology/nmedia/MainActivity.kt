@@ -1,5 +1,6 @@
 package ru.netology.nmedia
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -31,8 +32,19 @@ class MainActivity : AppCompatActivity() {
             viewModel.likeById(post.id)
         }
 
+        /*
         override fun onShare(post: Post) {
             viewModel.likeByShareId(post.id)
+        }
+        */
+
+        override fun onShare(post: Post) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT, post.content)
+            intent.type = "text/plain"
+
+            startActivity(intent)
         }
 
         override fun onRedEye(post: Post) {
@@ -87,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                         context.getString(R.string.error_empty_content),
                         Toast.LENGTH_SHORT
                     ).show()
-                    //return@setOnClickListener
+                    return@setOnClickListener
                 } else {
                     viewModel.changeContent(text.toString())
                     viewModel.save()
