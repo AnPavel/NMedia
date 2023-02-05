@@ -44,7 +44,10 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(Intent.EXTRA_TEXT, post.content)
             intent.type = "text/plain"
 
-            startActivity(intent)
+            //val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+            val shareIntent = Intent.createChooser(intent, getString(R.id.content))
+            startActivity(shareIntent)
+            //startActivity(intent)
         }
 
         override fun onRedEye(post: Post) {
