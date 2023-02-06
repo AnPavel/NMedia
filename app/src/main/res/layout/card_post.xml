@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/textPoleAuthor"
         tools:text="@sample/posts.json/data/published" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/imageMenu"
         style="@style/Widget.App.MenuVert"
         android:layout_width="wrap_content"
@@ -48,6 +48,9 @@
         android:layout_marginBottom="@dimen/dimen_layout_activity"
         android:contentDescription="@string/image_buttom_more_vert"
         android:minWidth="0dp"
+        app:icon="@drawable/ic_baseline_more_vert_24"
+        app:iconTint="?attr/colorControlNormal"
+        app:rippleColor="?attr/colorControlNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/textPoleAuthor"
         app:srcCompat="@drawable/ic_baseline_more_vert_24" />
@@ -92,22 +95,25 @@
         tools:ignore="MissingClass"
         tools:text="@sample/posts.json/data/count_like" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/imageShare"
         style="@style/Widget.App.ShareButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_marginTop"
         android:contentDescription="@string/imageView_descript"
         android:minWidth="0dp"
         android:textColor="?attr/colorControlNormal"
+        app:icon="@drawable/ic_baseline_share_24"
+        app:iconTint="?attr/colorControlNormal"
+        app:rippleColor="?attr/colorControlNormal"
         app:layout_constraintStart_toEndOf="@id/imageFavorite"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         app:layout_constraintTop_toTopOf="@id/imageFavorite"
         tools:ignore="MissingClass"
         tools:text="@sample/posts.json/data/count_share" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/imageRedEye"
         style="@style/Widget.App.RedEyeButton"
         android:layout_width="wrap_content"
@@ -115,6 +121,9 @@
         android:contentDescription="@string/imageView_descript"
         android:minWidth="0dp"
         android:textColor="?attr/colorControlNormal"
+        app:icon="@drawable/ic_baseline_remove_red_eye_24"
+        app:iconTint="?attr/colorControlNormal"
+        app:rippleColor="?attr/colorControlNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         app:layout_constraintTop_toTopOf="@id/imageFavorite"
