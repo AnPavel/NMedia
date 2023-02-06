@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NMedia</string>
+    <string name="app_name">НMedia</string>
     <string name="logo_descript">Лого</string>
     <string name="field_name_on_screen">НМедиа11</string>
     <string name="field_name_on_screen_second">Нмедия22</string>
@@ -10,4 +10,6 @@
     <string name="button_save">Кнопка сохранить</string>
     <string name="menu_edit">Редактировать</string>
     <string name="menu_delete">Удалить</string>
+    <string name="chooser_share_post">Nmedia_share</string>
+    <string name="image_buttom_more_vert">Меню</string>
 </resources>

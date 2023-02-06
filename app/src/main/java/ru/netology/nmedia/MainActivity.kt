@@ -39,15 +39,16 @@ class MainActivity : AppCompatActivity() {
         */
 
         override fun onShare(post: Post) {
-            val intent = Intent()
-            intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, post.content)
-            intent.type = "text/plain"
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                //putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+                putExtra(Intent.EXTRA_TEXT, post.content)
+                type = "text/plain"
+            }
 
-            //val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
-            val shareIntent = Intent.createChooser(intent, getString(R.id.content))
+            val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+            //val shareIntent = Intent.createChooser(intent, getString(R.string.post_text))
             startActivity(shareIntent)
-            //startActivity(intent)
         }
 
         override fun onRedEye(post: Post) {
