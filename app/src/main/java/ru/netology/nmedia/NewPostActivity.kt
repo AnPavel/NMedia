@@ -14,6 +14,7 @@ class NewPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityNewPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        /* обработка события по контракту если пусто - вернуть Cancel, иначе OK */
         binding.buttonOk.setOnClickListener {
             val text = binding.content.text.toString()
             if (text.isBlank()) {
@@ -21,16 +22,18 @@ class NewPostActivity : AppCompatActivity() {
             } else {
                 setResult(Activity.RESULT_OK, Intent().apply { putExtra(Intent.EXTRA_TEXT, text) })
             }
+            /* скрыть активити */
             finish()
         }
     }
 
-    object NewPostContract: ActivityResultContract<Unit, String?>() {
+    object NewPostContract : ActivityResultContract<Unit, String?>() {
 
-        override fun createIntent(context: Context, input: Unit) = Intent(context, NewPostActivity::class.java)
+        override fun createIntent(context: Context, input: Unit) =
+            Intent(context, NewPostActivity::class.java)
 
-
-        override fun parseResult(resultCode: Int, intent: Intent?) = intent?.getStringExtra(Intent.EXTRA_TEXT)
+        override fun parseResult(resultCode: Int, intent: Intent?) =
+            intent?.getStringExtra(Intent.EXTRA_TEXT)
 
     }
 }

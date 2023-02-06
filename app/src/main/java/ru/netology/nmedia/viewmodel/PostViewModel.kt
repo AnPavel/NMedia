@@ -15,7 +15,8 @@ private val empty = Post(
     publisher = "",
     countFavorite = 0,
     countShare = 0,
-    countRedEye = 0
+    countRedEye = 0,
+    linkToVideo = null
 )
 
 class PostViewModel : ViewModel() {

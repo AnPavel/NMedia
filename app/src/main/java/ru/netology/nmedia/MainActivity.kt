@@ -82,11 +82,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.add.setOnClickListener {
+            /* запускаем контаакт методом lauch */
             newPostContract.launch()
         }
 
 
-        /*
+        /* после обьявления контракта - не используем
         //binding.content.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         binding.cancel.setOnClickListener {
             viewModel.cancel()

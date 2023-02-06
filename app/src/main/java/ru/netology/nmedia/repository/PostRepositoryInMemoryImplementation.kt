@@ -10,13 +10,15 @@ class PostRepositoryInMemoryImplementation : PostRepository {
 
     private var posts = listOf(
         Post(
-            nextId++, "Нетология-1. Университет интернет-профессий. Источник знаний для роста в профессии",
+            nextId++,
+            "Нетология-1. Университет интернет-профессий. Источник знаний для роста в профессии",
             "11 января 2023 11:00",
             "1- Нетология - российская компания и образовательная онлайн-платформа, запущенная в 2011 году. Одна из ведущих российских компаний онлайн-образования. Входит в IT-холдинг TalentTech, объединяющий компании по трём направлениям: EdTech, HRTech и Freelance.",
             false,
             999,
             10,
-            300
+            300,
+            ""
         ),
         Post(
             nextId++, "Нетология-2. Источник знаний для роста в профессии",
@@ -25,7 +27,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             false,
             999,
             20,
-            300
+            300,
+            ""
         ),
         Post(
             nextId++, "Нетология-3. Источник знаний для роста в профессии",
@@ -34,7 +37,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             false,
             99,
             30,
-            700
+            700,
+            ""
         ),
         Post(
             nextId++, "Нетология-4. Источник знаний для роста в профессии",
@@ -43,7 +47,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             false,
             99,
             40,
-            900
+            900,
+            ""
         )
     )
     private val data = MutableLiveData(posts)
