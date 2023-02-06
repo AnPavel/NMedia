@@ -3,6 +3,7 @@ package ru.netology.nmedia
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -62,18 +63,30 @@ class MainActivity : AppCompatActivity() {
         //val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val newPostContract = registerForActivityResult(NewPostActivity.NewPostContract) { content ->
+            content ?: return@registerForActivityResult
+            viewModel.changeContent(content)
+            viewModel.save()
+        }
+
         val adapter = PostsAdapter(interactionListener)
         binding.list.adapter = adapter
 
         viewModel.data.observe(this) { posts ->
             val newPost = posts.size > adapter.currentList.size
             adapter.submitList(posts) {
+                /* при добавлени нового поста переход на добавленный пост в начало страницы */
                 if (newPost) {
                     binding.list.smoothScrollToPosition(0)
                 }
             }
         }
+        binding.add.setOnClickListener {
+            newPostContract.launch()
+        }
 
+
+        /*
         //binding.content.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         binding.cancel.setOnClickListener {
             viewModel.cancel()
@@ -114,5 +127,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        */
+
     }
 }

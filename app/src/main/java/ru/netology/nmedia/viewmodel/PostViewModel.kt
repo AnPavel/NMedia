@@ -51,7 +51,7 @@ class PostViewModel : ViewModel() {
     }
 
     fun likeById(id: Long) = repository.likeById(id)
-    fun likeByShareId(id: Long) = repository.likeByShareId(id)
+    //fun likeByShareId(id: Long) = repository.likeByShareId(id)
     fun likeByRedEyeId(id: Long) = repository.likeByRedEyeId(id)
 
 }
