@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
                     putExtra(Intent.EXTRA_TEXT, post.content)
                     type = "text/plain"
                 }
-                    Log.d("MyLog","intent=" + intent?.getStringExtra(Intent.EXTRA_TEXT))
 
                 //newPostContract.launch()
                 newPostContract.launch(viewModel.edit(post))
@@ -52,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                 //Log.d("MyLog","intent=" + intent?.getStringExtra(Intent.EXTRA_TEXT))
                 val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
+                viewModel.likeByShareId(post.id)
             }
 
             override fun onLike(post: Post) {

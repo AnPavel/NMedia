@@ -69,11 +69,13 @@ class PostRepositoryInMemoryImplementation : PostRepository {
                     countRedEye = 0
                 )
             ) + posts
-        } else {
-            //редактирование
-            posts = posts.map {
-                if (it.id != post.id) it else it.copy(content = post.content)
-            }
+            data.value = posts
+            return
+        }
+
+        //редактирование
+        posts = posts.map {
+            if (it.id != post.id) it else it.copy(content = post.content)
         }
         data.value = posts
     }
@@ -86,21 +88,10 @@ class PostRepositoryInMemoryImplementation : PostRepository {
 
     override fun likeById(id: Long) {
         posts = posts.map {
-            if (it.id != id) {
-                it
-            } else {
-                if (it.likedByMe) {
-                    it.copy(
-                        likedByMe = !it.likedByMe,
-                        countFavorite = it.countFavorite - 1
-                    )
-                } else {
-                    it.copy(
-                        likedByMe = !it.likedByMe,
-                        countFavorite = it.countFavorite + 1
-                    )
-                }
-            }
+            if (it.id != id) it else it.copy(
+                likedByMe = !it.likedByMe,
+                countFavorite = if (it.likedByMe) it.countFavorite - 1 else it.countFavorite + 1
+            )
         }
         data.value = posts
     }

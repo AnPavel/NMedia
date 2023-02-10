@@ -15,15 +15,10 @@ class NewPostActivity : AppCompatActivity() {
         val binding = ActivityNewPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get the message from the intent
-        //val message = intent?.getStringExtra(EXTRA_MESSAGE)
+        // получить сообщение из интента
         val message = intent?.getStringExtra(Intent.EXTRA_TEXT)
 
-        //Log.d("MyLog","intent1=" + intent.getStringExtra("EXTRA_TEXT"))
         //Log.d("MyLog","intent1=" + intent?.getStringExtra(Intent.EXTRA_TEXT))
-        Log.d("MyLog","intent1=" + intent)
-        Log.d("MyLog","intent1=" + message)
-
 
         /* добавить string в поле на экране */
         //binding.content?.setText(message)
