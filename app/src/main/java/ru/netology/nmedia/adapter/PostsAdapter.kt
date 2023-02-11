@@ -41,6 +41,7 @@ class PostViewHolder(
             textPoleAuthor.text = post.author
             textPolePublished.text = post.publisher
             textPoleHeading.text = post.content
+            textPoleUrl.text = post.linkToVideo
             //if (post.likedByMe) imageFavorite.setImageResource(R.drawable.ic_baseline_favorite_24) else imageFavorite.setImageResource(
             //    R.drawable.ic_baseline_favorite_border_24
             //)

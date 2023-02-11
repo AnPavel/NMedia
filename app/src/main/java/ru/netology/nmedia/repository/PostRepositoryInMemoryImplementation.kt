@@ -18,7 +18,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             999,
             10,
             300,
-            ""
+            "https://www.youtube.com/watch?v=KxgWmYJV3OU"
         ),
         Post(
             nextId++, "Нетология-2. Источник знаний для роста в профессии",
@@ -28,7 +28,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             999,
             20,
             300,
-            ""
+            "https://www.netology.ru"
         ),
         Post(
             nextId++, "Нетология-3. Источник знаний для роста в профессии",
