@@ -1,6 +1,7 @@
 package ru.netology.nmedia
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.launch
@@ -53,6 +54,16 @@ class MainActivity : AppCompatActivity() {
                 val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
             }
+
+            /*********************************/
+
+            override fun onUrl(post: Post) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.linkToVideo))
+                startActivity(intent)
+
+            }
+
+            /*********************************/
 
             override fun onLike(post: Post) {
                 viewModel.likeById(post.id)
