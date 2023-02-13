@@ -21,7 +21,7 @@
     </style>
 
     <style name="Widget.App.UrlButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="buttonTint">@color/color_share</item>
+        <item name="buttonTint">@color/white</item>
         <item name="android:button">@drawable/ic_youtube_selector</item>
     </style>
 

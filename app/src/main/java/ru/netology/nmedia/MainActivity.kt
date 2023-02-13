@@ -31,12 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
-                }
-                    Log.d("MyLog","intent=" + intent?.getStringExtra(Intent.EXTRA_TEXT))
+                //val intent = Intent().apply {
+                //    action = Intent.ACTION_SEND
+                //    putExtra(Intent.EXTRA_TEXT, post.content)
+                //    type = "text/plain"
+                //}
 
                 //newPostContract.launch()
                 newPostContract.launch(viewModel.edit(post))
@@ -55,15 +54,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
 
-            /*********************************/
-
             override fun onUrl(post: Post) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.linkToVideo))
                 startActivity(intent)
-
             }
-
-            /*********************************/
 
             override fun onLike(post: Post) {
                 viewModel.likeById(post.id)

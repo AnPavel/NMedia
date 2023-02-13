@@ -16,7 +16,7 @@ private val empty = Post(
     countFavorite = 0,
     countShare = 0,
     countRedEye = 0,
-    linkToVideo = null
+    linkToVideo = ""
 )
 
 class PostViewModel : ViewModel() {
@@ -53,6 +53,7 @@ class PostViewModel : ViewModel() {
     }
 
     fun likeById(id: Long) = repository.likeById(id)
+
     //fun likeByShareId(id: Long) = repository.likeByShareId(id)
     fun likeByRedEyeId(id: Long) = repository.likeByRedEyeId(id)
 

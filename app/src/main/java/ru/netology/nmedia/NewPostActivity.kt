@@ -16,18 +16,15 @@ class NewPostActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Get the message from the intent
-        //val message = intent?.getStringExtra(EXTRA_MESSAGE)
-        val message = intent?.getStringExtra(Intent.EXTRA_TEXT)
-
-        //Log.d("MyLog","intent1=" + intent.getStringExtra("EXTRA_TEXT"))
+        //val message = intent?.getStringExtra(Intent.EXTRA_TEXT)
         //Log.d("MyLog","intent1=" + intent?.getStringExtra(Intent.EXTRA_TEXT))
-        Log.d("MyLog","intent1=" + intent)
-        Log.d("MyLog","intent1=" + message)
+        //Log.d("MyLog","intent1=" + intent)
+        //Log.d("MyLog","intent1=" + message)
 
 
         /* добавить string в поле на экране */
         //binding.content?.setText(message)
-        binding.content?.setText("This is my text to post.")
+        binding.content.setText("This is my text to post.")
 
         /* обработка события по контракту если пусто - вернуть Cancel, иначе OK */
         binding.buttonOk.setOnClickListener {
