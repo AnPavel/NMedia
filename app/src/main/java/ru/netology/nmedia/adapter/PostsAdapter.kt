@@ -43,7 +43,9 @@ class PostViewHolder(
             textPolePublished.text = post.publisher
             if (post.linkToVideo == "") {
                 textPoleHeading.text = post.content
+                textPoleUrl.setImageResource(0)
             } else {
+                textPoleHeading.text = ""
                 textPoleUrl.setImageResource(R.drawable.youtube240)
             }
             //textPoleUrl.text = post.linkToVideo

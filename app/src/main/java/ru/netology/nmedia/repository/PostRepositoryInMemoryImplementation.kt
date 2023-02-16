@@ -66,7 +66,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
                     likedByMe = false,
                     countFavorite = 0,
                     countShare = 0,
-                    countRedEye = 0
+                    countRedEye = 0,
+                    linkToVideo = ""
                 )
             ) + posts
         } else {
@@ -92,12 +93,16 @@ class PostRepositoryInMemoryImplementation : PostRepository {
                 if (it.likedByMe) {
                     it.copy(
                         likedByMe = !it.likedByMe,
-                        countFavorite = it.countFavorite - 1
+                        countFavorite = it.countFavorite - 1,
+                        content = it.content,
+                        linkToVideo = it.linkToVideo
                     )
                 } else {
                     it.copy(
                         likedByMe = !it.likedByMe,
-                        countFavorite = it.countFavorite + 1
+                        countFavorite = it.countFavorite + 1,
+                        content = it.content,
+                        linkToVideo = it.linkToVideo
                     )
                 }
             }
