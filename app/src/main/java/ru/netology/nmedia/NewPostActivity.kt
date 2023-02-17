@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
@@ -16,13 +15,11 @@ class NewPostActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // получить сообщение из интента
-        val message = intent?.getStringExtra(Intent.EXTRA_TEXT)
-
-        //Log.d("MyLog","intent1=" + intent?.getStringExtra(Intent.EXTRA_TEXT))
+        val message = intent.getStringExtra(Intent.EXTRA_TEXT)
 
         /* добавить string в поле на экране */
-        //binding.content?.setText(message)
-        binding.content?.setText("This is my text to post.")
+        binding.content.setText(message)
+        //binding.content?.setText("This is my text to post.")
 
         /* обработка события по контракту если пусто - вернуть Cancel, иначе OK */
         binding.buttonOk.setOnClickListener {
@@ -37,13 +34,20 @@ class NewPostActivity : AppCompatActivity() {
         }
     }
 
-    object NewPostContract : ActivityResultContract<Unit, String?>() {
+    object NewPostContract : ActivityResultContract<String, String?>() {
 
-        override fun createIntent(context: Context, input: Unit) =
+        override fun createIntent(context: Context, input: String) =
             Intent(context, NewPostActivity::class.java)
+                .putExtra(Intent.EXTRA_TEXT, input)
+
 
         override fun parseResult(resultCode: Int, intent: Intent?) =
             intent?.getStringExtra(Intent.EXTRA_TEXT)
 
     }
+    /*
+    companion object {
+        internal const val EXTRA_INPUT_MESSAGE = "EXTRA_TEXT"
+    }
+    */
 }

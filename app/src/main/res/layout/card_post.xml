@@ -71,16 +71,30 @@
         android:layout_marginTop="@dimen/dimen_marginTop"
         android:autoLink="web"
         android:linksClickable="true"
-        android:text="Адрес сайта: google.ru"
         app:layout_constraintTop_toBottomOf="@id/barrier_heading"
         tools:text="@sample/posts.json/data/textPublic" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/textPoleUrl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_marginTop"
+        android:linksClickable="true"
+        app:backgroundTint="@android:color/transparent"
+        app:icon="@drawable/ic_baseline_play_circle_outline_24"
+        app:iconGravity="textStart"
+        app:iconTint="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textPoleHeading"
+        tools:ignore="MissingClass" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textPoleHeading" />
+        app:constraint_referenced_ids="textPoleUrl" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageFavorite"

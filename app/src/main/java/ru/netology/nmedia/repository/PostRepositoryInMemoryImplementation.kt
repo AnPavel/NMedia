@@ -28,7 +28,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             999,
             20,
             300,
-            ""
+            "http://netology.ru"
         ),
         Post(
             nextId++, "Нетология-3. Источник знаний для роста в профессии",
@@ -66,7 +66,8 @@ class PostRepositoryInMemoryImplementation : PostRepository {
                     likedByMe = false,
                     countFavorite = 0,
                     countShare = 0,
-                    countRedEye = 0
+                    countRedEye = 0,
+                    linkToVideo = ""
                 )
             ) + posts
             data.value = posts

@@ -30,14 +30,10 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
-                }
 
-                //newPostContract.launch()
-                newPostContract.launch(viewModel.edit(post))
+                viewModel.edit(post)
+                newPostContract.launch(post.content)
+                //newPostContract.launch(viewModel.edit(post))
             }
 
             override fun onShare(post: Post) {
@@ -47,8 +43,6 @@ class MainActivity : AppCompatActivity() {
                     putExtra(Intent.EXTRA_TEXT, post.content)
                     type = "text/plain"
                 }
-                //Log.d("MyLog","intent=" + intent.putExtra(Intent.EXTRA_TEXT, post.content))
-                //Log.d("MyLog","intent=" + intent?.getStringExtra(Intent.EXTRA_TEXT))
                 val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
                 viewModel.likeByShareId(post.id)
@@ -71,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.data.observe(this) { posts ->
             val newPost = posts.size > adapter.currentList.size
             adapter.submitList(posts) {
-                /* при добавлени нового поста переход на добавленный пост в начало страницы */
+                /* при добавлении нового поста переход на добавленный пост в начало страницы */
                 if (newPost) {
                     binding.list.smoothScrollToPosition(0)
                 }
@@ -79,8 +73,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.add.setOnClickListener {
-            /* запускаем контаакт методом lauch */
-            newPostContract.launch()
+            /* запускаем контракт методом lauch */
+            newPostContract.launch("")
         }
 
     }

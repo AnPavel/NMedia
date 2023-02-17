@@ -11,6 +11,7 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 
 interface OnInteractionListener {
+    fun onUrl(post: Post) {}
     fun onLike(post: Post) {}
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
@@ -40,10 +41,14 @@ class PostViewHolder(
         binding.apply {
             textPoleAuthor.text = post.author
             textPolePublished.text = post.publisher
-            textPoleHeading.text = post.content
-            //if (post.likedByMe) imageFavorite.setImageResource(R.drawable.ic_baseline_favorite_24) else imageFavorite.setImageResource(
-            //    R.drawable.ic_baseline_favorite_border_24
-            //)
+            if (post.linkToVideo == "") {
+                textPoleHeading.text = post.content
+                textPoleUrl.setImageResource(0)
+            } else {
+                textPoleHeading.text = ""
+                textPoleUrl.setImageResource(R.drawable.youtube240)
+            }
+            //textPoleUrl.text = post.linkToVideo
             imageFavorite.text = transferToScreen(post.countFavorite)
             //textFavorite.text = transferToScreen(post.countFavorite)
             imageShare.text = transferToScreen(post.countShare)
@@ -68,6 +73,10 @@ class PostViewHolder(
                         }
                     }
                 }.show()
+            }
+
+            textPoleUrl.setOnClickListener {
+                onInteractionListener.onUrl(post)
             }
 
             imageFavorite.isChecked = post.likedByMe
