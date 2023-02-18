@@ -47,11 +47,23 @@ class PostRepositorySQLiteImpl(
     }
 
     override fun likeByShareId(id: Long) {
-        TODO("Not yet implemented")
+        dao.likeByShareId(id)
+        posts = posts.map {
+            if (it.id != id) it else it.copy(
+                countShare = it.countShare + 100
+            )
+        }
+        data.value = posts
     }
 
     override fun likeByRedEyeId(id: Long) {
-        TODO("Not yet implemented")
+        dao.likeByRedEyeId(id)
+        posts = posts.map {
+            if (it.id != id) it else it.copy(
+                countRedEye = it.countRedEye + 200
+            )
+        }
+        data.value = posts
     }
 
     override fun removeById(id: Long) {

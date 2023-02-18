@@ -69,8 +69,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         val values = ContentValues().apply {
             put(PostColumns.COLUMN_CONTENT, post.content)
             put(PostColumns.COLUMN_AUTHOR, "Me")
-            put(PostColumns.COLUMN_PUBLISHER, "Now")
-            //put(PostColumns.COLUMN_PUBLISHER, GetDataTime().dateFormat.toString())
+            //put(PostColumns.COLUMN_PUBLISHER, "Now")
+            put(PostColumns.COLUMN_PUBLISHER, GetDataTime().dateFormat.toString())
             put(PostColumns.COLUMN_COUNT_LINK_TO_VIDEO, "")
         }
         val id = if (post.id != 0L) {
@@ -112,7 +112,19 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
     }
 
     override fun likeByShareId(id: Long) {
-        TODO("Not yet implemented")
+        db.execSQL(
+            """
+           UPDATE posts SET countShare = countShare + 100 WHERE id = ?;
+        """.trimIndent(), arrayOf(id)
+        )
+    }
+
+    override fun likeByRedEyeId(id: Long) {
+        db.execSQL(
+            """
+           UPDATE posts SET countRedEye = countRedEye + 200 WHERE id = ?;
+        """.trimIndent(), arrayOf(id)
+        )
     }
 
     override fun removeById(id: Long) {
