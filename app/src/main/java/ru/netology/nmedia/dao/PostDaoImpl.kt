@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.utils.GetDataTime
 
 class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
     companion object {
@@ -68,7 +69,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         val values = ContentValues().apply {
             put(PostColumns.COLUMN_AUTHOR, "Me")
             put(PostColumns.COLUMN_CONTENT, post.content)
-            put(PostColumns.COLUMN_PUBLISHER, "now")
+            put(PostColumns.COLUMN_PUBLISHER, "Now")
+            //put(PostColumns.COLUMN_PUBLISHER, GetDataTime().dateFormat.toString())
         }
         val id = if (post.id != 0L) {
             db.update(
