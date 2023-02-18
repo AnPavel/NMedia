@@ -12,9 +12,12 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             ${PostColumns.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
             ${PostColumns.COLUMN_AUTHOR} TEXT NOT NULL,
             ${PostColumns.COLUMN_CONTENT} TEXT NOT NULL,
-            ${PostColumns.COLUMN_PUBLISHED} TEXT NOT NULL,
+            ${PostColumns.COLUMN_PUBLISHER} TEXT NOT NULL,
             ${PostColumns.COLUMN_LIKED_BY_ME} BOOLEAN NOT NULL DEFAULT 0,
-            ${PostColumns.COLUMN_LIKES} INTEGER NOT NULL DEFAULT 0
+            ${PostColumns.COLUMN_COUNT_FAVORITE} INTEGER NOT NULL DEFAULT 0,
+            ${PostColumns.COLUMN_COUNT_SHARE} INTEGER NOT NULL DEFAULT 0,
+            ${PostColumns.COLUMN_COUNT_REDEYE} INTEGER NOT NULL DEFAULT 0,
+            ${PostColumns.COLUMN_COUNT_LINK_TO_VIDEO} TEXT NOT NULL
         );
         """.trimIndent()
     }
@@ -24,16 +27,22 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         const val COLUMN_ID = "id"
         const val COLUMN_AUTHOR = "author"
         const val COLUMN_CONTENT = "content"
-        const val COLUMN_PUBLISHED = "published"
+        const val COLUMN_PUBLISHER = "published"
         const val COLUMN_LIKED_BY_ME = "likedByMe"
-        const val COLUMN_LIKES = "likes"
+        const val COLUMN_COUNT_FAVORITE = "countFavorite"
+        const val COLUMN_COUNT_SHARE = "countShare"
+        const val COLUMN_COUNT_REDEYE = "countRedEye"
+        const val COLUMN_COUNT_LINK_TO_VIDEO = "linkToVideo"
         val ALL_COLUMNS = arrayOf(
             COLUMN_ID,
             COLUMN_AUTHOR,
             COLUMN_CONTENT,
-            COLUMN_PUBLISHED,
+            COLUMN_PUBLISHER,
             COLUMN_LIKED_BY_ME,
-            COLUMN_LIKES
+            COLUMN_COUNT_FAVORITE,
+            COLUMN_COUNT_SHARE,
+            COLUMN_COUNT_REDEYE,
+            COLUMN_COUNT_LINK_TO_VIDEO
         )
     }
 
@@ -57,10 +66,9 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
 
     override fun save(post: Post): Post {
         val values = ContentValues().apply {
-            // TODO: remove hardcoded values
             put(PostColumns.COLUMN_AUTHOR, "Me")
             put(PostColumns.COLUMN_CONTENT, post.content)
-            put(PostColumns.COLUMN_PUBLISHED, "now")
+            put(PostColumns.COLUMN_PUBLISHER, "now")
         }
         val id = if (post.id != 0L) {
             db.update(
@@ -91,7 +99,7 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         db.execSQL(
             """
            UPDATE posts SET
-               likes = likes + CASE WHEN likedByMe THEN -1 ELSE 1 END,
+               countFavorite = countFavorite + CASE WHEN likedByMe THEN -1 ELSE 1 END,
                likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END
            WHERE id = ?;
         """.trimIndent(), arrayOf(id)
@@ -112,9 +120,12 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
                 id = getLong(getColumnIndexOrThrow(PostColumns.COLUMN_ID)),
                 author = getString(getColumnIndexOrThrow(PostColumns.COLUMN_AUTHOR)),
                 content = getString(getColumnIndexOrThrow(PostColumns.COLUMN_CONTENT)),
-                published = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHED)),
+                publisher = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHER)),
                 likedByMe = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKED_BY_ME)) != 0,
-                likes = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKES)),
+                countFavorite = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_COUNT_FAVORITE)),
+                countRedEye = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_COUNT_SHARE)),
+                countShare = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_COUNT_REDEYE)),
+                linkToVideo = getString(getColumnIndexOrThrow(PostColumns.COLUMN_COUNT_LINK_TO_VIDEO)),
             )
         }
     }
