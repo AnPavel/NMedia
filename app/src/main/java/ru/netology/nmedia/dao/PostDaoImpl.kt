@@ -11,10 +11,10 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         val DDL = """
         CREATE TABLE ${PostColumns.TABLE} (
             ${PostColumns.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
-            ${PostColumns.COLUMN_AUTHOR} TEXT NOT NULL,
             ${PostColumns.COLUMN_CONTENT} TEXT NOT NULL,
-            ${PostColumns.COLUMN_PUBLISHER} TEXT NOT NULL,
+            ${PostColumns.COLUMN_AUTHOR} TEXT NOT NULL,
             ${PostColumns.COLUMN_LIKED_BY_ME} BOOLEAN NOT NULL DEFAULT 0,
+            ${PostColumns.COLUMN_PUBLISHER} TEXT NOT NULL,
             ${PostColumns.COLUMN_COUNT_FAVORITE} INTEGER NOT NULL DEFAULT 0,
             ${PostColumns.COLUMN_COUNT_SHARE} INTEGER NOT NULL DEFAULT 0,
             ${PostColumns.COLUMN_COUNT_REDEYE} INTEGER NOT NULL DEFAULT 0,
@@ -26,20 +26,20 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
     object PostColumns {
         const val TABLE = "posts"
         const val COLUMN_ID = "id"
-        const val COLUMN_AUTHOR = "author"
         const val COLUMN_CONTENT = "content"
-        const val COLUMN_PUBLISHER = "published"
+        const val COLUMN_AUTHOR = "author"
         const val COLUMN_LIKED_BY_ME = "likedByMe"
+        const val COLUMN_PUBLISHER = "published"
         const val COLUMN_COUNT_FAVORITE = "countFavorite"
         const val COLUMN_COUNT_SHARE = "countShare"
         const val COLUMN_COUNT_REDEYE = "countRedEye"
         const val COLUMN_COUNT_LINK_TO_VIDEO = "linkToVideo"
         val ALL_COLUMNS = arrayOf(
             COLUMN_ID,
-            COLUMN_AUTHOR,
             COLUMN_CONTENT,
-            COLUMN_PUBLISHER,
+            COLUMN_AUTHOR,
             COLUMN_LIKED_BY_ME,
+            COLUMN_PUBLISHER,
             COLUMN_COUNT_FAVORITE,
             COLUMN_COUNT_SHARE,
             COLUMN_COUNT_REDEYE,
@@ -120,10 +120,10 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         with(cursor) {
             return Post(
                 id = getLong(getColumnIndexOrThrow(PostColumns.COLUMN_ID)),
-                author = getString(getColumnIndexOrThrow(PostColumns.COLUMN_AUTHOR)),
                 content = getString(getColumnIndexOrThrow(PostColumns.COLUMN_CONTENT)),
-                publisher = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHER)),
+                author = getString(getColumnIndexOrThrow(PostColumns.COLUMN_AUTHOR)),
                 likedByMe = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKED_BY_ME)) != 0,
+                publisher = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHER)),
                 countFavorite = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_COUNT_FAVORITE)),
                 countRedEye = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_COUNT_SHARE)),
                 countShare = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_COUNT_REDEYE)),
