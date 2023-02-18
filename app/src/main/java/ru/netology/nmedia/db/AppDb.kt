@@ -31,6 +31,7 @@ class DbHelper(context: Context, dbVersion: Int, dbName: String, private val DDL
     SQLiteOpenHelper(context, dbName, null, dbVersion) {
     override fun onCreate(db: SQLiteDatabase) {
         DDLs.forEach {
+            /* создать базу данных */
             db.execSQL(it)
         }
     }

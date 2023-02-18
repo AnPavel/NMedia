@@ -84,7 +84,8 @@ class PostRepositoryFileImpl(
                     likedByMe = false,
                     countFavorite = 0,
                     countShare = 0,
-                    countRedEye = 0
+                    countRedEye = 0,
+                    linkToVideo = ""
                 )
             ) + posts
             data.value = posts

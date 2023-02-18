@@ -22,9 +22,7 @@ private val empty = Post(
 
 class PostViewModel(application: Application): AndroidViewModel(application) {
 
-    private val repository: PostRepository = PostRepositorySQLiteImpl(
-        AppDb.getInstance(application).postDao
-    )
+    private val repository: PostRepository = PostRepositorySQLiteImpl(AppDb.getInstance(application).postDao)
     //private val repository: PostRepository = PostRepositoryInMemoryImplementation()
     //private val repository: PostRepository = PostRepositoryFileImpl(application)
     //private val repository: PostRepository = PostRepositorySharedPrefsImpl(application)

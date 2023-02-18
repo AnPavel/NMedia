@@ -29,7 +29,7 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         const val COLUMN_CONTENT = "content"
         const val COLUMN_AUTHOR = "author"
         const val COLUMN_LIKED_BY_ME = "likedByMe"
-        const val COLUMN_PUBLISHER = "published"
+        const val COLUMN_PUBLISHER = "publisher"
         const val COLUMN_COUNT_FAVORITE = "countFavorite"
         const val COLUMN_COUNT_SHARE = "countShare"
         const val COLUMN_COUNT_REDEYE = "countRedEye"
@@ -67,12 +67,14 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
 
     override fun save(post: Post): Post {
         val values = ContentValues().apply {
-            put(PostColumns.COLUMN_AUTHOR, "Me")
             put(PostColumns.COLUMN_CONTENT, post.content)
+            put(PostColumns.COLUMN_AUTHOR, "Me")
             put(PostColumns.COLUMN_PUBLISHER, "Now")
             //put(PostColumns.COLUMN_PUBLISHER, GetDataTime().dateFormat.toString())
+            put(PostColumns.COLUMN_COUNT_LINK_TO_VIDEO, "")
         }
         val id = if (post.id != 0L) {
+            /* редактируем пост */
             db.update(
                 PostColumns.TABLE,
                 values,
@@ -81,6 +83,7 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             )
             post.id
         } else {
+            /* добавляем пост */
             db.insert(PostColumns.TABLE, null, values)
         }
         db.query(
@@ -108,6 +111,10 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         )
     }
 
+    override fun likeByShareId(id: Long) {
+        TODO("Not yet implemented")
+    }
+
     override fun removeById(id: Long) {
         db.delete(
             PostColumns.TABLE,
@@ -117,8 +124,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
     }
 
     private fun map(cursor: Cursor): Post {
-        with(cursor) {
-            return Post(
+        return with(cursor) {
+             Post(
                 id = getLong(getColumnIndexOrThrow(PostColumns.COLUMN_ID)),
                 content = getString(getColumnIndexOrThrow(PostColumns.COLUMN_CONTENT)),
                 author = getString(getColumnIndexOrThrow(PostColumns.COLUMN_AUTHOR)),
