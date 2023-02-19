@@ -6,9 +6,8 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
@@ -22,12 +21,12 @@ class FeedFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentFeedBinding.inflate(layoutInflater, container, false)
         val viewModel: PostViewModel by viewModels()
 
         val newPostContract =
-            registerForActivityResult(NewPostActivity.NewPostContract) { content ->
+            registerForActivityResult(NewPostFragment.NewPostContract) { content ->
                 content ?: return@registerForActivityResult
                 viewModel.changeContent(content)
                 viewModel.save()
@@ -72,7 +71,7 @@ class FeedFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
-        viewModel.data.observe(this) { posts ->
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
             val newPost = posts.size > adapter.currentList.size
             adapter.submitList(posts) {
                 /* при добавлении нового поста переход на добавленный пост в начало страницы */
@@ -86,6 +85,7 @@ class FeedFragment : Fragment() {
             /* запускаем контракт методом lauch */
             newPostContract.launch("")
         }
+        return binding.root
     }
 
 }

@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
 
-class NewPostActivity : AppCompatActivity() {
+class NewPostFragment : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityNewPostBinding.inflate(layoutInflater)
@@ -37,7 +37,7 @@ class NewPostActivity : AppCompatActivity() {
     object NewPostContract : ActivityResultContract<String, String?>() {
 
         override fun createIntent(context: Context, input: String) =
-            Intent(context, NewPostActivity::class.java)
+            Intent(context, NewPostFragment::class.java)
                 .putExtra(Intent.EXTRA_TEXT, input)
 
 
