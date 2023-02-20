@@ -9,5 +9,5 @@ data class Post(
     val countFavorite: Int,
     val countShare: Int,
     val countRedEye: Int,
-    val linkToVideo: String?
+    val linkToVideo: String
 )

@@ -1,53 +1,50 @@
 package ru.netology.nmedia
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.appcompat.app.AppCompatActivity
-import ru.netology.nmedia.databinding.ActivityNewPostBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.internal.ViewUtils.hideKeyboard
+import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.utils.AndroidUtils
+import ru.netology.nmedia.utils.StringArg
+import ru.netology.nmedia.viewmodel.PostViewModel
 
-class NewPostFragment : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val binding = ActivityNewPostBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+class NewPostFragment : Fragment() {
 
-        // получить сообщение из интента
-        val message = intent.getStringExtra(Intent.EXTRA_TEXT)
+    private val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
 
-        /* добавить string в поле на экране */
-        binding.content.setText(message)
-        //binding.content?.setText("This is my text to post.")
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val binding = FragmentFeedBinding.inflate(layoutInflater, container, false)
+        //arguments?.textArg?.let {
+        //    binding.edit.settext(it)
+        //}
 
-        /* обработка события по контракту если пусто - вернуть Cancel, иначе OK */
-        binding.buttonOk.setOnClickListener {
-            val text = binding.content.text.toString()
-            if (text.isBlank()) {
-                setResult(Activity.RESULT_CANCELED)
-            } else {
-                setResult(Activity.RESULT_OK, Intent().apply { putExtra(Intent.EXTRA_TEXT, text) })
+        arguments?.textArg?.let(binding.content::setText)
+        binding.content.requestFocus()
+        binding.add.setOnClickListener {
+            val content = binding.content.text.toString()
+            if (content.isNullorBlank()) {
+                viewModel.changeContent(content)
+                viewModel.save()
+                //AndroidUtils.hideKeyboard(requireView())
+                findNavController().navigateUp()
             }
-            /* скрыть активити */
-            finish()
         }
+        return binding.root
     }
 
-    object NewPostContract : ActivityResultContract<String, String?>() {
-
-        override fun createIntent(context: Context, input: String) =
-            Intent(context, NewPostFragment::class.java)
-                .putExtra(Intent.EXTRA_TEXT, input)
-
-
-        override fun parseResult(resultCode: Int, intent: Intent?) =
-            intent?.getStringExtra(Intent.EXTRA_TEXT)
-
-    }
-    /*
     companion object {
-        internal const val EXTRA_INPUT_MESSAGE = "EXTRA_TEXT"
+        var Bundle.textArg: String? by StringArg
     }
-    */
+
 }

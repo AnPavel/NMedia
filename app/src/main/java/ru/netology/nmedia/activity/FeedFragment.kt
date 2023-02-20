@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
@@ -23,21 +24,11 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentFeedBinding.inflate(layoutInflater, container, false)
-        val viewModel: PostViewModel by viewModels()
-
-        val newPostContract =
-            registerForActivityResult(NewPostFragment.NewPostContract) { content ->
-                content ?: return@registerForActivityResult
-                viewModel.changeContent(content)
-                viewModel.save()
-            }
+        val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
-
                 viewModel.edit(post)
-                newPostContract.launch(post.content)
-                //newPostContract.launch(viewModel.edit(post))
             }
 
             override fun onShare(post: Post) {
@@ -82,8 +73,7 @@ class FeedFragment : Fragment() {
         }
 
         binding.add.setOnClickListener {
-            /* запускаем контракт методом lauch */
-            newPostContract.launch("")
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
         return binding.root
     }
