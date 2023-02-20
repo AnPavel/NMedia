@@ -31,13 +31,10 @@ class NewPostFragment : Fragment() {
         binding.content.requestFocus()
 
         binding.buttonOk.setOnClickListener {
-            val content = binding.content.text.toString()
-            if (content.isNullOrEmpty()) {
-                viewModel.changeContent(content)
-                viewModel.save()
-                //AndroidUtils.hideKeyboard(requireView())
-                findNavController().navigateUp()
-            }
+            viewModel.changeContent(binding.content.text.toString())
+            viewModel.save()
+            //AndroidUtils.hideKeyboard(requireView())
+            findNavController().navigateUp()
         }
         return binding.root
     }
