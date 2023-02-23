@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="@dimen/dimen_layout_activity"
-    tools:context=".FeedFragment">
+    tools:context=".activity.FeedFragment">
 
     <ImageView
         android:id="@+id/logoNetology"
