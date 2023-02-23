@@ -17,7 +17,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             false,
             999,
             10,
-            300,
+            100,
             ""
         ),
         Post(
@@ -27,7 +27,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             false,
             999,
             20,
-            300,
+            200,
             "https://www.youtube.com/watch?v=GobFLwflpx4"
         ),
         Post(
@@ -37,17 +37,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
             false,
             99,
             30,
-            700,
-            ""
-        ),
-        Post(
-            nextId++, "Нетология-4. Источник знаний для роста в профессии",
-            "14 января 2023 14:00",
-            "4- Нетология - Одна из ведущих российских компаний онлайн-образования. Входит в IT-холдинг TalentTech, объединяющий компании по трём направлениям: EdTech, HRTech и Freelance.",
-            false,
-            99,
-            40,
-            900,
+            300,
             ""
         )
     )
