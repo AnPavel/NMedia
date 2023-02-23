@@ -75,6 +75,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
         posts = posts.map {
             if (it.id != post.id) it else it.copy(content = post.content)
         }
+        data.value = posts
     }
 
     override fun likeById(id: Long) {
