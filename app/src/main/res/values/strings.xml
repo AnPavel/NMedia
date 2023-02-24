@@ -7,9 +7,11 @@
     <string name="image_buttom_more_vert">Menu</string>
     <string name="error_empty_content">The data cannot be empty</string>
     <string name="post_text">Enter a post</string>
-    <string name="button_cancel">Button cancel</string>
-    <string name="button_save">Botton save</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_save">Save</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
     <string name="chooser_share_post">Nmedia_share</string>
+    <string name="description_post_save">Description post save</string>
+    <string name="add_post">Add post</string>
 </resources>

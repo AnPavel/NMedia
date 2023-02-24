@@ -5,11 +5,13 @@
     <string name="field_name_on_screen">НМедиа11</string>
     <string name="field_name_on_screen_second">Нмедия22</string>
     <string name="error_empty_content">Данные не могут быть пустыми</string>
-    <string name="post_text">Введите пост</string>
-    <string name="button_cancel">Кнопка отмена</string>
-    <string name="button_save">Кнопка сохранить</string>
+    <string name="post_text">Введите текст поста</string>
+    <string name="button_cancel">" Отмена"</string>
+    <string name="button_save">Сохранить</string>
     <string name="menu_edit">Редактировать</string>
     <string name="menu_delete">Удалить</string>
     <string name="chooser_share_post">Nmedia_share</string>
     <string name="image_buttom_more_vert">Меню</string>
+    <string name="description_post_save">Сохранить описание поста</string>
+    <string name="add_post">Добавить пост</string>
 </resources>
