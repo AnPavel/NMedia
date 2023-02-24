@@ -14,4 +14,8 @@
     <string name="image_buttom_more_vert">Меню</string>
     <string name="description_post_save">Сохранить описание поста</string>
     <string name="add_post">Добавить пост</string>
+    <string name="google_play_unavailable">Гугл плэй недоступен</string>
+    <string name="channel_remote_name">Имя удаленного канала</string>
+    <string name="channel_remote_description">Описание удаленного канала</string>
+    <string name="notification_user_liked">Уведомление пользователь отметил пост</string>
 </resources>

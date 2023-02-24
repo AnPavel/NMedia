@@ -14,4 +14,8 @@
     <string name="chooser_share_post">Nmedia_share</string>
     <string name="description_post_save">Description post save</string>
     <string name="add_post">Add post</string>
+    <string name="google_play_unavailable">Google play unavailable</string>
+    <string name="channel_remote_name">Channel remote name</string>
+    <string name="channel_remote_description">Channel remote description</string>
+    <string name="notification_user_liked">Notification user liked</string>
 </resources>

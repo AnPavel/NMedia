@@ -1,5 +1,6 @@
 package ru.netology.nmedia.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -46,6 +47,7 @@ class FCMService : FirebaseMessagingService() {
         println(token)
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun handleLike(content: Like) {
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
