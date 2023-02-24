@@ -28,6 +28,12 @@ interface PostDao {
         """)
     fun likeById(id: Long)
 
+    @Query("UPDATE PostEntity SET countShare = countShare + 1 WHERE id = :id")
+    fun likeByShareId(id: Long)
+
+    @Query("UPDATE PostEntity SET countRedEye = countRedEye + 1 WHERE id = :id")
+    fun likeByRedEyeId(id: Long)
+
     @Query("DELETE FROM PostEntity WHERE id = :id")
     fun removeById(id: Long)
 }

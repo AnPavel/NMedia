@@ -19,11 +19,11 @@ class PostRepositoryImpl(
     }
 
     override fun likeByShareId(id: Long) {
-        TODO("Not yet implemented")
+        dao.likeByShareId(id)
     }
 
     override fun likeByRedEyeId(id: Long) {
-        TODO("Not yet implemented")
+        dao.likeByRedEyeId(id)
     }
 
     override fun save(post: Post) {

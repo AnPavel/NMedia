@@ -20,7 +20,7 @@
         android:theme="@style/Theme.NMedia"
         tools:targetApi="31">
         <activity
-            android:name=".NewPostActivity"
+            android:name=".activity.NewPostActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="ExtraText">
@@ -34,7 +34,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".IntentHandlerActivity"
+            android:name=".activity.IntentHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -46,7 +46,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
