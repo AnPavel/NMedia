@@ -44,6 +44,7 @@ class PostRepositoryInMemoryImplementation : PostRepository {
     private val data = MutableLiveData(posts)
 
     override fun getAll(): LiveData<List<Post>> = data
+
     override fun save(post: Post) {
         if (post.id == 0L) {
             //добавление нового поста
