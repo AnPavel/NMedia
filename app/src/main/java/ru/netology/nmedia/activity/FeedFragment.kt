@@ -39,6 +39,16 @@ class FeedFragment : Fragment() {
                 )
             }
 
+            override fun onSinglePost(post: Post) {
+                viewModel.edit(post)
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply {
+                        //textArg = post.content
+                    }
+                )
+            }
+
             override fun onShare(post: Post) {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
