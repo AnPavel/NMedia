@@ -52,10 +52,6 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
 
     fun removeById(id: Long) = repository.removeById(id)
 
-    fun cancel() {
-        edited.value = empty
-    }
-
     fun likeById(id: Long) = repository.likeById(id)
     fun likeByShareId(id: Long) = repository.likeByShareId(id)
     fun likeByRedEyeId(id: Long) = repository.likeByRedEyeId(id)

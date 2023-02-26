@@ -17,6 +17,7 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
     fun onRedEye(post: Post) {}
+    fun onSinglePost(post: Post) {}
 }
 
 class PostsAdapter(
@@ -91,6 +92,12 @@ class PostViewHolder(
             imageRedEye.setOnClickListener {
                 onInteractionListener.onRedEye(post)
             }
+
+            /* все нажатия, которые не обработатлись кнопками */
+            binding.root.setOnClickListener {
+                onInteractionListener.onSinglePost(post)
+            }
+
         }
     }
 }
