@@ -40,9 +40,9 @@ class FeedFragment : Fragment() {
             }
 
             override fun onSinglePost(post: Post) {
-                viewModel.edit(post)
+                //viewModel.edit(post)
                 findNavController().navigate(
-                    R.id.action_feedFragment_to_newPostFragment,
+                    R.id.action_feedFragment_to_SinglePostFragment,
                     Bundle().apply {
                         //textArg = post.content
                     }
