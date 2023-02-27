@@ -27,7 +27,6 @@ class FeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //val binding = FragmentPostBinding.inflate(layoutInflater, container, false)
         val binding = FragmentFeedBinding.inflate(layoutInflater, container, false)
 
         val adapter = PostsAdapter(object : OnInteractionListener {
@@ -45,7 +44,8 @@ class FeedFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_feedFragment_to_SinglePostFragment,
                     Bundle().apply {
-                        putLong("idPost", post.id)
+                        //putLong("idPost", post.id)
+                        textArg = post.id.toString()
                     }
                 )
             }

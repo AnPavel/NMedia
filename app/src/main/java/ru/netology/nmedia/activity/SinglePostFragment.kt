@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.navArgs
+import androidx.fragment.app.viewModels
+import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostViewHolder
-import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.databinding.FragmentPostBinding
-import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.utils.StringArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class SinglePostFragment : Fragment() {
@@ -20,16 +17,6 @@ class SinglePostFragment : Fragment() {
     //private val viewModel: PostViewModel by viewModels(
     //    ownerProducer = ::requireParentFragment
     //)
-    /*
-    companion object {
-        fun getNewInstance(args: Bundle?): SinglePostFragment {
-            val SinglePostFragment2 = SinglePostFragment()
-            SinglePostFragment2.arguments = args
-            return SinglePostFragment2
-        }
-
-    }
-    */
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,16 +24,22 @@ class SinglePostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentPostBinding.inflate(layoutInflater, container, false)
-        val arg2 = arguments?.getLong("idPost")
+        val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+
         val viewHolder = PostViewHolder(binding.post, object : OnInteractionListener {
             /* переопределить методы */
 
         })
-        val viewModel: PostViewModel by activityViewModels()
-        //viewHolder.bind(viewModel.data.value.orEmpty().get(idPost))
-        viewHolder.bind(viewModel.data.value.orEmpty().get(arg2!!.toInt()))
 
-        return binding.root
+            val currentPostId = requireArguments().textArg!!.toLong()
+
+            binding.post.apply {
+                viewModel.data.observe(viewLifecycleOwner) { it ->
+                    //val viewHolder = PostViewHolder(binding.post, object : OnInteractionListener)
+                    val post = it.find { it.id == currentPostId }
+                    post?.let { viewHolder.bind(post) }
+                }
+            }
+            return binding.root
     }
-
 }
