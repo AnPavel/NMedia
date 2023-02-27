@@ -14,6 +14,7 @@ import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.databinding.FragmentPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -26,6 +27,7 @@ class FeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //val binding = FragmentPostBinding.inflate(layoutInflater, container, false)
         val binding = FragmentFeedBinding.inflate(layoutInflater, container, false)
 
         val adapter = PostsAdapter(object : OnInteractionListener {
@@ -40,11 +42,10 @@ class FeedFragment : Fragment() {
             }
 
             override fun onSinglePost(post: Post) {
-                //viewModel.edit(post)
                 findNavController().navigate(
                     R.id.action_feedFragment_to_SinglePostFragment,
                     Bundle().apply {
-                        //textArg = post.content
+                        putLong("idPost", post.id)
                     }
                 )
             }

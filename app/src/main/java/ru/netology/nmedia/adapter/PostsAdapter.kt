@@ -93,7 +93,7 @@ class PostViewHolder(
                 onInteractionListener.onRedEye(post)
             }
 
-            /* все нажатия, которые не обработатлись кнопками */
+            /* все нажатия, которые не обработались кнопками выше */
             binding.root.setOnClickListener {
                 onInteractionListener.onSinglePost(post)
             }
