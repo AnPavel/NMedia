@@ -19,9 +19,11 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
-    //private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
+    //private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,7 +59,8 @@ class FeedFragment : Fragment() {
                     putExtra(Intent.EXTRA_TEXT, post.content)
                     type = "text/plain"
                 }
-                val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                val shareIntent =
+                    Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
                 viewModel.likeByShareId(post.id)
             }

@@ -23,9 +23,10 @@ class NewPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentNewPostBinding.inflate(layoutInflater, container, false)
+        //val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
         //arguments?.textArg?.let {
         //    binding.edit.settext(it)
-        //}
+        //
 
         arguments?.textArg?.let(binding.content::setText)
         binding.content.requestFocus()
@@ -37,6 +38,7 @@ class NewPostFragment : Fragment() {
             findNavController().navigateUp()
         }
         return binding.root
+
     }
 
     companion object {

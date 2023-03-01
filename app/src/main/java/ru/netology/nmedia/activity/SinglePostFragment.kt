@@ -11,18 +11,18 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostViewHolder
+import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class SinglePostFragment : Fragment() {
 
-    //private val viewModel: PostViewModel by viewModels(
-    //    ownerProducer = ::requireParentFragment
-    //)
+    val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
     private var _binding: FragmentPostBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -30,8 +30,8 @@ class SinglePostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentPostBinding.inflate(layoutInflater, container, false)
-        val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
         val viewHolder = PostViewHolder(binding.post, object : OnInteractionListener {
             /* переопределить методы */
@@ -55,26 +55,22 @@ class SinglePostFragment : Fragment() {
                 viewModel.likeByRedEyeId(post.id)
             }
 
-
         })
 
         val currentPostId = requireArguments().textArg!!.toLong()
 
-        binding.post.apply {
+        _binding!!.post.apply {
             viewModel.data.observe(viewLifecycleOwner) { it ->
                 //val viewHolder = PostViewHolder(binding.post, object : OnInteractionListener)
                 val post = it.find { it.id == currentPostId }
                 post?.let { viewHolder.bind(post) }
             }
         }
-        return binding.root
-
-
+        return _binding!!.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
