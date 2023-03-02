@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -17,7 +18,7 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 
 class SinglePostFragment : Fragment() {
 
-    val viewModel: PostViewModel by viewModels(
+    private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
     private var _binding: FragmentPostBinding? = null
@@ -54,17 +55,33 @@ class SinglePostFragment : Fragment() {
                 viewModel.likeByRedEyeId(post.id)
             }
 
+            override fun onEdit(post: Post) {
+                viewModel.edit(post)
+                findNavController().navigate(
+                    R.id.action_SinglePostFragment_to_newPostFragment,
+                    Bundle().apply {
+                        textArg = post.content
+                    })
+            }
+
+            override fun onRemove(post: Post) {
+                viewModel.removeById(post.id)
+                findNavController().navigate(R.id.action_SinglePostFragment_to_feedFragment)
+            }
+
+
         })
 
         val currentPostId = requireArguments().textArg!!.toLong()
 
-        _binding!!.post.apply {
+        binding.post.apply {
             viewModel.data.observe(viewLifecycleOwner) { it ->
                 //val viewHolder = PostViewHolder(binding.post, object : OnInteractionListener)
                 val post = it.find { it.id == currentPostId }
                 post?.let { viewHolder.bind(post) }
             }
         }
+
         return _binding!!.root
     }
 
@@ -72,4 +89,5 @@ class SinglePostFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
