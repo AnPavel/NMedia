@@ -72,12 +72,11 @@ class SinglePostFragment : Fragment() {
 
         })
 
-        val currentPostId = requireArguments().textArg!!.toLong()
+        val postId = requireArguments().textArg!!.toLong()
 
         binding.post.apply {
             viewModel.data.observe(viewLifecycleOwner) { it ->
-                //val viewHolder = PostViewHolder(binding.post, object : OnInteractionListener)
-                val post = it.find { it.id == currentPostId }
+                val post = it.find { it.id == postId }
                 post?.let { viewHolder.bind(post) }
             }
         }
