@@ -85,7 +85,9 @@ class FeedFragment : Fragment() {
 
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val newPost = posts.size > adapter.currentList.size
+            //скроллинг будет только при непустом прошлом списке
+            val newPost = posts.size > adapter.currentList.size && adapter.currentList.size > 0
+            //val newPost = posts.size > adapter.currentList.size
             adapter.submitList(posts) {
                 /* при добавлении нового поста переход на добавленный пост в начало страницы */
                 if (newPost) {
