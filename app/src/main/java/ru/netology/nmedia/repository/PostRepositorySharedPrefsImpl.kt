@@ -27,7 +27,11 @@ class PostRepositorySharedPrefsImpl(
         }
     }
 
-    override fun getAll(): LiveData<List<Post>> = data
+    //override fun getAll(): LiveData<List<Post>> = data
+    //временное решение при изменении файла PostRepositoryImpl  - > Изменили LiveData на List
+    override fun getAll(): List<Post> {
+        return emptyList()
+    }
 
     override fun likeByShareId(id: Long) {
         posts = posts.map {

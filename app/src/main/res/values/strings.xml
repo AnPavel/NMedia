@@ -18,4 +18,8 @@
     <string name="channel_remote_name">Channel remote name</string>
     <string name="channel_remote_description">Channel remote description</string>
     <string name="notification_user_liked">Notification user liked</string>
+    <string name="error_loading">Error loading</string>
+    <string name="retry_loading">Retry loading</string>
+    <string name="empty_posts">Empty post</string>
+
 </resources>

@@ -18,4 +18,7 @@
     <string name="channel_remote_name">Имя удаленного канала</string>
     <string name="channel_remote_description">Описание удаленного канала</string>
     <string name="notification_user_liked">Уведомление пользователь отметил пост</string>
+    <string name="error_loading">Ошибка загрузки</string>
+    <string name="retry_loading">Повторная загрузка</string>
+    <string name="empty_posts">Пустой пост</string>
 </resources>
