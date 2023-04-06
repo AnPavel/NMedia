@@ -20,7 +20,6 @@ class PostRepositoryImpl : PostRepository {
     companion object {
         private const val BASE_URL = "http://10.0.2.2:9999"
         private val jsonType = "application/json".toMediaType()
-
     }
 
     //список постов
@@ -38,7 +37,7 @@ class PostRepositoryImpl : PostRepository {
     }
 
 
-    override fun likeById(id: Post) {
+    override fun likeById(id: Long) {
         //dao.likeById(id)
         TODO("Not yet implemented")
     }

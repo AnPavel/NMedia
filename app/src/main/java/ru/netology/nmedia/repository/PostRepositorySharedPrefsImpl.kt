@@ -82,7 +82,7 @@ class PostRepositorySharedPrefsImpl(
         sync()
     }
 
-    override fun likeById(id: Post) {
+    override fun likeById(id: Long) {
         posts = posts.map {
             if (it.id != id) it else it.copy(
                 likedByMe = !it.likedByMe,
