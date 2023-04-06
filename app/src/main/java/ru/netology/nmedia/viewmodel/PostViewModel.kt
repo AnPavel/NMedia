@@ -6,7 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModel
-import ru.netology.nmedia.repository.*
+import ru.netology.nmedia.repository.PostRepository
+import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.utils.SingleLiveEvent
 import java.io.IOException
 import kotlin.concurrent.thread
@@ -85,9 +86,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
-    fun likeById(id: Long) {
-        thread { repository.likeByShareId(id) }
-        /*
+    fun likeById(id: Long, post: Post) {
+        //thread { repository.likeByShareId(id) }
         thread {
             try {
                 val post = repository.likeById(post)
@@ -103,7 +103,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 println(e.message.toString())
             }
         }
-        */
     }
 
     fun likeByShareId(id: Long) {
