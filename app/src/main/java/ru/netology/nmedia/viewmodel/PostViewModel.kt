@@ -33,9 +33,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     //private val repository: PostRepository = PostRepositorySharedPrefsImpl(application)
 
     private val _data = MutableLiveData(FeedModel())
+
+    //список постов
     val data: LiveData<FeedModel>
         get() = _data
-    val edited = MutableLiveData(empty)
+
+    //текущий пост
+    private val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
@@ -82,13 +86,32 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun likeById(id: Long) {
-        thread { repository.likeById(id) }
+        thread { repository.likeByShareId(id) }
+        /*
+        thread {
+            try {
+                val post = repository.likeById(post)
+                val posts = _data.value?.posts.orEmpty().map {
+                    if (it.id == id) {
+                        post
+                    } else {
+                        it
+                    }
+                }
+                _data.postValue(_data.value?.copy(posts = posts as List<Post>))
+            } catch (e: IOException) {
+                println(e.message.toString())
+            }
+        }
+        */
     }
 
     fun likeByShareId(id: Long) {
+        thread { repository.likeByShareId(id) }
     }
 
     fun likeByRedEyeId(id: Long) {
+        thread { repository.likeByRedEyeId(id) }
     }
 
     fun removeById(id: Long) {
@@ -108,8 +131,3 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 }
-
-
-//fun likeById(id: Long) = repository.likeById(id)
-//fun likeByShareId(id: Long) = repository.likeByShareId(id)
-//fun likeByRedEyeId(id: Long) = repository.likeByRedEyeId(id)

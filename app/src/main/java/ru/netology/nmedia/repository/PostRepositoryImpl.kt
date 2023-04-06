@@ -38,7 +38,7 @@ class PostRepositoryImpl : PostRepository {
     }
 
 
-    override fun likeById(id: Long) {
+    override fun likeById(id: Post) {
         //dao.likeById(id)
         TODO("Not yet implemented")
     }
