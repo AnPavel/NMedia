@@ -1,5 +1,7 @@
 package ru.netology.nmedia.repository
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
@@ -24,24 +26,26 @@ class PostRepositoryImpl : PostRepository {
 
     //список постов
     override fun getAll(): List<Post> {
-        val request: Request = Request.Builder()
+        val posts = Request.Builder()
             .url("${BASE_URL}/api/slow/posts")
             .build()
-
-        return client.newCall(request)
+            .let(client::newCall)
             .execute()
-            .let { it.body?.string() ?: throw RuntimeException("body is null") }
-            .let {
-                gson.fromJson(it, typeToken.type)
-            }
+            .let { requireNotNull(it.body?.string()) {"body is null"} }
+            .let { gson.fromJson(it, typeToken) }
+        Log.e("myLog", "getALL: $posts", )
+        return posts
     }
 
-
+    override fun likeById(post: Post) {
+        TODO("Not yet implemented")
+    }
+/*
     override fun likeById(id: Long) {
         //dao.likeById(id)
         TODO("Not yet implemented")
     }
-
+*/
     override fun likeByShareId(id: Long) {
         //dao.likeByShareId(id)
         TODO("Not yet implemented")
