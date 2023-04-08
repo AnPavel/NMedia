@@ -88,7 +88,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun likeById(id: Long, post: Post) {
-        //thread { repository.likeByShareId(id) }
         thread {
             try {
                 val post = repository.likeById(post)
@@ -99,7 +98,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                         it
                     }
                 }
-                _data.postValue(_data.value?.copy(posts = posts as List<Post>))
+                _data.postValue(_data.value?.copy(posts = _data.value?.posts.orEmpty()))
             } catch (e: IOException) {
                 println(e.message.toString())
             }

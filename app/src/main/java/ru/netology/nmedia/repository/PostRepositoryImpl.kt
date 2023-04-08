@@ -1,6 +1,5 @@
 package ru.netology.nmedia.repository
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -38,14 +37,23 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun likeById(post: Post) {
-        TODO("Not yet implemented")
+        val request: Request = if (!post.likedByMe) {
+            Request.Builder()
+                .post("".toRequestBody())
+        } else {
+            Request.Builder()
+                .delete()
+        }
+            .url("${BASE_URL}/api/slow/posts/${post.id}/likes")
+            .build()
+
+        return client.newCall(request)
+            .execute()
+            .let { it.body?.string() ?: throw RuntimeException("body is null") }
+            //.let { gson.fromJson(it, Post::class.java) }
+            .let { gson.fromJson(it, Post::class.java) }
     }
-/*
-    override fun likeById(id: Long) {
-        //dao.likeById(id)
-        TODO("Not yet implemented")
-    }
-*/
+
     override fun likeByShareId(id: Long) {
         //dao.likeByShareId(id)
         TODO("Not yet implemented")

@@ -41,6 +41,10 @@ class PostViewHolder(
         binding.apply {
             textPoleAuthor.text = post.author
             textPolePublished.text = post.publisher
+            textPoleHeading.text = post.content
+            //imageFavorite.isChecked = post.likedByMe
+            imageFavorite.text = "${post.countFavorite}"
+            /*
             if (post.linkToVideo == "") {
                 textPoleHeading.text = post.content
                 textPoleUrl.setImageResource(0)
@@ -48,6 +52,7 @@ class PostViewHolder(
                 textPoleHeading.text = ""
                 textPoleUrl.setImageResource(R.drawable.youtube240)
             }
+             */
             //textPoleUrl.text = post.linkToVideo
             imageFavorite.text = transferToScreen(post.countFavorite)
             //textFavorite.text = transferToScreen(post.countFavorite)
