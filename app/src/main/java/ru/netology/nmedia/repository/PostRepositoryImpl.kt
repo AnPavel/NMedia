@@ -44,13 +44,13 @@ class PostRepositoryImpl : PostRepository {
             Request.Builder()
                 .delete()
         }
+            //post.countFavorite += 1
             .url("${BASE_URL}/api/slow/posts/${post.id}/likes")
             .build()
 
         return client.newCall(request)
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
-            //.let { gson.fromJson(it, Post::class.java) }
             .let { gson.fromJson(it, Post::class.java) }
     }
 
