@@ -12,9 +12,11 @@ import java.util.concurrent.TimeUnit
 
 
 class PostRepositoryImpl : PostRepository {
+    //создаем объект OkHttpClient
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .build()
+    //создаем парсер Gson сообщений
     private val gson = Gson()
     private val typeToken = object : TypeToken<List<Post>>() {}
 
@@ -25,6 +27,7 @@ class PostRepositoryImpl : PostRepository {
 
     //список постов
     override fun getAll(): List<Post> {
+        //создаем запрос
         val posts = Request.Builder()
             .url("${BASE_URL}/api/slow/posts")
             .build()
@@ -48,6 +51,7 @@ class PostRepositoryImpl : PostRepository {
             .url("${BASE_URL}/api/slow/posts/${post.id}/likes")
             .build()
 
+        //запрос на сервер
         return client.newCall(request)
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
