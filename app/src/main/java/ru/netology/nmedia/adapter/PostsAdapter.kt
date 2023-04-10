@@ -43,7 +43,8 @@ class PostViewHolder(
             textPolePublished.text = post.publisher
             textPoleHeading.text = post.content
             //imageFavorite.isChecked = post.likedByMe
-            imageFavorite.text = "${post.likes}"
+            //imageFavorite.text = "${post.likes}"
+            imageFavorite.text = transferToScreen(post.likes)
             /*
             if (post.linkToVideo == "") {
                 textPoleHeading.text = post.content
@@ -54,7 +55,7 @@ class PostViewHolder(
             }
              */
             //textPoleUrl.text = post.linkToVideo
-            imageFavorite.text = transferToScreen(post.likes)
+            //imageFavorite.text = transferToScreen(post.likes)
             //textFavorite.text = transferToScreen(post.countFavorite)
             imageShare.text = transferToScreen(post.countShare)
             //textShare.text = transferToScreen(post.countShare)
