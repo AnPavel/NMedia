@@ -4,4 +4,5 @@
     <dimen name="dimen_marginStart">8sp</dimen>
     <dimen name="dimen_marginTop">12sp</dimen>
     <dimen name="fab_margin">16sp</dimen>
+    <dimen name="common_spacing">16sp</dimen>
 </resources>

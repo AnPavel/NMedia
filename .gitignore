@@ -10,6 +10,7 @@
 .DS_Store
 /build
 /captures
+/app/fcm.json
 .externalNativeBuild
 .cxx
 local.properties
