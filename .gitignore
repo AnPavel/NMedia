@@ -10,6 +10,8 @@
 .DS_Store
 /build
 /captures
+/app/fcm.json
+/app/google-services.json
 .externalNativeBuild
 .cxx
 local.properties
