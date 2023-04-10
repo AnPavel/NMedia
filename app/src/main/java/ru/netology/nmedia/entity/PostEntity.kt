@@ -12,7 +12,7 @@ data class PostEntity(
     val published: String,
     val content: String,
     val likedByMe: Boolean,
-    val countFavorite: Int = 0,
+    val likes: Int = 0,
     val countShare: Int = 0,
     val countRedEye: Int = 0,
     val linkToVideo: String = "",
@@ -23,7 +23,7 @@ data class PostEntity(
         published,
         content,
         likedByMe,
-        countFavorite,
+        likes,
         countShare,
         countRedEye,
         linkToVideo
@@ -37,7 +37,7 @@ data class PostEntity(
                 dto.publisher,
                 dto.content,
                 dto.likedByMe,
-                dto.countFavorite,
+                dto.likes,
                 dto.countShare,
                 dto.countRedEye,
                 dto.linkToVideo
