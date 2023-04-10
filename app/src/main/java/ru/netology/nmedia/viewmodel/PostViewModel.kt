@@ -93,12 +93,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 val post = repository.likeById(post)
                 val posts = _data.value?.posts.orEmpty().map {
                     if (it.id == id) {
-                        /*
-                        it.copy(
-                            likedByMe = !it.likedByMe,
-                            countFavorite = it.countFavorite + 1
-                        )
-                        */
                         post
                     } else {
                         it
