@@ -39,7 +39,7 @@ class PostRepositoryImpl : PostRepository {
         return posts
     }
 
-    override fun likeById(post: Post) {
+    override fun likeById(post: Post): Post {
         val request: Request = if (!post.likedByMe) {
             Request.Builder()
                 .post("".toRequestBody())
@@ -51,10 +51,11 @@ class PostRepositoryImpl : PostRepository {
             .build()
 
         //запрос на сервер
-        return client.newCall(request)
+        client.newCall(request)
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let { gson.fromJson(it, Post::class.java) }
+        return post
     }
 
     override fun likeByShareId(id: Long) {
