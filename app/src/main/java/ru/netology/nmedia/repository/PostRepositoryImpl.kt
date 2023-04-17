@@ -35,7 +35,7 @@ class PostRepositoryImpl : PostRepository {
             .execute()
             .let { requireNotNull(it.body?.string()) {"body is null"} }
             .let { gson.fromJson(it, typeToken) }
-        Log.e("myLog", "getALL: $posts", )
+        Log.e("myLog", "getALL: $posts")
         return posts
     }
 
@@ -47,7 +47,6 @@ class PostRepositoryImpl : PostRepository {
             Request.Builder()
                 .delete()
         }
-            //post.countFavorite += 1
             .url("${BASE_URL}/api/slow/posts/${post.id}/likes")
             .build()
 
@@ -59,13 +58,9 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun likeByShareId(id: Long) {
-        //dao.likeByShareId(id)
-        TODO("Not yet implemented")
     }
 
     override fun likeByRedEyeId(id: Long) {
-        //dao.likeByRedEyeId(id)
-        TODO("Not yet implemented")
     }
 
     override fun save(post: Post) {
@@ -80,7 +75,6 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun edit(post: Post) {
-        TODO("Not yet implemented")
     }
 
     override fun removeById(id: Long) {
