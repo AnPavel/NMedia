@@ -16,6 +16,7 @@ class PostRepositoryImpl : PostRepository {
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .build()
+
     //создаем парсер Gson сообщений
     private val gson = Gson()
     private val typeToken = object : TypeToken<List<Post>>() {}
@@ -46,16 +47,20 @@ class PostRepositoryImpl : PostRepository {
             .build()
 
         client.newCall(request)
+            //вызов через enqueue
             .enqueue(object : Callback {
+                //
                 override fun onResponse(call: Call, response: Response) {
+                    //проверка на заполненное поле
                     val body = response.body?.string() ?: throw RuntimeException("body is null")
                     try {
                         callback.onSuccess(gson.fromJson(body, typeToken.type))
                     } catch (e: Exception) {
+                        //отлов ошибки
                         callback.onError(e)
                     }
                 }
-
+                //
                 override fun onFailure(call: Call, e: IOException) {
                     callback.onError(e)
                 }
