@@ -27,6 +27,7 @@ class PostRepositoryImpl : PostRepository {
     }
 
     //список постов
+    /*
     override fun getAll(): List<Post> {
         //создаем запрос
         val request: Request = Request.Builder()
@@ -40,8 +41,9 @@ class PostRepositoryImpl : PostRepository {
                 gson.fromJson(it, typeToken.type)
             }
     }
+    */
 
-    override fun getAllAsync(callback: PostRepository.GetAllCallback) {
+    override fun getAllAsync(callback: PostRepository.GetAllCallback<List<Post>>) {
         val request: Request = Request.Builder()
             .url("${BASE_URL}/api/slow/posts")
             .build()

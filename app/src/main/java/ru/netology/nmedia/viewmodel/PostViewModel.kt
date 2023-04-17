@@ -53,10 +53,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun loadPosts() {
         //установка значений на главном потоке
         _data.value = FeedModel(loading = true)
-        repository.getAllAsync(object : PostRepository.GetAllCallback {
+        repository.getAllAsync(object : PostRepository.GetAllCallback<List<Post>> {
             // передаем список постов
-            override fun onSuccess(posts: List<Post>) {
-                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
+            override fun onSuccess(postsDat: List<Post>) {
+                _data.postValue(FeedModel(posts = postsDat, empty = postsDat.isEmpty()))
             }
             // передаем ошибку
             override fun onError(e: Exception) {
