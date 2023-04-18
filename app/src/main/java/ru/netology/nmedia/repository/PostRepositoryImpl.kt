@@ -70,7 +70,7 @@ class PostRepositoryImpl : PostRepository {
     }
 
 
-    override fun likeById(post: Post): Post {
+    override fun likeById(post: Post, callback: PostRepository.GetAllCallback<Post>): Post {
         val request: Request = if (!post.likedByMe) {
             Request.Builder()
                 .post("".toRequestBody())
@@ -82,10 +82,33 @@ class PostRepositoryImpl : PostRepository {
             .build()
 
         //запрос на сервер
+        /*
         client.newCall(request)
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let { gson.fromJson(it, Post::class.java) }
+        return post
+        */
+        client.newCall(request)
+            //вызов через enqueue
+            .enqueue(object : Callback {
+                //
+                override fun onResponse(call: Call, response: Response) {
+                    //проверка на заполненное поле
+                    val body = response.body?.string() ?: throw RuntimeException("body is null")
+                    try {
+                        callback.onSuccess(gson.fromJson(body, typeToken.type))
+                    } catch (e: Exception) {
+                        //отлов ошибки
+                        callback.onError(e)
+                    }
+                }
+
+                //
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError(e)
+                }
+            })
         return post
     }
 
@@ -110,16 +133,30 @@ class PostRepositoryImpl : PostRepository {
     }
 
 
-    override fun removeById(id: Long) {
+    override fun removeById(id: Long, callback: PostRepository.GetAllCallback<Post>) {
         val request: Request = Request.Builder()
             .delete()
             .url("${BASE_URL}/api/slow/posts/$id")
             .build()
 
         client.newCall(request)
-            .execute()
-            .close()
+            .enqueue(object : Callback {
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string() ?: throw RuntimeException("body is null")
+                    try {
+                        callback.onSuccess(gson.fromJson(body, typeToken.type))
+                    } catch (e: Exception) {
+                        callback.onError(e)
+                    }
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError(e)
+                }
+
+            })
+
 
     }
-
 }

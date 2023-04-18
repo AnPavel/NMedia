@@ -87,7 +87,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
-    fun likeById(id: Long, post: Post) {
+    fun likeById(id: Long, post: Post, callback: PostRepository.GetAllCallback<Post>) {
         thread {
             val posts = _data.value?.posts.orEmpty().map {
                 if (it.id == id) {
@@ -98,7 +98,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
             _data.postValue(_data.value?.copy(posts = posts))
             try {
-                repository.likeById(post)
+                repository.likeById(post, callback)
                 //loadPosts()
             } catch (e: IOException) {
                 println(e.message.toString())
@@ -114,7 +114,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         thread { repository.likeByRedEyeId(id) }
     }
 
-    fun removeById(id: Long) {
+    fun removeById(id: Long, callback: PostRepository.GetAllCallback<Post>) {
         thread {
             // Оптимистичная модель
             val old = _data.value?.posts.orEmpty()
@@ -124,7 +124,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 )
             )
             try {
-                repository.removeById(id)
+                repository.removeById(id, callback)
             } catch (e: IOException) {
                 _data.postValue(_data.value?.copy(posts = old))
             }

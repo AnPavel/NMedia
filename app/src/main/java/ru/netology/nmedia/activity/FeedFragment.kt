@@ -14,6 +14,7 @@ import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -33,11 +34,11 @@ class FeedFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                viewModel.likeById(post.id, post)
+                viewModel.likeById(post.id, post, post)
             }
 
             override fun onRemove(post: Post) {
-                viewModel.removeById(post.id)
+                //viewModel.removeById(post.id)
             }
 
             override fun onShare(post: Post) {
