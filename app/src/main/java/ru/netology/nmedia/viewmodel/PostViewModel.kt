@@ -49,6 +49,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         loadPosts()
     }
 
+
     fun loadPosts() {
         thread {
             // Начинаем загрузку
@@ -63,6 +64,21 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }.also(_data::postValue)
         }
     }
+
+    /* альтернативное написание кода выше
+    fun loadPosts(){
+        thread {
+            _data.postValue = FeedModel(loading = true)
+            try {
+                val posts = repository.getAll()
+                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
+            }catch (e: Exception){
+                _data.postValue(FeedModel(error = true))
+            }
+
+        }
+    }
+    */
 
     fun save() {
         edited.value?.let {
@@ -86,12 +102,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
-    fun likeById(id: Long, post: Post) {
+    fun likeById(post: Post) {
         thread {
             try {
                 val likedPost = repository.likeById(post)
                 val posts = _data.value?.posts.orEmpty().map {
-                    if (it.id == id) {
+                    if (it.id == post.id) {
                         likedPost
                     } else {
                         it
@@ -105,6 +121,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
+    /* альтернативное написание кода выше
+    fun likeById(post: Post){
+        thread {
+            val likedPost = repository.likeById(post)
+            _data.postValue(FeedModel(posts=_data.value?.posts.orEmpty().map { if (it.id == post.id) likedPost else it }))
+        }
+    }
+    */
+
 
     fun likeByShareId(id: Long) {
         thread { repository.likeByShareId(id) }

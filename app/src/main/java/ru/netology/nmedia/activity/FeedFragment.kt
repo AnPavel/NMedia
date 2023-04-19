@@ -33,7 +33,7 @@ class FeedFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                viewModel.likeById(post.id, post)
+                viewModel.likeById(post)
             }
 
             override fun onRemove(post: Post) {
@@ -54,7 +54,14 @@ class FeedFragment : Fragment() {
         })
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
+            //проверка на изменение кол-во постов
+            val newPost = adapter.currentList.size < state.posts.size
+            adapter.submitList(state.posts) {
+                if (newPost) {
+                    //переход на первый пост - на новый пост
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }
             binding.progress.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
@@ -68,6 +75,15 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
+        binding.swiperefresh.setOnRefreshListener { // Обновление экрана
+            viewModel.loadPosts() //Загрузка постов
+            binding.swiperefresh.isRefreshing = false
+        }
+        /*
+        viewModel.error.observe(viewLifecycleOwner) {
+            Snackbar.make(requireView(), it.message as CharSequence, Snackbar.LENGTH_LONG).show()
+        }
+        */
         return binding.root
     }
 }
