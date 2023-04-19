@@ -34,7 +34,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     //private val repository: PostRepository = PostRepositorySharedPrefsImpl(application)
 
     private val _data = MutableLiveData(FeedModel())
-
     //список постов
     val data: LiveData<FeedModel>
         get() = _data
@@ -99,7 +98,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
                 _data.postValue(_data.value?.copy(posts = posts))
-                //repository.likeById(post)
+                //repository.likeById(likedPost)
                 //loadPosts()
             } catch (e: IOException) {
                 println(e.message.toString())
