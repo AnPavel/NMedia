@@ -30,7 +30,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders.usesCleartextTraffic = false
         }
-
+        /* доступ к HTTP трафику только в debug сборке
+          в AndroidManifest устанавливаем свой-во в тэге application
+          android:usesCleartextTraffic="${usesCleartextTraffic}
+          в зависимости от сборки будет подставляться значение
+        */
         debug {
             manifestPlaceholders.usesCleartextTraffic = true
         }
