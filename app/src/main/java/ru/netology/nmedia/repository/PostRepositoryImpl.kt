@@ -19,20 +19,25 @@ class PostRepositoryImpl : PostRepository {
     private val typeToken = object : TypeToken<List<Post>>() {}
 
     companion object {
+        /* адрес локального сервера - текущей машины с эмулятором */
         private const val BASE_URL = "http://10.0.2.2:9999"
         private val jsonType = "application/json".toMediaType()
     }
 
-    //список постов
+    // формируем запрос на список постов - результат список постов
     override fun getAll(): List<Post> {
         val posts = Request.Builder()
+            // медленные запросы с задержкой - slow
             .url("${BASE_URL}/api/slow/posts")
             .build()
+            // вызываем клиент и передаем запрос
             .let(client::newCall)
             .execute()
-            .let { requireNotNull(it.body?.string()) {"body is null"} }
+            // обрабатываем ответ на наш запрос через метод let  - извлекаем ответ в виде строки
+            .let { requireNotNull(it.body?.string()) { "body is null" } }
+            // через библиотеку gson получем список постов
             .let { gson.fromJson(it, typeToken) }
-        Log.e("myLog", "getALL: $posts", )
+        Log.e("myLog", "getALL: $posts")
         return posts
     }
 
