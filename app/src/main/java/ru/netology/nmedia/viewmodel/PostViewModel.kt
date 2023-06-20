@@ -92,6 +92,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
+
     fun likeById(id: Long, post: Post) {
         thread {
             try {
@@ -101,7 +102,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                         /*
                         it.copy(
                             likedByMe = !it.likedByMe,
-                            countFavorite = it.countFavorite + 1
+                            countFavorite = it.countFavorite + if (it.likedByMe) -1 else 1
                         )
                         */
                         post
