@@ -93,29 +93,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun likeById(id: Long, post: Post) {
-        thread {
-            try {
-                val post = repository.likeById(post)
-                val posts = _data.value?.posts.orEmpty().map {
-                    if (it.id == id) {
-                        /*
-                        it.copy(
-                            likedByMe = !it.likedByMe,
-                            countFavorite = it.countFavorite + if (it.likedByMe) -1 else 1
-                        )
-                        */
-                        post
-                    } else {
-                        it
-                    }
-                }
-                _data.postValue(_data.value?.copy(posts = _data.value?.posts.orEmpty()))
-            } catch (e: IOException) {
-                println(e.message.toString())
-            }
-        }
-    }
+    /*
 
     fun likeByShareId(id: Long) {
         //thread { repository.likeByShareId(id) }
@@ -123,6 +101,27 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun likeByRedEyeId(id: Long) {
         //thread { repository.likeByRedEyeId(id) }
+    }
+
+    */
+
+    fun likeById(id: Long, post: Post) {
+        thread {
+            // Оптимистичная модель
+            val old = _data.value?.posts.orEmpty()
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty().map {
+                    if (it.id == id) post
+                    else it
+                }
+                )
+            )
+            try {
+                repository.likeById(post)
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+        }
     }
 
     fun removeById(id: Long) {
@@ -141,4 +140,5 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
 }

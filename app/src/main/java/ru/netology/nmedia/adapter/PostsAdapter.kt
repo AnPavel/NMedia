@@ -18,6 +18,7 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
     fun onRedEye(post: Post) {}
+    //fun onRefresh() {}
 }
 
 class PostsAdapter(
@@ -30,7 +31,7 @@ class PostsAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = getItem(position)
-        holder.bind(post,)
+        holder.bind(post)
     }
 }
 
@@ -77,7 +78,7 @@ class PostViewHolder(
                             }
                             R.id.menu_refresh -> {
                                 Log.i("AAAA", "Refresh menu item selected")
-                                //myUpdateOperation()
+                                //onInteractionListener.onRefresh()
                                 true
                             }
                             else -> false
