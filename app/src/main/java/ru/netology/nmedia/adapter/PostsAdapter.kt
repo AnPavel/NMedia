@@ -1,5 +1,6 @@
 package ru.netology.nmedia.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -17,6 +18,7 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
     fun onRedEye(post: Post) {}
+    //fun onRefresh() {}
 }
 
 class PostsAdapter(
@@ -75,6 +77,11 @@ class PostViewHolder(
                                 onInteractionListener.onEdit(post)
                                 true
                             }
+                            R.id.menu_refresh -> {
+                                Log.i("AAAA", "Refresh menu item selected")
+                                //onInteractionListener.onRefresh()
+                                true
+                            }
                             else -> false
                         }
                     }
@@ -97,9 +104,12 @@ class PostViewHolder(
             imageRedEye.setOnClickListener {
                 onInteractionListener.onRedEye(post)
             }
+
         }
     }
+
 }
+
 
 class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {

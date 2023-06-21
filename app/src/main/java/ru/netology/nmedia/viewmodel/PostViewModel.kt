@@ -19,7 +19,7 @@ private val empty = Post(
     author = "",
     likedByMe = false,
     publisher = "",
-    likes = 0,
+    countFavorite = 0,
     countShare = 0,
     countRedEye = 0,
     linkToVideo = ""
@@ -34,7 +34,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     //private val repository: PostRepository = PostRepositorySharedPrefsImpl(application)
 
     private val _data = MutableLiveData(FeedModel())
+
     //список постов
+    // data - только для чтения, посты не изменяются
     val data: LiveData<FeedModel>
         get() = _data
 
@@ -50,13 +52,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
+
     fun loadPosts() {
+        //создаем поток для выполнения запроса, нельзя использовать основной поток - ошибка
         thread {
             // Начинаем загрузку
             _data.postValue(FeedModel(loading = true))
             try {
-                // Данные успешно получены
+                // Данные успешно получены, обращаем к сети в ФОНОВОМ потоке, созданный thread
                 val posts = repository.getAll()
+                //записываем в FeedModel полученные посты, флаг empty - значение
                 FeedModel(posts = posts, empty = posts.isEmpty())
             } catch (e: IOException) {
                 // Получена ошибка
@@ -64,21 +69,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }.also(_data::postValue)
         }
     }
-
-    /* альтернативное написание кода выше
-    fun loadPosts(){
-        thread {
-            _data.postValue = FeedModel(loading = true)
-            try {
-                val posts = repository.getAll()
-                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
-            }catch (e: Exception){
-                _data.postValue(FeedModel(error = true))
-            }
-
-        }
-    }
-    */
 
     fun save() {
         edited.value?.let {
@@ -102,42 +92,36 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
-    fun likeById(post: Post) {
-        thread {
-            try {
-                val likedPost = repository.likeById(post)
-                val posts = _data.value?.posts.orEmpty().map {
-                    if (it.id == post.id) {
-                        likedPost
-                    } else {
-                        it
-                    }
-                }
-                _data.postValue(_data.value?.copy(posts = posts))
-                //repository.likeById(likedPost)
-                //loadPosts()
-            } catch (e: IOException) {
-                println(e.message.toString())
-            }
-        }
-    }
 
-    /* альтернативное написание кода выше
-    fun likeById(post: Post){
-        thread {
-            val likedPost = repository.likeById(post)
-            _data.postValue(FeedModel(posts=_data.value?.posts.orEmpty().map { if (it.id == post.id) likedPost else it }))
-        }
-    }
-    */
-
+    /*
 
     fun likeByShareId(id: Long) {
-        thread { repository.likeByShareId(id) }
+        //thread { repository.likeByShareId(id) }
     }
 
     fun likeByRedEyeId(id: Long) {
-        thread { repository.likeByRedEyeId(id) }
+        //thread { repository.likeByRedEyeId(id) }
+    }
+
+    */
+
+    fun likeById(id: Long, post: Post) {
+        thread {
+            // Оптимистичная модель
+            val old = _data.value?.posts.orEmpty()
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty().map {
+                    if (it.id == id) post
+                    else it
+                }
+                )
+            )
+            try {
+                repository.likeById(post)
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+        }
     }
 
     fun removeById(id: Long) {
@@ -156,4 +140,5 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
 }
