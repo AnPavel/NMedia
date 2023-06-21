@@ -2,7 +2,7 @@
 
 ## Kotlin
 
-------> промышленная разраьотка под Android
+------> промышленная разработка под Android
 
 task_main_thread - Сетевые запросы: «Main Thread & Background»
 
