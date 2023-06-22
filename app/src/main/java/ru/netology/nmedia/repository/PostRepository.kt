@@ -13,4 +13,14 @@ interface PostRepository {
     fun save(post: Post)
     fun edit(post: Post)
 
+    //асинхронный
+    fun getAllAsync(callback: GetAllCallback)
+
+    interface GetAllCallback {
+        // если успешно в параметре - список постов
+        fun onSuccess(post: List<Post>)
+        // если ошибка
+        fun onError()
+    }
+
 }

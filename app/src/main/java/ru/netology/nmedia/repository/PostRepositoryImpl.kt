@@ -3,11 +3,11 @@ package ru.netology.nmedia.repository
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nmedia.dto.Post
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
@@ -26,6 +26,7 @@ class PostRepositoryImpl : PostRepository {
         private val jsonType = "application/json".toMediaType()
     }
 
+    // СИНХРОННЫЙ метод
     // формируем запрос на список постов - результат список постов
     override fun getAll(): List<Post> {
         //создаем запрос
@@ -42,6 +43,35 @@ class PostRepositoryImpl : PostRepository {
             .let { gson.fromJson(it, typeToken) }
         Log.e("myLog", "getALL: $posts")
         return posts
+    }
+
+    // АСИНХРОННЫЙ метод
+    override fun getAllAsync(callback: PostRepository.GetAllCallback) {
+        //создаем запрос
+        val request: Request = Request.Builder()
+            // медленные запросы с задержкой - slow
+            .url("${BASE_URL}/api/slow/posts")
+            .build()
+
+        client.newCall(request)
+            .enqueue(object : Callback {
+                //успешный результат
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        //сохранить тело ответа
+                        val body = response.body?.string() ?:  throw RuntimeException("body is null")
+                        //вызов callback с параметром gson
+                        callback.onSuccess(gson.fromJson(body, typeToken.type))
+                    } catch (e: Exception) {
+                        callback.onError()
+                    }
+                }
+                // НЕ успешный результат
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError()
+                }
+
+            })
     }
 
     override fun likeById(post: Post): Post {
@@ -64,9 +94,11 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun likeByShareId(id: Long) {
+        TODO("Not yet implemented")
     }
 
     override fun likeByRedEyeId(id: Long) {
+        TODO("Not yet implemented")
     }
 
     override fun save(post: Post) {

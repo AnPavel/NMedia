@@ -52,22 +52,23 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-
     fun loadPosts() {
         //создаем поток для выполнения запроса, нельзя использовать основной поток - ошибка
-        thread {
-            // Начинаем загрузку
-            _data.postValue(FeedModel(loading = true))
-            try {
-                // Данные успешно получены, обращаем к сети в ФОНОВОМ потоке, созданный thread
-                val posts = repository.getAll()
+        /* для синхронного метода создавали новый поток
+        thread {}
+        */
+        // Начинаем загрузку
+        _data.postValue(FeedModel(loading = true))
+        repository.getAllAsync(object : PostRepository.GetAllCallback {
+            override fun onSuccess(postsDat: List<Post>) {
                 //записываем в FeedModel полученные посты, флаг empty - значение
-                FeedModel(posts = posts, empty = posts.isEmpty())
-            } catch (e: IOException) {
-                // Получена ошибка
-                FeedModel(error = true)
-            }.also(_data::postValue)
-        }
+                _data.postValue(FeedModel(posts = postsDat, empty = postsDat.isEmpty()))
+            }
+
+            override fun onError() {
+                _data.postValue(FeedModel(error = true))
+            }
+        })
     }
 
     fun save() {
@@ -92,17 +93,17 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
-    /*
+/*
 
-    fun likeByShareId(id: Long) {
-        //thread { repository.likeByShareId(id) }
-    }
+fun likeByShareId(id: Long) {
+//thread { repository.likeByShareId(id) }
+}
 
-    fun likeByRedEyeId(id: Long) {
-        //thread { repository.likeByRedEyeId(id) }
-    }
+fun likeByRedEyeId(id: Long) {
+//thread { repository.likeByRedEyeId(id) }
+}
 
-    */
+*/
 
     //fun likeById(id: Long, post: Post) {
     fun likeById(post: Post) {
