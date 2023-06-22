@@ -18,7 +18,6 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
     fun onRedEye(post: Post) {}
-    //fun onRefresh() {}
 }
 
 class PostsAdapter(

@@ -1,6 +1,5 @@
 package ru.netology.nmedia.repository
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.*
@@ -28,6 +27,7 @@ class PostRepositoryImpl : PostRepository {
 
     // СИНХРОННЫЙ метод
     // формируем запрос на список постов - результат список постов
+    /*
     override fun getAll(): List<Post> {
         //создаем запрос
         val posts = Request.Builder()
@@ -45,8 +45,10 @@ class PostRepositoryImpl : PostRepository {
         return posts
     }
 
+     */
+
     // АСИНХРОННЫЙ метод
-    override fun getAllAsync(callback: PostRepository.GetAllCallback) {
+    override fun getAllAsync(callback: PostRepository.GetAllCallback<List<Post>>) {
         //создаем запрос
         val request: Request = Request.Builder()
             // медленные запросы с задержкой - slow
@@ -74,7 +76,7 @@ class PostRepositoryImpl : PostRepository {
             })
     }
 
-    override fun likeById(post: Post): Post {
+    override fun likeByIdAsync(post: Post, callback: PostRepository.GetAllCallback<Post>) {
         val request: Request = if (!post.likedByMe) {
             Request.Builder()
                 .post("".toRequestBody())
@@ -87,44 +89,60 @@ class PostRepositoryImpl : PostRepository {
 
         //запрос на сервер
         client.newCall(request)
-            .execute()
-            .let { it.body?.string() ?: throw RuntimeException("body is null") }
-            .let { gson.fromJson(it, Post::class.java) }
-        return post
+            .enqueue(object: Callback{
+                override fun onResponse(call: Call, response: Response) {
+                    val body = requireNotNull(response.body?.string()){"body is null"}
+                    callback.onSuccess(gson.fromJson(body, Post::class.java))
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError()
+                }
+            })
     }
 
-    override fun likeByShareId(id: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun likeByRedEyeId(id: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun save(post: Post) {
-        val request: Request = Request.Builder()
-            .post(gson.toJson(post).toRequestBody(jsonType))
-            .url("${BASE_URL}/api/slow/posts")
-            .build()
-
-        client.newCall(request)
-            .execute()
-            .close()
-    }
-
-    override fun edit(post: Post) {
-    }
-
-    override fun removeById(id: Long) {
+    override fun removeByIdAsync(id: Long, callback: PostRepository.GetAllCallback<Unit>) {
         val request: Request = Request.Builder()
             .delete()
             .url("${BASE_URL}/api/slow/posts/$id")
             .build()
 
         client.newCall(request)
-            .execute()
-            .close()
+            .enqueue(object: Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError()
+                }
 
+                override fun onResponse(call: Call, response: Response) {
+                    if(!response.isSuccessful){
+                        callback.onError()
+                    }
+                    callback.onSuccess(Unit)
+                }
+            })
     }
+
+    override fun saveAsync(post: Post, callback: PostRepository.GetAllCallback<Post>) {
+        val request = Request.Builder()
+            .url("$BASE_URL/api/slow/posts")
+            .post(gson.toJson(post).toRequestBody(jsonType))
+            .build()
+
+        client.newCall(request)
+            .enqueue(object: Callback{
+                override fun onResponse(call: Call, response: Response) {
+                    if(!response.isSuccessful){
+                        callback.onError()
+                    }
+                    val body = requireNotNull(response.body?.string()){"body is null"}
+                    callback.onSuccess(gson.fromJson(body, Post::class.java))
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError()
+                }
+            })
+    }
+
 
 }
