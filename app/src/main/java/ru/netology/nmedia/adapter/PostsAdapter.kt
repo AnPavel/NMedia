@@ -44,8 +44,8 @@ class PostViewHolder(
             textPoleAuthor.text = post.author
             textPolePublished.text = post.publisher
             textPoleHeading.text = post.content
-            //imageFavorite.isChecked = post.likedByMe
-            //imageFavorite.text = "${post.likes}"
+            imageFavorite.isChecked = post.likedByMe
+            imageFavorite.text = "${post.likes}"
             /*
             if (post.linkToVideo == "") {
                 textPoleHeading.text = post.content
@@ -91,8 +91,8 @@ class PostViewHolder(
                 onInteractionListener.onUrl(post)
             }
 
-            imageFavorite.isChecked = post.likedByMe
-            imageFavorite.text = "${post.likes}"
+            //imageFavorite.isChecked = post.likedByMe
+            //imageFavorite.text = "${post.likes}"
             imageFavorite.setOnClickListener {
                 onInteractionListener.onLike(post)
             }

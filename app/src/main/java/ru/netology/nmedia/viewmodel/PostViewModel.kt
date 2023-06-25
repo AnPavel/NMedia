@@ -55,6 +55,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadPosts() {
         //создаем поток для выполнения запроса, нельзя использовать основной поток - ошибка
+        //_data.value(FeedModel(loading = true))
         thread {
             // Начинаем загрузку
             _data.postValue(FeedModel(loading = true))
@@ -109,6 +110,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         thread {
             // Оптимистичная модель
             val old = _data.value?.posts.orEmpty()
+            //_data.postValue(FeedModel(posts=_data.value?.posts.orEmpty().map { if (it.id == post.id) post else it }))
             _data.postValue(
                 _data.value?.copy(posts = _data.value?.posts.orEmpty().map {
                     if (it.id == post.id) post

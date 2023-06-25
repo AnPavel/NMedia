@@ -26,22 +26,22 @@ class PostRepositoryImpl : PostRepository {
 
     // формируем запрос на список постов - результат список постов
     override fun getAll(): List<Post> {
-        val posts = Request.Builder()
+        val request = Request.Builder()
             // медленные запросы с задержкой - slow
             .url("${BASE_URL}/api/slow/posts")
             .build()
-            // вызываем клиент и передаем запрос
-            .let(client::newCall)
+
+        // вызываем клиент и передаем запрос
+        return client.newCall(request)
             .execute()
             // обрабатываем ответ на наш запрос через метод let  - извлекаем ответ в виде строки
             .let { requireNotNull(it.body?.string()) { "body is null" } }
             // через библиотеку gson получем список постов
             .let { gson.fromJson(it, typeToken) }
-        Log.e("myLog", "getALL: $posts")
-        return posts
+        Log.e("myLog", "getALL: $request")
     }
 
-    override fun likeById(post: Post) {
+    override fun likeById(post: Post): Post {
         val request: Request = if (!post.likedByMe) {
             Request.Builder()
                 .post("".toRequestBody())
