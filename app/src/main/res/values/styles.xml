@@ -10,6 +10,14 @@
         <item name="android:button">@drawable/ic_share_selector</item>
     </style>
 
+    <style name="Widget.AppTheme.ViewsButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="icon">@drawable/ic_views_24</item>
+        <item name="iconTint">@color/color_default</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+
     <style name="Widget.App.RedEyeButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="buttonTint">@color/color_redeye</item>
         <item name="android:button">@drawable/ic_redeye_selector</item>

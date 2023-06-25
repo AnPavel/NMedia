@@ -4,12 +4,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
+import ru.netology.nmedia.extens.load
+import ru.netology.nmedia.extens.loadCircle
 
 interface OnInteractionListener {
     fun onUrl(post: Post) {}
@@ -39,12 +42,19 @@ class PostViewHolder(
     private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) {
+
+        val baseUrl = "http://10.0.2.2:9999"
+
         binding.apply {
+            postAvatar.loadCircle("$baseUrl/avatars/${post.authorAvatar}")
+            attachment.load("$baseUrl/images/${post.attachment?.url}")
+            attachment.contentDescription = post.attachment?.description
+            attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             textPoleAuthor.text = post.author
             textPolePublished.text = post.publisher
             textPoleHeading.text = post.content
-            //imageFavorite.isChecked = post.likedByMe
-            //imageFavorite.text = "${post.likes}"
+            if (linkToVideo.text == "") videoGroup.isVisible = false
+            linkToVideo.isVisible = false
             /*
             if (post.linkToVideo == "") {
                 textPoleHeading.text = post.content
@@ -86,7 +96,7 @@ class PostViewHolder(
                 }.show()
             }
 
-            textPoleUrl.setOnClickListener {
+            linkToVideo.setOnClickListener {
                 onInteractionListener.onUrl(post)
             }
 

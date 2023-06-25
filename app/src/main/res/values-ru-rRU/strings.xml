@@ -22,4 +22,5 @@
     <string name="retry_loading">Повторная загрузка</string>
     <string name="empty_posts">Пустой пост</string>
     <string name="menu_refresh">Обновить</string>
+    <string name="simple_description">Простое описание</string>
 </resources>

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list2"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/dimen_layout_activity"
     tools:context=".activity.AppActivity">
 
     <ImageView
-        android:id="@+id/logoNetology"
+        android:id="@+id/postAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_layout_activity"
@@ -27,15 +27,15 @@
         android:lines="1"
         app:layout_constraintBottom_toTopOf="@id/textPolePublished"
         app:layout_constraintEnd_toStartOf="@id/imageMenu"
-        app:layout_constraintStart_toEndOf="@id/logoNetology"
-        app:layout_constraintTop_toTopOf="@id/logoNetology"
+        app:layout_constraintStart_toEndOf="@id/postAvatar"
+        app:layout_constraintTop_toTopOf="@id/postAvatar"
         tools:text="@sample/posts.json/data/author" />
 
     <TextView
         android:id="@+id/textPolePublished"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/logoNetology"
+        app:layout_constraintBottom_toBottomOf="@id/postAvatar"
         app:layout_constraintStart_toStartOf="@id/textPoleAuthor"
         app:layout_constraintTop_toBottomOf="@id/textPoleAuthor"
         tools:text="@sample/posts.json/data/published" />
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_marginTop"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="logoNetology, textPoleAuthor, textPolePublished, imageMenu" />
+        app:constraint_referenced_ids="postAvatar, textPoleAuthor, textPolePublished, imageMenu" />
 
     <TextView
         android:id="@+id/textPoleHeading"
@@ -74,14 +74,13 @@
         app:layout_constraintTop_toBottomOf="@id/barrier_heading"
         tools:text="@sample/posts.json/data/textPublic" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/textPoleUrl"
+    <TextView
+        android:id="@+id/linkToVideo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_marginTop"
         android:linksClickable="true"
         app:backgroundTint="@android:color/transparent"
-        app:icon="@drawable/ic_baseline_play_circle_outline_24"
         app:iconGravity="textStart"
         app:iconTint="?attr/colorOnSurface"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +93,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textPoleUrl" />
+        app:constraint_referenced_ids="linkToVideo" />
+
+    <ImageView
+        android:id="@+id/attachment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/common_dimen"
+        android:layout_marginEnd="@dimen/common_dimen"
+        android:layout_marginTop="@dimen/common_medium_dimen"
+        android:contentDescription="@string/simple_description"
+        app:layout_constraintTop_toBottomOf="@id/barrier_body"
+        tools:srcCompat="@drawable/youtube240" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/videoGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="videoPreview, playVideo" />
+
+    <ImageView
+        android:id="@+id/videoPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/common_dimen"
+        android:layout_marginTop="@dimen/common_dimen"
+        android:layout_marginEnd="@dimen/common_dimen"
+        android:contentDescription="@string/simple_description"
+        app:layout_constraintBottom_toTopOf="@id/TextBarrier"
+        app:layout_constraintTop_toBottomOf="@id/attachment"
+        app:srcCompat="@drawable/youtube240" />
+
+
+    <ImageView
+        android:id="@+id/playVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/simple_description"
+        app:layout_constraintBottom_toBottomOf="@id/videoPreview"
+        app:layout_constraintEnd_toEndOf="@id/videoPreview"
+        app:layout_constraintStart_toStartOf="@id/videoPreview"
+        app:layout_constraintTop_toTopOf="@id/videoPreview"
+        app:srcCompat="@drawable/ic_baseline_play_circle_outline_24" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/TextBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="textPoleHeading,videoPreview" />
+
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/imageFavorite"
@@ -105,7 +153,7 @@
         android:contentDescription="@string/imageView_descript"
         android:minWidth="0dp"
         android:textColor="?attr/colorControlNormal"
-        app:layout_constraintTop_toBottomOf="@id/barrier_body"
+        app:layout_constraintTop_toBottomOf="@id/TextBarrier"
         tools:ignore="MissingClass"
         tools:text="@sample/posts.json/data/count_like" />
 
