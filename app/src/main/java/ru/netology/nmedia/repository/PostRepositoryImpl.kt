@@ -1,6 +1,5 @@
 package ru.netology.nmedia.repository
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
@@ -38,7 +37,7 @@ class PostRepositoryImpl : PostRepository {
             .let { requireNotNull(it.body?.string()) { "body is null" } }
             // через библиотеку gson получем список постов
             .let { gson.fromJson(it, typeToken) }
-        Log.e("myLog", "getALL: $request")
+
     }
 
     override fun likeById(post: Post): Post {
@@ -56,6 +55,7 @@ class PostRepositoryImpl : PostRepository {
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let { gson.fromJson(it, Post::class.java) }
+
     }
 
     override fun likeByShareId(id: Long) {
