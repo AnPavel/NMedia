@@ -18,7 +18,7 @@ private val empty = Post(
     content = "",
     author = "",
     likedByMe = false,
-    publisher = "",
+    published = "",
     likes = 0,
     countShare = 0,
     countRedEye = 0,
@@ -65,7 +65,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _data.postValue(FeedModel(posts = value, empty = value.isEmpty()))
             }
 
-            override fun onError() {
+            override fun onError(e: Exception) {
                 _data.postValue(FeedModel(error = true))
             }
         })
@@ -78,8 +78,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     _postCreated.postValue(Unit)
                 }
 
-                override fun onError() {
-
+                override fun onError(e: Exception) {
+                    _data.postValue(FeedModel(error = true))
                 }
             })
         }
@@ -110,7 +110,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 }))
             }
 
-            override fun onError() {
+            override fun onError(e: Exception) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
         })
@@ -128,7 +128,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
 
-            override fun onError() {
+            override fun onError(e: Exception) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
         })
