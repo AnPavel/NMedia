@@ -104,7 +104,7 @@
         android:layout_marginTop="@dimen/common_medium_dimen"
         android:contentDescription="@string/simple_description"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
-        tools:srcCompat="@drawable/youtube240" />
+        tools:srcCompat="@drawable/ic_baseline_attach_file_24" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/videoGroup"
@@ -123,7 +123,6 @@
         app:layout_constraintBottom_toTopOf="@id/TextBarrier"
         app:layout_constraintTop_toBottomOf="@id/attachment"
         app:srcCompat="@drawable/youtube240" />
-
 
     <ImageView
         android:id="@+id/playVideo"

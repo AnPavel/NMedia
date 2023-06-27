@@ -9,16 +9,15 @@ import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.utils.SingleLiveEvent
-import java.io.IOException
-import kotlin.concurrent.thread
 
 //пустой пост
 private val empty = Post(
     id = 0,
-    content = "",
+    authorAvatar = "",
     author = "",
+    content = "",
+    published = "",
     likedByMe = false,
-    publisher = "",
     likes = 0,
     countShare = 0,
     countRedEye = 0,
@@ -65,9 +64,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _data.postValue(FeedModel(posts = value, empty = value.isEmpty()))
             }
 
-            override fun onError() {
+            override fun onError(e: Exception) {
                 _data.postValue(FeedModel(error = true))
             }
+
         })
     }
 
@@ -78,8 +78,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     _postCreated.postValue(Unit)
                 }
 
-                override fun onError() {
-
+                override fun onError(e: Exception) {
+                    _data.postValue(FeedModel(error = true))
                 }
             })
         }
@@ -95,7 +95,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         if (edited.value?.content == text) {
             return
         }
-        edited.value = edited.value?.copy(content = text)
+        edited.value = edited.value?.copy(content = text,  author = "Сам автор данного поста")
     }
 
 
@@ -110,7 +110,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 }))
             }
 
-            override fun onError() {
+            override fun onError(e: Exception) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
         })
@@ -128,7 +128,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
 
-            override fun onError() {
+            override fun onError(e: Exception) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
         })

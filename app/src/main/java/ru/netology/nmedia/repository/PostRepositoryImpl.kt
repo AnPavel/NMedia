@@ -65,12 +65,12 @@ class PostRepositoryImpl : PostRepository {
                         //вызов callback с параметром gson
                         callback.onSuccess(gson.fromJson(body, typeToken.type))
                     } catch (e: Exception) {
-                        callback.onError()
+                        callback.onError(e)
                     }
                 }
                 // НЕ успешный результат
                 override fun onFailure(call: Call, e: IOException) {
-                    callback.onError()
+                    callback.onError(e)
                 }
 
             })
@@ -96,7 +96,7 @@ class PostRepositoryImpl : PostRepository {
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
-                    callback.onError()
+                    callback.onError(e)
                 }
             })
     }
@@ -110,12 +110,12 @@ class PostRepositoryImpl : PostRepository {
         client.newCall(request)
             .enqueue(object: Callback{
                 override fun onFailure(call: Call, e: IOException) {
-                    callback.onError()
+                    callback.onError(e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     if(!response.isSuccessful){
-                        callback.onError()
+                        callback.onError(Exception(response.message))
                     }
                     callback.onSuccess(Unit)
                 }
@@ -132,17 +132,16 @@ class PostRepositoryImpl : PostRepository {
             .enqueue(object: Callback{
                 override fun onResponse(call: Call, response: Response) {
                     if(!response.isSuccessful){
-                        callback.onError()
+                        callback.onError(Exception(response.message))
                     }
                     val body = requireNotNull(response.body?.string()){"body is null"}
                     callback.onSuccess(gson.fromJson(body, Post::class.java))
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
-                    callback.onError()
+                    callback.onError(e)
                 }
             })
     }
-
 
 }

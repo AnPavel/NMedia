@@ -23,4 +23,5 @@
     <string name="empty_posts">Пустой пост</string>
     <string name="menu_refresh">Обновить</string>
     <string name="simple_description">Простое описание</string>
+    <string name="empty_content_warning">Контент не может быть пустым</string>
 </resources>

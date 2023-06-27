@@ -23,7 +23,7 @@ interface PostRepository {
 
     interface GetAllCallback<T> {
         fun onSuccess(value: T)     // если успешно в параметре - список постов
-        fun onError()               // если ошибка
+        fun onError(e: Exception)   // если ошибка
     }
 
 }

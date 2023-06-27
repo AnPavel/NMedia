@@ -1,6 +1,5 @@
 package ru.netology.nmedia.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -51,43 +50,30 @@ class PostViewHolder(
             attachment.contentDescription = post.attachment?.description
             attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             textPoleAuthor.text = post.author
-            textPolePublished.text = post.publisher
+            textPolePublished.text = post.published
             textPoleHeading.text = post.content
+            imageFavorite.isChecked = post.likedByMe
+            imageFavorite.text = "${post.likes}"
+ /*
             if (linkToVideo.text == "") videoGroup.isVisible = false
+
             linkToVideo.isVisible = false
-            /*
-            if (post.linkToVideo == "") {
-                textPoleHeading.text = post.content
-                textPoleUrl.setImageResource(0)
-            } else {
-                textPoleHeading.text = ""
-                textPoleUrl.setImageResource(R.drawable.youtube240)
-            }
-             */
-            //textPoleUrl.text = post.linkToVideo
+ */
             imageFavorite.text = transferToScreen(post.likes)
-            //textFavorite.text = transferToScreen(post.countFavorite)
             imageShare.text = transferToScreen(post.countShare)
-            //textShare.text = transferToScreen(post.countShare)
             imageRedEye.text = transferToScreen(post.countRedEye)
-            //textRedEye.text = transferToScreen(post.countRedEye)
 
             imageMenu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.remove -> {
-                                onInteractionListener.onRemove(post)
-                                true
-                            }
                             R.id.edit -> {
                                 onInteractionListener.onEdit(post)
                                 true
                             }
-                            R.id.menu_refresh -> {
-                                Log.i("AAAA", "Refresh menu item selected")
-                                //onInteractionListener.onRefresh()
+                            R.id.remove -> {
+                                onInteractionListener.onRemove(post)
                                 true
                             }
                             else -> false
@@ -100,8 +86,6 @@ class PostViewHolder(
                 onInteractionListener.onUrl(post)
             }
 
-            imageFavorite.isChecked = post.likedByMe
-            imageFavorite.text = "${post.likes}"
             imageFavorite.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
