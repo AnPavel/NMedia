@@ -15,10 +15,11 @@ import kotlin.concurrent.thread
 //пустой пост
 private val empty = Post(
     id = 0,
-    content = "",
     author = "",
-    likedByMe = false,
+    authorAvatar = "",
+    content = "",
     published = "",
+    likedByMe = false,
     likes = 0,
     countShare = 0,
     countRedEye = 0,
