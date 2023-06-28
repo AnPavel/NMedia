@@ -19,6 +19,7 @@ interface PostRepository {
     //асинхронный
     fun getAllAsync(callback: GetAllCallback<List<Post>>)
     fun likeByIdAsync(post: Post, callback: GetAllCallback<Post>)
+    fun unlikeByIdAsync(post: Post, callback: GetAllCallback<Post>)
     fun removeByIdAsync(id: Long, callback: GetAllCallback<Unit>)
     fun saveAsync(post: Post, callback: GetAllCallback<Post>)
 

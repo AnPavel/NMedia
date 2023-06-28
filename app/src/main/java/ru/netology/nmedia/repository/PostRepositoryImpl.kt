@@ -52,15 +52,63 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun likeByIdAsync(post: Post, callback: PostRepository.GetAllCallback<Post>) {
-        //PostApi.service.likeById(post)
+        PostApi.service
+            .likeById(post.id)
+            .enqueue(object: Callback<Post>{
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    if (!response.isSuccessful){
+                        callback.onError(RuntimeException(response.message()))
+                    }
+                    if(response.code()) {
+                        callback.onSuccess(
+                            response.body() ?: throw RuntimeException("body is null")
+                        )
+                    } else{
+                        callback.onError(RuntimeException(response.message()))
+                    }
+                }
+
+                override fun onFailure(call: Call<Post>, t: Throwable) {
+                    callback.onError(RuntimeException(t))
+                }
+
+            })
+    }
+
+    override fun unlikeByIdAsync(post: Post, callback: PostRepository.GetAllCallback<Post>) {
+        PostApi.service
+            .unlikeById(post.id)
+            .enqueue(object: Callback<Post>{
+                override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                    if (!response.isSuccessful){
+                        callback.onError(RuntimeException(response.message()))
+                    }
+                    if(response.code()) {
+                        callback.onSuccess(
+                            response.body() ?: throw RuntimeException("body is null")
+                        )
+                    } else{
+                        callback.onError(RuntimeException(response.message()))
+                    }
+
+                }
+
+                override fun onFailure(call: Call<Post>, t: Throwable) {
+                    callback.onError(RuntimeException(t))
+                }
+
+            })
     }
 
     override fun removeByIdAsync(id: Long, callback: PostRepository.GetAllCallback<Unit>) {
-        PostApi.service.deletePost(id)
+        PostApi.service
+            .deletePost(id)
+            .execute()
     }
 
     override fun saveAsync(post: Post, callback: PostRepository.GetAllCallback<Post>) {
-        PostApi.service.savePost(post)
+        PostApi.service
+            .savePost(post)
             .execute()
     }
 
