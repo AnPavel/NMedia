@@ -50,9 +50,9 @@
         android:minWidth="0dp"
         app:icon="@drawable/ic_baseline_more_vert_24"
         app:iconTint="?attr/colorControlNormal"
-        app:rippleColor="?attr/colorControlNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/textPoleAuthor"
+        app:rippleColor="?attr/colorControlNormal"
         app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
 
@@ -100,9 +100,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/common_dimen"
-        android:layout_marginEnd="@dimen/common_dimen"
         android:layout_marginTop="@dimen/common_medium_dimen"
+        android:layout_marginEnd="@dimen/common_dimen"
         android:contentDescription="@string/simple_description"
+        android:scaleType="center"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         tools:srcCompat="@drawable/ic_baseline_attach_file_24" />
 
@@ -167,10 +168,10 @@
         android:textColor="?attr/colorControlNormal"
         app:icon="@drawable/ic_baseline_share_24"
         app:iconTint="?attr/colorControlNormal"
-        app:rippleColor="?attr/colorControlNormal"
         app:layout_constraintStart_toEndOf="@id/imageFavorite"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         app:layout_constraintTop_toTopOf="@id/imageFavorite"
+        app:rippleColor="?attr/colorControlNormal"
         tools:ignore="MissingClass"
         tools:text="@sample/posts.json/data/count_share" />
 
@@ -184,10 +185,10 @@
         android:textColor="?attr/colorControlNormal"
         app:icon="@drawable/ic_baseline_remove_red_eye_24"
         app:iconTint="?attr/colorControlNormal"
-        app:rippleColor="?attr/colorControlNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier_body"
         app:layout_constraintTop_toTopOf="@id/imageFavorite"
+        app:rippleColor="?attr/colorControlNormal"
         tools:ignore="MissingClass"
         tools:text="@sample/posts.json/data/count_redeye" />
 
