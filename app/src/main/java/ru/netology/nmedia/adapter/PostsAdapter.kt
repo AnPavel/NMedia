@@ -43,8 +43,8 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) {
         binding.apply {
-            postAvatar.loadCircle("${BuildConfig.BASE_URL}\n/avatars/${post.authorAvatar}")
-            attachment.load("${BuildConfig.BASE_URL}\n/images/${post.attachment?.url}")
+            postAvatar.loadCircle("${BuildConfig.BASE_URL}avatars/${post.authorAvatar}")
+            attachment.load("${BuildConfig.BASE_URL}images/${post.attachment?.url}")
             attachment.contentDescription = post.attachment?.description
             attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             textPoleAuthor.text = post.author

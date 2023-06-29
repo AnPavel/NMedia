@@ -39,11 +39,12 @@ class PostRepositoryImpl : PostRepository {
             .enqueue(object : Callback<List<Post>> {
 
                 override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
+                    //Returns true if code() is in the range (200..300)
                     if (!response.isSuccessful) {
                         callback.onError(RuntimeException(response.errorBody()?.string()))
                         return
                     }
-
+                    //можно сделать проверку на код от 201 до 300
                     callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
                 }
 
@@ -62,7 +63,10 @@ class PostRepositoryImpl : PostRepository {
                 override fun onResponse(call: Call<Post>, response: Response<Post>) {
                     if (!response.isSuccessful) {
                         callback.onError(RuntimeException(response.message()))
+                        return
                     }
+
+                    callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
                 }
 
                 override fun onFailure(call: Call<Post>, t: Throwable) {
@@ -80,7 +84,10 @@ class PostRepositoryImpl : PostRepository {
                 override fun onResponse(call: Call<Post>, response: Response<Post>) {
                     if (!response.isSuccessful) {
                         callback.onError(RuntimeException(response.message()))
+                        return
                     }
+
+                    callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
                 }
 
                 override fun onFailure(call: Call<Post>, t: Throwable) {
@@ -98,7 +105,10 @@ class PostRepositoryImpl : PostRepository {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (!response.isSuccessful) {
                         callback.onError(RuntimeException(response.message()))
+                        return
                     }
+
+                    callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
                 }
 
                 override fun onFailure(call: Call<Unit>, t: Throwable) {
@@ -116,7 +126,10 @@ class PostRepositoryImpl : PostRepository {
                 override fun onResponse(call: Call<Post>, response: Response<Post>) {
                     if (!response.isSuccessful) {
                         callback.onError(RuntimeException(response.message()))
+                        return
                     }
+
+                    callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
                 }
 
                 override fun onFailure(call: Call<Post>, t: Throwable) {
