@@ -54,11 +54,11 @@ class PostViewHolder(
             textPoleHeading.text = post.content
             imageFavorite.isChecked = post.likedByMe
             imageFavorite.text = "${post.likes}"
- /*
+
+            linkToVideo.text = post.linkToVideo
+            linkToVideo.isVisible = false
             if (linkToVideo.text == "") videoGroup.isVisible = false
 
-            linkToVideo.isVisible = false
- */
             imageFavorite.text = transferToScreen(post.likes)
             imageShare.text = transferToScreen(post.countShare)
             imageRedEye.text = transferToScreen(post.countRedEye)
