@@ -5,7 +5,7 @@ import ru.netology.nmedia.extens.AttachmentType
 data class Post(
     val id: Long,
     val authorAvatar: String = "",
-    val author: String = "77777777777",
+    val author: String = "",
     val content: String,
     val published: String,
     val likedByMe: Boolean,
