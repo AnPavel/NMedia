@@ -21,7 +21,9 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        viewBinding true
+        buildConfig true
+
     }
 
     buildTypes {
@@ -29,6 +31,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders.usesCleartextTraffic = false
+            buildConfigField "String", "BASE_URL", "\"http://mySiteTest.ru/\""
         }
         /* доступ к HTTP трафику только в debug сборке
           в AndroidManifest устанавливаем свой-во в тэге application
@@ -37,6 +40,7 @@ android {
         */
         debug {
             manifestPlaceholders.usesCleartextTraffic = true
+            buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:9999/\""
         }
 
     }
@@ -51,7 +55,7 @@ android {
 
 dependencies {
     def retrofit_version= "2.9.0"
-    def okhttplogging_version= "4.11.0"
+    def okhttplogging_version= "4.10.0"
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -68,7 +72,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.5.1"
     implementation platform("com.google.firebase:firebase-bom:31.2.2")
     implementation "com.google.firebase:firebase-messaging-ktx"
-    implementation "com.squareup.okhttp3:okhttp:4.11.0"
+    implementation "com.squareup.okhttp3:okhttp:4.10.0"
     implementation "com.google.android.gms:play-services-base:18.2.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     implementation "com.github.bumptech.glide:glide:4.14.2"
