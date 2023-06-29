@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
@@ -41,12 +42,9 @@ class PostViewHolder(
     private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) {
-
-        val baseUrl = "http://10.0.2.2:9999"
-
         binding.apply {
-            postAvatar.loadCircle("$baseUrl/avatars/${post.authorAvatar}")
-            attachment.load("$baseUrl/images/${post.attachment?.url}")
+            postAvatar.loadCircle("${BuildConfig.BASE_URL}\n/avatars/${post.authorAvatar}")
+            attachment.load("${BuildConfig.BASE_URL}\n/images/${post.attachment?.url}")
             attachment.contentDescription = post.attachment?.description
             attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             textPoleAuthor.text = post.author
