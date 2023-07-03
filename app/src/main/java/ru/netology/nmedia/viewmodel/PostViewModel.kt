@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
+import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.repository.PostRepository
@@ -100,6 +102,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun likeById(post: Post) {
+        val constraintlayout = R.layout.activity_app
         // Оптимистичная модель
         val old = _data.value?.posts.orEmpty()
         if (!post.likedByMe) {
@@ -113,6 +116,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
                 override fun onError(e: Exception) {
                     _data.postValue(_data.value?.copy(posts = old))
+                    val snackBar = Snackbar.make(
+                        constraintlayout,
+                        "Ошибка, что-то пошло не так",
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackBar.show()
                 }
             })
         } else {
@@ -125,29 +134,36 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
                 override fun onError(e: Exception) {
                     _data.postValue(_data.value?.copy(posts = old))
-                }
 
-            })
-
-        }
-    }
-
-        fun removeById(id: Long) {
-            // Оптимистичная модель
-            val old = _data.value?.posts.orEmpty()
-            repository.removeByIdAsync(id, object : PostRepository.GetAllCallback<Unit> {
-                override fun onSuccess(value: Unit) {
-                    _data.postValue(
-                        _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                            .filter { it.id != id }
-                        )
+                    val snackBar = Snackbar.make(
+                        constraintlayout,
+                        "Ошибка, что-то пошло не так",
+                        Snackbar.LENGTH_LONG
                     )
+                    snackBar.show()
                 }
 
-                override fun onError(e: Exception) {
-                    _data.postValue(_data.value?.copy(posts = old))
-                }
             })
-        }
 
+        }
     }
+
+    fun removeById(id: Long) {
+        // Оптимистичная модель
+        val old = _data.value?.posts.orEmpty()
+        repository.removeByIdAsync(id, object : PostRepository.GetAllCallback<Unit> {
+            override fun onSuccess(value: Unit) {
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                        .filter { it.id != id }
+                    )
+                )
+            }
+
+            override fun onError(e: Exception) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+        })
+    }
+
+}
