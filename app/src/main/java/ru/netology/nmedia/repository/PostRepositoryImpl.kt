@@ -5,7 +5,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.netology.nmedia.api.PostApi
 import ru.netology.nmedia.dto.Post
-//import java.io.IOException
 import java.lang.Exception
 
 
@@ -42,6 +41,7 @@ class PostRepositoryImpl : PostRepository {
                     //Returns true if code() is in the range (200..300)
                     if (!response.isSuccessful) {
                         callback.onError(RuntimeException(response.errorBody()?.string()))
+                        //response.code()
                         return
                     }
                     //можно сделать проверку на код от 201 до 300

@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -79,6 +80,14 @@ class FeedFragment : Fragment() {
             binding.swipeRefresh.isRefreshing = true
             viewModel.loadPosts()
             binding.swipeRefresh.isRefreshing = false
+        }
+
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                //Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
+                Snackbar.make(binding.root, "Ошибка, что-то пошло не так", Snackbar.LENGTH_LONG)
+                    .show()
+            }
         }
 
         return binding.root
