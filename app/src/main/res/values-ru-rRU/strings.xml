@@ -24,4 +24,6 @@
     <string name="menu_refresh">Обновить</string>
     <string name="simple_description">Простое описание</string>
     <string name="empty_content_warning">Контент не может быть пустым</string>
+    <string name="buttom_snackbar_txt">Повторить</string>
+    <string name="error_refresh">Ошибка обновления</string>
 </resources>

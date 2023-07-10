@@ -28,7 +28,6 @@ private val empty = Post(
 class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: PostRepository = PostRepositoryImpl(AppDb.getInstance(application).postDao())
-    //private val scope = MainScope()
     //private val repository: PostRepository = PostRepositorySQLiteImpl(AppDb.getInstance(application).postDao)
     //private val repository: PostRepository = PostRepositoryInMemoryImplementation()
     //private val repository: PostRepository = PostRepositoryFileImpl(application)
@@ -62,16 +61,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             repository.getAll()
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
+            _dataState.value = FeedModelState(error = true, errStateCodeTxt = "load")
         }
     }
-
-    /*
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
-    }
-     */
 
     fun refresh() = viewModelScope.launch {
         _dataState.value = FeedModelState(refreshing = true)
@@ -79,7 +71,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             repository.getAll()
             _dataState.value = FeedModelState()
         }catch (e: Exception){
-            _dataState.value = FeedModelState(error = true)
+            _dataState.value = FeedModelState(error = true, errStateCodeTxt = "refresh")
         }
     }
 
@@ -91,7 +83,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             edited.value = empty
             _postCreated.postValue(Unit)
         }catch (e: Exception){
-            _dataState.value = FeedModelState(error = true)
+            _dataState.value = FeedModelState(error = true, errStateCodeTxt = "save")
         }
     }
 
@@ -111,7 +103,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             repository.likeById(id)
             _dataState.value = FeedModelState(loading = true)
         }catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
+            _dataState.value = FeedModelState(error = true, errStateCodeTxt = "like")
         }
     }
 
@@ -121,7 +113,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 repository.removeById(id)
                 _dataState.value = FeedModelState(loading = true)
             } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
+                _dataState.value = FeedModelState(error = true, errStateCodeTxt = "remove")
             }
         }
     }

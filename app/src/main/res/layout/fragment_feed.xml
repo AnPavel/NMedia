@@ -39,6 +39,7 @@
             android:id="@+id/errorGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:constraint_referenced_ids="retryTitle,retryButton" />
 
         <TextView
