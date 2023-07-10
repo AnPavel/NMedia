@@ -1,18 +1,102 @@
 package ru.netology.nmedia.repository
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.map
 import ru.netology.nmedia.api.PostApi
+import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
-import java.lang.Exception
+import ru.netology.nmedia.entity.PostEntity
+import ru.netology.nmedia.entity.toDto
+import ru.netology.nmedia.entity.toEntity
+import ru.netology.nmedia.error.*
+import java.io.IOException
 
 
-class PostRepositoryImpl : PostRepository {
+class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
+    override val data = postDao.getAll().map(List<PostEntity>::toDto)
 
+    override suspend fun getAll() {
+        try {
+            val response = PostApi.service.getPosts()
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(body.toEntity())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun save(post: Post) {
+        try {
+            val response = PostApi.service.savePost(post)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun likeById(id: Long) {
+        try {
+            val response = PostApi.service.getById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            } else {
+                postDao.likeById(id)
+                if (response.body()!!.likedByMe) {
+                    PostApi.service.unlikeById(id)
+                    val body = (response.body())?.copy(
+                        likedByMe = false,
+                        likes = (response.body())!!.likes - 1
+                    ) ?: throw ApiError(response.code(), response.message())
+                    postDao.insert(PostEntity.fromDto(body))
+                } else {
+                    PostApi.service.likeById(id)
+                    val body = (response.body())?.copy(
+                        likedByMe = true,
+                        likes = (response.body())!!.likes + 1
+                    ) ?: throw ApiError(response.code(), response.message())
+                    postDao.insert(PostEntity.fromDto(body))
+                }
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun removeById(id: Long) {
+        try {
+            val response = PostApi.service.deletePost(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            } else {
+                postDao.removeById(id)
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+}
+
+    /*
     // СИНХРОННЫЙ метод
     // формируем запрос на список постов - результат список постов
-    /*
+
     override fun getAll(): List<Post> {
         //создаем запрос
         val posts = Request.Builder()
@@ -29,7 +113,7 @@ class PostRepositoryImpl : PostRepository {
         Log.e("myLog", "getALL: $posts")
         return posts
     }
-    */
+
 
     // АСИНХРОННЫЙ метод
     override fun getAllAsync(callback: PostRepository.GetAllCallback<List<Post>>) {
@@ -139,4 +223,4 @@ class PostRepositoryImpl : PostRepository {
             })
     }
 
-}
+    */

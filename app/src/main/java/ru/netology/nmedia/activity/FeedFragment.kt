@@ -7,20 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
-import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
 
-    private val viewModel: PostViewModel by activityViewModels()
+    //private val viewModel: PostViewModel by activityViewModels()
+    private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +42,7 @@ class FeedFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                viewModel.likeById(post)
+                viewModel.likeById(post.id)
             }
 
             override fun onRemove(post: Post) {
@@ -61,12 +62,23 @@ class FeedFragment : Fragment() {
             }
         })
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
+        viewModel.dataState.observe(viewLifecycleOwner)  { state ->
             binding.progress.isVisible = state.loading
-            binding.errorGroup.isVisible = state.error
+            binding.swipeRefresh.isVisible = state.refreshing
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.error_loading) {
+                        viewModel.loadPosts()
+                    }
+                    .show()
+            }
+        }
+
+        viewModel.data.observe(viewLifecycleOwner)  { state ->
+            adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
         }
+
 
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
@@ -77,17 +89,9 @@ class FeedFragment : Fragment() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            binding.swipeRefresh.isRefreshing = true
-            viewModel.loadPosts()
-            binding.swipeRefresh.isRefreshing = false
-        }
-
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            if (state.error) {
-                //Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
-                Snackbar.make(binding.root, "Ошибка, что-то пошло не так", Snackbar.LENGTH_LONG)
-                    .show()
-            }
+            //binding.swipeRefresh.isRefreshing = true
+            viewModel.refresh()
+            //binding.swipeRefresh.isRefreshing = false
         }
 
         return binding.root
