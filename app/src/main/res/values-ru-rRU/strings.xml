@@ -26,4 +26,5 @@
     <string name="empty_content_warning">Контент не может быть пустым</string>
     <string name="buttom_snackbar_txt">Повторить</string>
     <string name="error_refresh">Ошибка обновления</string>
+    <string name="error_save">Ошибка сохранения</string>
 </resources>

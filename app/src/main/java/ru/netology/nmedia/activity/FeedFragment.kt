@@ -63,7 +63,7 @@ class FeedFragment : Fragment() {
         binding.list.adapter = adapter
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             //binding.progress.isVisible = state.loading
-            //binding.swipeRefresh.isVisible = state.refreshing
+            binding.swipeRefresh.isRefreshing = state.refreshing
             if (state.error) {
                 if (state.errStateCodeTxt == "load") {
                     Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
@@ -76,6 +76,13 @@ class FeedFragment : Fragment() {
                     Snackbar.make(binding.root, R.string.error_refresh, Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.buttom_snackbar_txt) {
                             viewModel.refresh()
+                        }
+                        .show()
+                }
+                if (state.errStateCodeTxt == "save") {
+                    Snackbar.make(binding.root, R.string.error_save, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.buttom_snackbar_txt) {
+                            viewModel.save()
                         }
                         .show()
                 }
