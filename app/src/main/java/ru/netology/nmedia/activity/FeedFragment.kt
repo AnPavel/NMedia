@@ -94,8 +94,7 @@ class FeedFragment : Fragment() {
             adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
         }
-
-
+        
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
         }
@@ -113,7 +112,6 @@ class FeedFragment : Fragment() {
         viewModel.newerCount.observe(viewLifecycleOwner) {
             Log.d("FeedFragment","newer count: $it")
         }
-
 
         return binding.root
     }
