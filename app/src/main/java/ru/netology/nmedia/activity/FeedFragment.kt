@@ -2,6 +2,7 @@ package ru.netology.nmedia.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,6 +109,11 @@ class FeedFragment : Fragment() {
             viewModel.refresh()
             binding.swipeRefresh.isRefreshing = false
         }
+
+        viewModel.newerCount.observe(viewLifecycleOwner) {
+            Log.d("FeedFragment","newer count: $it")
+        }
+
 
         return binding.root
     }
