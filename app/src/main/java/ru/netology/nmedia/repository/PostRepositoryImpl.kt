@@ -1,6 +1,10 @@
 package ru.netology.nmedia.repository
 
-import androidx.lifecycle.map
+import androidx.lifecycle.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import ru.netology.nmedia.api.PostApi
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
@@ -9,10 +13,34 @@ import ru.netology.nmedia.entity.toDto
 import ru.netology.nmedia.entity.toEntity
 import ru.netology.nmedia.error.*
 import java.io.IOException
+import java.util.concurrent.CancellationException
 
 
 class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
-    override val data = postDao.getAll().map(List<PostEntity>::toDto)
+    override val data: Flow<List<Post>> = postDao.getAll().map(List<PostEntity>::toDto)
+
+    override fun getNewerCount(id: Long): Flow<Int> = flow{
+        while (true) {
+            try {
+                //ждем 10 сек
+                delay(10_000)
+                //делаем запрос
+                val response = PostApi.service.getNewer(id)
+                //обработка либо посты либо пусто
+                val posts = response.body().orEmpty()
+                //вставляем в базу
+                postDao.insert(posts.toEntity())
+                //выдаем подписчикам кол-во новых постов
+                emit(posts.size)
+            } catch (e: CancellationException) {
+                throw e
+            }
+            catch (e: Exception) {
+                //ignore
+                e.printStackTrace()
+            }
+        }
+    }
 
     override suspend fun getAll() {
         try {
