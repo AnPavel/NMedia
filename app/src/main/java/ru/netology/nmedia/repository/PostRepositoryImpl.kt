@@ -2,15 +2,11 @@ package ru.netology.nmedia.repository
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import ru.netology.nmedia.api.PostApi
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.entity.PostEntity
-import ru.netology.nmedia.entity.toDto
-import ru.netology.nmedia.entity.toEntity
+import ru.netology.nmedia.entity.*
 import ru.netology.nmedia.error.*
 import java.io.IOException
 import java.util.concurrent.CancellationException
@@ -29,7 +25,7 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
                 //обработка либо посты либо пусто
                 val posts = response.body().orEmpty()
                 //вставляем в базу
-                postDao.insert(posts.toEntity())
+                postDao.insert(posts.toEntity(hiddenEntry = false))
                 //выдаем подписчикам кол-во новых постов
                 emit(posts.size)
             } catch (e: CancellationException) {
@@ -50,12 +46,21 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(body.toEntity())
+            postDao.insert(body.toEntity(hiddenEntry = false))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
         }
+    }
+
+    override suspend fun getAllVisible() {
+        val response = PostApi.service.getPosts()
+        if (!response.isSuccessful) {
+            throw RuntimeException(response.message())
+        }
+        val posts = response.body() ?: throw RuntimeException("body is null")
+        postDao.insert(posts.map { PostEntity.fromDto(it, hiddenEntry = false) })
     }
 
     override suspend fun save(post: Post) {
@@ -66,7 +71,7 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body))
+            postDao.insert(PostEntity.fromDto(body, false))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -87,14 +92,14 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
                         likedByMe = false,
                         likes = (response.body())!!.likes - 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body))
+                    postDao.insert(PostEntity.fromDto(body, false))
                 } else {
                     PostApi.service.likeById(id)
                     val body = (response.body())?.copy(
                         likedByMe = true,
                         likes = (response.body())!!.likes + 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body))
+                    postDao.insert(PostEntity.fromDto(body, false))
                 }
             }
         } catch (e: IOException) {
@@ -118,8 +123,10 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
             throw UnknownError
         }
     }
-
 }
+
+
+
 
     /*
     // СИНХРОННЫЙ метод

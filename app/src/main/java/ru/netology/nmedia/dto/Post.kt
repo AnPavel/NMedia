@@ -13,6 +13,7 @@ data class Post(
     val countShare: Int,
     val countRedEye: Int,
     val linkToVideo: String?,
+    val hiddenEntry: Boolean,
     val attachment: Attachment? = null
 )
 

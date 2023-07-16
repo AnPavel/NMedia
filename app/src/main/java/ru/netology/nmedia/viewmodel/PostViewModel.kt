@@ -24,7 +24,8 @@ private val empty = Post(
     likes = 0,
     countShare = 0,
     countRedEye = 0,
-    linkToVideo = ""
+    linkToVideo = "",
+    hiddenEntry = false
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -94,7 +96,7 @@ class FeedFragment : Fragment() {
             adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
         }
-        
+
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
         }
@@ -111,6 +113,13 @@ class FeedFragment : Fragment() {
 
         viewModel.newerCount.observe(viewLifecycleOwner) {
             Log.d("FeedFragment","newer count: $it")
+            if (it > 0) {
+                binding.newPostsButton.visibility = VISIBLE
+            }
+        }
+        binding.newPostsButton.setOnClickListener {
+            binding.list.smoothScrollToPosition(0)
+            binding.newPostsButton.visibility = INVISIBLE
         }
 
         return binding.root
