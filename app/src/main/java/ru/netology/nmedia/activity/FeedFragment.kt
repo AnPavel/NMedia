@@ -65,7 +65,8 @@ class FeedFragment : Fragment() {
         })
         binding.list.adapter = adapter
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
-            //binding.progress.isVisible = state.loading
+            Log.d("FeedFragment","data_state: $state")
+            binding.progress.isVisible = state.loading
             binding.swipeRefresh.isRefreshing = state.refreshing
             if (state.error) {
                 if (state.errStateCodeTxt == "load") {
@@ -89,10 +90,18 @@ class FeedFragment : Fragment() {
                         }
                         .show()
                 }
+                if (state.errStateCodeTxt == "like") {
+                    Snackbar.make(binding.root, R.string.error_like, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.buttom_snackbar_txt) {
+                            viewModel.refresh()
+                        }
+                        .show()
+                }
             }
         }
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
+            Log.d("FeedFragment","data: $state")
             adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
         }
@@ -106,18 +115,21 @@ class FeedFragment : Fragment() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
+            Log.d("FeedFragment","swipeRefresh - обновление экрана")
             binding.swipeRefresh.isRefreshing = true
             viewModel.refresh()
             binding.swipeRefresh.isRefreshing = false
         }
 
         viewModel.newerCount.observe(viewLifecycleOwner) {
-            Log.d("FeedFragment","newer count: $it")
+            Log.d("FeedFragment","newer count - новых записей: $it")
             if (it > 0) {
                 binding.newPostsButton.visibility = VISIBLE
             }
         }
         binding.newPostsButton.setOnClickListener {
+            viewModel.showHiddenPosts()
+            Log.d("FeedFragment","showHiddenPosts - отображение кнопки")
             binding.list.smoothScrollToPosition(0)
             binding.newPostsButton.visibility = INVISIBLE
         }
