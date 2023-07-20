@@ -25,7 +25,7 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
                 //обработка либо посты либо пусто
                 val posts = response.body().orEmpty()
                 //вставляем в базу
-                postDao.insert(posts.toEntity(hiddenEntry = false))
+                postDao.insert(posts.toEntity(hiddenEntry = true))
                 //выдаем подписчикам кол-во новых постов
                 emit(posts.size)
             } catch (e: CancellationException) {
@@ -55,12 +55,18 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
     }
 
     override suspend fun getAllVisible() {
-        val response = PostApi.service.getPosts()
-        if (!response.isSuccessful) {
-            throw RuntimeException(response.message())
+        try {
+            val response = PostApi.service.getPosts()
+            if (!response.isSuccessful) {
+                throw RuntimeException(response.message())
+            }
+            val posts = response.body() ?: throw RuntimeException("body is null")
+            postDao.insert(posts.map { PostEntity.fromDto(it, hiddenEntry = false) })
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
         }
-        val posts = response.body() ?: throw RuntimeException("body is null")
-        postDao.insert(posts.map { PostEntity.fromDto(it, hiddenEntry = false) })
     }
 
     override suspend fun save(post: Post) {
@@ -71,7 +77,7 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body, false))
+            postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -92,14 +98,14 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
                         likedByMe = false,
                         likes = (response.body())!!.likes - 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body, false))
+                    postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
                 } else {
                     PostApi.service.likeById(id)
                     val body = (response.body())?.copy(
                         likedByMe = true,
                         likes = (response.body())!!.likes + 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body, false))
+                    postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
                 }
             }
         } catch (e: IOException) {
