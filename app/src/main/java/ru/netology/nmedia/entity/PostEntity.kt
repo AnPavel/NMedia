@@ -17,7 +17,7 @@ data class PostEntity(
     val countShare: Int = 0,
     val countRedEye: Int = 0,
     val linkToVideo: String? = "",
-    val hiddenEntry: Boolean = false,
+    val hiddenEntry: Boolean,
     val attachment: String = "",
 ) {
     fun toDto() = Post(

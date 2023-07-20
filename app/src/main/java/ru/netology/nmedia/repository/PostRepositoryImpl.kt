@@ -1,42 +1,41 @@
 package ru.netology.nmedia.repository
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import ru.netology.nmedia.api.PostApi
+import ru.netology.nmedia.api.*
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.*
 import ru.netology.nmedia.error.*
 import java.io.IOException
-import java.util.concurrent.CancellationException
 
 
 class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
-    override val data: Flow<List<Post>> = postDao.getAll().map(List<PostEntity>::toDto)
+    override val data: Flow<List<Post>> = postDao.getAll()
+        .map(List<PostEntity>::toDto)
+        .flowOn(Dispatchers.Default)
 
-    override fun getNewerCount(id: Long): Flow<Int> = flow{
+    override fun getNewerCount(id: Long): Flow<Int> = flow {
         while (true) {
-            try {
-                //ждем 10 сек
-                delay(10_000)
-                //делаем запрос
-                val response = PostApi.service.getNewer(id)
-                //обработка либо посты либо пусто
-                val posts = response.body().orEmpty()
-                //вставляем в базу
-                postDao.insert(posts.toEntity(hiddenEntry = false))
-                //выдаем подписчикам кол-во новых постов
-                emit(posts.size)
-            } catch (e: CancellationException) {
-                throw e
+            //ждем 10 сек
+            delay(10_000L)
+            //делаем запрос
+            val response = PostApi.service.getNewer(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
             }
-            catch (e: Exception) {
-                //ignore
-                e.printStackTrace()
-            }
+            //обработка
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            //вставляем в базу
+            postDao.insert(body.toEntity(hiddenEntry = true))
+            //выдаем подписчикам кол-во новых постов
+            emit(body.size)
         }
     }
+        .flowOn(Dispatchers.Default)
+
 
     override suspend fun getAll() {
         try {
@@ -54,13 +53,32 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
         }
     }
 
+
+    //вывести посты без скрытых - новых
     override suspend fun getAllVisible() {
-        val response = PostApi.service.getPosts()
-        if (!response.isSuccessful) {
-            throw RuntimeException(response.message())
+        try {
+            val response = PostApi.service.getPosts()
+            if (!response.isSuccessful) {
+                throw RuntimeException(response.message())
+            }
+            val posts = response.body() ?: throw RuntimeException("body is null")
+            postDao.insert(posts.map { PostEntity.fromDto(it, hiddenEntry = false) })
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
         }
-        val posts = response.body() ?: throw RuntimeException("body is null")
-        postDao.insert(posts.map { PostEntity.fromDto(it, hiddenEntry = false) })
+    }
+
+    //вывести все посты после изменения флага видимости
+    override suspend fun showAll() {
+        try {
+            postDao.showAll()
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
     override suspend fun save(post: Post) {
@@ -71,7 +89,7 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body, false))
+            postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -92,14 +110,14 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
                         likedByMe = false,
                         likes = (response.body())!!.likes - 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body, false))
+                    postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
                 } else {
                     PostApi.service.likeById(id)
                     val body = (response.body())?.copy(
                         likedByMe = true,
                         likes = (response.body())!!.likes + 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body, false))
+                    postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
                 }
             }
         } catch (e: IOException) {
