@@ -1,16 +1,16 @@
 package ru.netology.nmedia.activity
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
+import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.utils.StringArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -38,6 +38,25 @@ class NewPostFragment : Fragment() {
             ?.let(binding.edit::setText)
         binding.edit.requestFocus()
 
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.new_post_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                when (menuItem.itemId) {
+                    R.id.save -> {
+                        viewModel.changeContent(binding.edit.text.toString())
+                        viewModel.save()
+                        //AndroidUtils.hideKeyboard(requireView())
+                        true
+                    }
+                    else -> false
+                }
+
+        }, viewLifecycleOwner) //меню убрать из экшенбара
+
+        /*
         binding.ok.setOnClickListener {
             val text = binding.edit.text.toString()
             //проверка на заполнение, не пустое поле
@@ -55,8 +74,11 @@ class NewPostFragment : Fragment() {
             //findNavController().navigateUp()
 
         }
+        */
+
         /* подписываемся */
-        viewModel.postCreated.observe(viewLifecycleOwner){
+        viewModel.postCreated.observe(viewLifecycleOwner)
+        {
             viewModel.loadPosts()
             findNavController().navigateUp()
         }
