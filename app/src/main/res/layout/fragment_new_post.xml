@@ -14,19 +14,29 @@
         android:inputType="textMultiLine">
     </com.google.android.material.textfield.TextInputEditText>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/bottomAppBar"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="?colorPrimary">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/description_post_save"
-        app:layout_anchor="@id/bottomAppBar"
-        app:srcCompat="@drawable/ic_ok_24dp" />
+        <ImageView
+            android:id="@+id/takePhoto"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_baseline_add_a_photo_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/gallery"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_baseline_insert_photo_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
