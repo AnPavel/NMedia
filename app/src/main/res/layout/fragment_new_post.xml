@@ -6,36 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".activity.NewPostFragment">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edit"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="start|top"
-        android:inputType="textMultiLine">
-    </com.google.android.material.textfield.TextInputEditText>
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
-        android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="?actionBarSize">
+
+            <EditText
+                android:id="@+id/edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:padding="@dimen/common_spacing"
+                tools:text="@tools:sample/lorem[50]" />
+
+            <FrameLayout
+                android:id="@+id/previewPhotoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/previewPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/description_photo"
+                    android:src="@tools:sample/avatars" />
+
+                <Button
+                    android:id="@+id/clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="@string/clear" />
+
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/buttonPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
         android:id="@+id/bottomAppBar"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
-        android:background="?colorPrimary">
+        android:background="?colorPrimary"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
+    <ImageView
             android:id="@+id/takePhoto"
-            android:padding="16dp"
-            app:srcCompat="@drawable/ic_baseline_add_a_photo_24"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:contentDescription="@string/description_photo"
+            android:padding="@dimen/common_spacing"
+            app:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
 
         <ImageView
             android:id="@+id/gallery"
-            android:padding="16dp"
-            app:srcCompat="@drawable/ic_baseline_insert_photo_24"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:contentDescription="@string/description_photo"
+            android:padding="@dimen/common_spacing"
+            app:srcCompat="@drawable/ic_baseline_insert_photo_24" />
 
     </LinearLayout>
 

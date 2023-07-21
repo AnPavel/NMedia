@@ -29,4 +29,6 @@
     <string name="error_save">Ошибка сохранения</string>
     <string name="error_like">Ошибка лайка</string>
     <string name="menu_save">Сохранить</string>
+    <string name="clear">Очистить</string>
+    <string name="description_photo">Описание фото</string>
 </resources>
