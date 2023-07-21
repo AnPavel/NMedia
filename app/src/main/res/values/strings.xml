@@ -11,6 +11,7 @@
     <string name="button_save">Save</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_save">Save</string>
     <string name="chooser_share_post">Nmedia_share</string>
     <string name="description_post_save">Description post save</string>
     <string name="simple_description">Smple description</string>

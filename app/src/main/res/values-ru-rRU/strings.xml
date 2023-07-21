@@ -28,4 +28,5 @@
     <string name="error_refresh">Ошибка обновления</string>
     <string name="error_save">Ошибка сохранения</string>
     <string name="error_like">Ошибка лайка</string>
+    <string name="menu_save">Сохранить</string>
 </resources>
