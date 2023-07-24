@@ -1,9 +1,8 @@
 package ru.netology.nmedia.repository
 
 import kotlinx.coroutines.flow.Flow
-import ru.netology.nmedia.dto.Media
-import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.model.PhotoModel
 
 interface PostRepository {
 
@@ -13,10 +12,10 @@ interface PostRepository {
     suspend fun getAllVisible()
     suspend fun showAll()
     suspend fun save(post: Post)
-    suspend fun saveWithAttachment(post: Post, upload: MediaUpload)
+    suspend fun saveWithAttachment(post: Post, model: PhotoModel)
     suspend fun likeById(id: Long)
+    suspend fun shareById(id: Long)
     suspend fun removeById(id: Long)
-    suspend fun upload(upload: MediaUpload): Media
 
 
 

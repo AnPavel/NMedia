@@ -13,12 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
-import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.listener.OnInteractionListener
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -33,7 +34,9 @@ class FeedFragment : Fragment() {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         val adapter = PostsAdapter(object : OnInteractionListener {
+
             override fun onEdit(post: Post) {
+                Log.d("MyAppLog","FeedFragment * adapter onEdit: $post")
                 viewModel.edit(post)
                 findNavController().navigate(
                     R.id.action_feedFragment_to_newPostFragment,
@@ -43,11 +46,31 @@ class FeedFragment : Fragment() {
                 )
             }
 
+            override fun onOpenPost(post: Post) {
+                Log.d("MyAppLog","FeedFragment * adapter onOpenPost: $post")
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_postFragment,
+                    Bundle().apply {
+                        textArg = post.id.toString()
+                    })
+            }
+
+            override fun onShowAttachment(post: Post) {
+                Log.d("MyAppLog","FeedFragment * adapter onShowAttachment: $post")
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_photoFragment,
+                    Bundle().apply {
+                        textArg = "${BuildConfig.BASE_URL}media/${post.attachment!!.url}"
+                    })
+            }
+
             override fun onLike(post: Post) {
+                Log.d("MyAppLog","FeedFragment * adapter onLike: $post")
                 viewModel.likeById(post.id)
             }
 
             override fun onRemove(post: Post) {
+                Log.d("MyAppLog","FeedFragment * adapter onRemove: $post")
                 viewModel.removeById(post.id)
             }
 
@@ -62,10 +85,11 @@ class FeedFragment : Fragment() {
                     Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
             }
+
         })
         binding.list.adapter = adapter
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
-            Log.d("FeedFragment","data_state: $state")
+            Log.d("MyAppLog","FeedFragment * data_state: $state")
             binding.progress.isVisible = state.loading
             binding.swipeRefresh.isRefreshing = state.refreshing
             if (state.error) {
@@ -101,7 +125,7 @@ class FeedFragment : Fragment() {
         }
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
-            Log.d("FeedFragment","data: $state")
+            Log.d("MyAppLog","FeedFragment * data: $state")
             adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
         }
@@ -115,21 +139,21 @@ class FeedFragment : Fragment() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            Log.d("FeedFragment","swipeRefresh - обновление экрана")
+            Log.d("MyAppLog","FeedFragment * swipeRefresh - обновление экрана")
             binding.swipeRefresh.isRefreshing = true
             viewModel.refresh()
             binding.swipeRefresh.isRefreshing = false
         }
 
         viewModel.newerCount.observe(viewLifecycleOwner) {
-            Log.d("FeedFragment","newer count - новых записей: $it")
+            Log.d("MyAppLog","FeedFragment * newer count - новых записей: $it")
             if (it > 0) {
                 binding.newPostsButton.visibility = VISIBLE
             }
         }
         binding.newPostsButton.setOnClickListener {
+            Log.d("MyAppLog","FeedFragment * showHiddenPosts - отображение кнопки")
             viewModel.showHiddenPosts()
-            Log.d("FeedFragment","showHiddenPosts - отображение кнопки")
             binding.list.smoothScrollToPosition(0)
             binding.newPostsButton.visibility = INVISIBLE
         }

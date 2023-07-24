@@ -1,5 +1,6 @@
 package ru.netology.nmedia.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -11,17 +12,11 @@ import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
+import ru.netology.nmedia.listener.OnInteractionListener
 import ru.netology.nmedia.extens.load
 import ru.netology.nmedia.extens.loadCircle
+import ru.netology.nmedia.utils.*
 
-interface OnInteractionListener {
-    fun onUrl(post: Post) {}
-    fun onLike(post: Post) {}
-    fun onEdit(post: Post) {}
-    fun onRemove(post: Post) {}
-    fun onShare(post: Post) {}
-    fun onRedEye(post: Post) {}
-}
 
 class PostsAdapter(
     private val onInteractionListener: OnInteractionListener,
@@ -44,8 +39,7 @@ class PostViewHolder(
     fun bind(post: Post) {
         binding.apply {
             postAvatar.loadCircle("${BuildConfig.BASE_URL}avatars/${post.authorAvatar}")
-            attachment.load("${BuildConfig.BASE_URL}images/${post.attachment?.url}")
-            //attachment.contentDescription = post.attachment?.description
+            attachment.load("${BuildConfig.BASE_URL}media/${post.attachment?.url}")
             attachment.isVisible = !post.attachment?.url.isNullOrBlank()
             textPoleAuthor.text = post.author
             textPolePublished.text = post.published
@@ -81,18 +75,32 @@ class PostViewHolder(
             }
 
             linkToVideo.setOnClickListener {
-                onInteractionListener.onUrl(post)
+                Log.d("MyAppLog","PostAdapter * onPlayVideo: $post")
+                onInteractionListener.onPlayVideo(post)
+            }
+
+            textPoleHeading.setOnClickListener(){
+                Log.d("MyAppLog","PostAdapter * onOpenPost: $post")
+                onInteractionListener.onOpenPost(post)
+            }
+
+            attachment.setOnClickListener {
+                Log.d("MyAppLog","PostAdapter * onShowAttachment: $post")
+                onInteractionListener.onShowAttachment(post)
             }
 
             imageFavorite.setOnClickListener {
+                Log.d("MyAppLog","PostAdapter * onLike: $post")
                 onInteractionListener.onLike(post)
             }
 
             imageShare.setOnClickListener {
+                Log.d("MyAppLog","PostAdapter * onShare: $post")
                 onInteractionListener.onShare(post)
             }
 
             imageRedEye.setOnClickListener {
+                Log.d("MyAppLog","PostAdapter * onRedEye: $post")
                 onInteractionListener.onRedEye(post)
             }
 
@@ -110,22 +118,4 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem == newItem
     }
-}
-
-private fun transferToScreen(count: Int): String {
-    val formatCount = when {
-        count in 1000..9999 -> {
-            String.format("%.1fK", count / 1000.0)
-        }
-        count in 10000..999999 -> {
-            String.format("%dK", count / 1000)
-        }
-        count > 1000000 -> {
-            String.format("%.1fM", count / 1000000.0)
-        }
-        else -> {
-            count.toString()
-        }
-    }
-    return formatCount
 }

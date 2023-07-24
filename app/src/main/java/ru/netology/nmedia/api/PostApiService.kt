@@ -69,7 +69,7 @@ interface PostApiService {
 
     @Multipart
     @POST("media")
-    suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
+    suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Media>
 
 }
 

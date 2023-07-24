@@ -31,5 +31,6 @@
     <string name="buttom_snackbar_txt">Retry</string>
     <string name="clear">Clear</string>
     <string name="description_photo">Description photo</string>
+    <string name="picker_error">Pick error</string>
 
 </resources>

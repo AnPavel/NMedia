@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/description_photo"
-                    android:src="@tools:sample/avatars" />
+                    tools:src="@tools:sample/avatars" />
 
                 <Button
                     android:id="@+id/clear"
