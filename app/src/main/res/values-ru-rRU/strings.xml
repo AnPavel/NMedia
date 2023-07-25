@@ -31,4 +31,6 @@
     <string name="menu_save">Сохранить</string>
     <string name="clear">Очистить</string>
     <string name="description_photo">Описание фото</string>
+    <string name="picker_error">Ошибка картинки</string>
+    <string name="recent_entries">Новые записи</string>
 </resources>

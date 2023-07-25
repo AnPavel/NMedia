@@ -32,5 +32,6 @@
     <string name="clear">Clear</string>
     <string name="description_photo">Description photo</string>
     <string name="picker_error">Pick error</string>
+    <string name="recent_entries">Recent Entries</string>
 
 </resources>

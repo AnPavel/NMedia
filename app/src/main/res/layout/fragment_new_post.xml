@@ -29,7 +29,8 @@
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 android:padding="@dimen/common_spacing"
-                tools:text="@tools:sample/lorem[50]" />
+                tools:text="@tools:sample/lorem[50]"
+                android:autofillHints="Edit Text" />
 
             <FrameLayout
                 android:id="@+id/previewPhotoContainer"
