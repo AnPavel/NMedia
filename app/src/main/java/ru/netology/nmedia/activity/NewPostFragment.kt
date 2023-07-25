@@ -2,6 +2,7 @@ package ru.netology.nmedia.activity
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,6 +31,7 @@ class NewPostFragment : Fragment() {
 
     private val photoPickerContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            Log.d("MyAppLog","NewPostFragment * photoPickerContract")
             when (it.resultCode) {
                 ImagePicker.RESULT_ERROR -> Toast.makeText(
                     requireContext(),
@@ -60,6 +62,7 @@ class NewPostFragment : Fragment() {
 
 
         binding.gallery.setOnClickListener {
+            Log.d("MyAppLog","NewPostFragment * gallery")
             ImagePicker.with(this)
                 .compress(2048)
                 .galleryMimeTypes(
@@ -73,6 +76,7 @@ class NewPostFragment : Fragment() {
         }
 
         binding.takePhoto.setOnClickListener {
+            Log.d("MyAppLog","NewPostFragment * takePhoto")
             ImagePicker.with(this)
                 .cameraOnly()
                 .crop()
@@ -81,10 +85,12 @@ class NewPostFragment : Fragment() {
 
 
         binding.clear.setOnClickListener {
+            Log.d("MyAppLog","NewPostFragment * clear")
             viewModel.clearPhoto()
         }
 
         viewModel.photo.observe(viewLifecycleOwner) { photo ->
+            Log.d("MyAppLog","NewPostFragment * photo: $photo")
             if (photo == null) {
                 binding.previewPhotoContainer.isGone = true
                 binding.previewPhoto.setImageURI(null)

@@ -42,6 +42,7 @@ class FeedFragment : Fragment() {
                     R.id.action_feedFragment_to_newPostFragment,
                     Bundle().apply {
                         textArg = post.content
+                        //textArg = post.id.toString()
                     }
                 )
             }
