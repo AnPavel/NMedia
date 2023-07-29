@@ -97,6 +97,15 @@
             android:padding="@dimen/common_spacing16"
             app:srcCompat="@drawable/ic_baseline_insert_photo_24" />
 
+        <ImageView
+            android:id="@+id/clearPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:contentDescription="@string/clear_photo"
+            android:padding="@dimen/common_spacing16"
+            app:srcCompat="@drawable/ic_baseline_delete_24" />
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

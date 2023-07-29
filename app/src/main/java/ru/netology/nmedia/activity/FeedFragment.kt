@@ -1,6 +1,7 @@
 package ru.netology.nmedia.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
@@ -79,7 +81,7 @@ class FeedFragment : Fragment() {
             override fun onLike(post: Post) {
                 Log.d("MyAppLog", "FeedFragment * adapter onLike: $post")
                 if (authViewModel.isAuthorized) {
-                    super.onLike(post)
+                    viewModel.likeById(post.id)
                 } else {
                     OfferToAuthenticate.remind(
                         binding.root,
@@ -92,13 +94,22 @@ class FeedFragment : Fragment() {
             override fun onShare(post: Post) {
                 Log.d("MyAppLog", "FeedFragment * adapter onShare: $post")
                 if (authViewModel.isAuthorized) {
-                    super.onShare(post)
+                    val intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, post.content)
+                        type = "text/plain"
+                    }
+
+                    val shareIntent =
+                        Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                    startActivity(shareIntent)
                 } else {
-                    OfferToAuthenticate.remind(
-                        binding.root,
-                        "You should sign in to share posts!",
-                        this@FeedFragment
+                    Snackbar.make(binding.root, getString(R.string.snak_auth), BaseTransientBottomBar.LENGTH_SHORT,
                     )
+                        .setAction(getString(R.string.confirm)) {
+                            findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
+                        }
+                        .show()
                 }
             }
 

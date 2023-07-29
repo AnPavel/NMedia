@@ -32,7 +32,7 @@ class NewPostFragment : Fragment() {
 
     private val photoPickerContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            Log.d("MyAppLog","NewPostFragment * photoPickerContract")
+            Log.d("MyAppLog", "NewPostFragment * photoPickerContract")
             when (it.resultCode) {
                 ImagePicker.RESULT_ERROR -> Toast.makeText(
                     requireContext(),
@@ -62,7 +62,7 @@ class NewPostFragment : Fragment() {
         binding.edit.requestFocus()
 
         binding.gallery.setOnClickListener {
-            Log.d("MyAppLog","NewPostFragment * gallery")
+            Log.d("MyAppLog", "NewPostFragment * icon gallery")
             ImagePicker.with(this)
                 .compress(2048)
                 .galleryMimeTypes(
@@ -76,21 +76,25 @@ class NewPostFragment : Fragment() {
         }
 
         binding.takePhoto.setOnClickListener {
-            Log.d("MyAppLog","NewPostFragment * takePhoto")
+            Log.d("MyAppLog", "NewPostFragment * icon takePhoto")
             ImagePicker.with(this)
                 .cameraOnly()
                 .crop()
                 .createIntent(photoPickerContract::launch)
         }
 
+        binding.clearPhoto.setOnClickListener {
+            Log.d("MyAppLog", "NewPostFragment * icon clear")
+            viewModel.clearPhoto()
+        }
 
         binding.clear.setOnClickListener {
-            Log.d("MyAppLog","NewPostFragment * clear")
+            Log.d("MyAppLog", "NewPostFragment * bottom : clear")
             viewModel.clearPhoto()
         }
 
         viewModel.photo.observe(viewLifecycleOwner) { photo ->
-            Log.d("MyAppLog","NewPostFragment * photo: $photo")
+            Log.d("MyAppLog", "NewPostFragment * photo: $photo")
             if (photo == null) {
                 binding.previewPhotoContainer.isGone = true
                 binding.previewPhoto.setImageURI(null)
@@ -109,7 +113,7 @@ class NewPostFragment : Fragment() {
                 when (menuItem.itemId) {
                     R.id.save -> {
                         val text = binding.edit.text.toString()
-                        Log.d("MyAppLog","NewPostFragment * save: $text")
+                        Log.d("MyAppLog", "NewPostFragment * save: $text")
                         if (text.isNotBlank()) {
                             viewModel.changeContent(text)
                             viewModel.save()

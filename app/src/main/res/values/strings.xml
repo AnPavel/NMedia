@@ -1,8 +1,8 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">NMedia</string>
     <string name="logo_descript">Logo</string>
     <string name="imageView_descript" translatable="false">imageView</string>
-    <string name="field_name_on_screen">NMedia11</string>
+    <string name="field_name_on_screen">NMedia!!</string>
     <string name="field_name_on_screen_second">NMedia22</string>
     <string name="image_buttom_more_vert">Menu</string>
     <string name="error_empty_content">The data cannot be empty</string>
@@ -37,7 +37,7 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="logout">Logout</string>
-    <string name="sign_in_error">User name not found or incorrect password/login</string>
+    <string name="error_sign_in">User name not found or incorrect password/login</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="empty_fields">Fields should not be empty</string>
@@ -45,4 +45,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="clear_photo">Clear photo</string>
+    <string name="confirm">Confirm</string>
+    <string name="snak_auth">Need to be authorized</string>">
 </resources>
