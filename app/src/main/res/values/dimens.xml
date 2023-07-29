@@ -2,12 +2,17 @@
 <resources>
     <dimen name="dimen_layout_activity">4dp</dimen>
     <dimen name="dimen_marginStart">8dp</dimen>
-    <dimen name="dimen_marginTop">12dp</dimen>
+    <dimen name="dimen_marginTop12">12dp</dimen>
+    <dimen name="dimen_marginTop16">16dp</dimen>
+    <dimen name="dimen_marginTop24">24dp</dimen>
+    <dimen name="dimen_marginTop32">32dp</dimen>
+    <dimen name="dimen_marginTop48">48dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="common_spacing">16dp</dimen>
-    <dimen name="special_attachment_dimen">200dp</dimen>
+    <dimen name="common_spacing16">16dp</dimen>
+    <dimen name="common_spacing32">32dp</dimen>
     <dimen name="common_dimen">16dp</dimen>
     <dimen name="common_medium_dimen">24dp</dimen>
+    <dimen name="special_attachment_dimen">200dp</dimen>
     <dimen name="big_dimen">48dp</dimen>
     <dimen name="small_dimen">10dp</dimen>
 </resources>

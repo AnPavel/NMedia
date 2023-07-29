@@ -28,9 +28,10 @@
                 android:background="@android:color/transparent"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:padding="@dimen/common_spacing"
+                android:padding="@dimen/common_spacing16"
                 tools:text="@tools:sample/lorem[50]"
-                android:autofillHints="Edit Text" />
+                android:autofillHints="Edit Text"
+                tools:ignore="LabelFor" />
 
             <FrameLayout
                 android:id="@+id/previewPhotoContainer"
@@ -60,8 +61,8 @@
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginStart="@dimen/common_spacing"
-        android:layout_marginEnd="@dimen/common_spacing"
+        android:layout_marginStart="@dimen/common_spacing16"
+        android:layout_marginEnd="@dimen/common_spacing16"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@id/buttonPanel"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +85,7 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:contentDescription="@string/description_photo"
-            android:padding="@dimen/common_spacing"
+            android:padding="@dimen/common_spacing16"
             app:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
 
         <ImageView
@@ -93,7 +94,7 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:contentDescription="@string/description_photo"
-            android:padding="@dimen/common_spacing"
+            android:padding="@dimen/common_spacing16"
             app:srcCompat="@drawable/ic_baseline_insert_photo_24" />
 
     </LinearLayout>

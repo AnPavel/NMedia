@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_feedFragment_to_photoFragment"
             app:destination="@id/photoFragment" />
+        <action
+            android:id="@+id/action_feedFragment_self"
+            app:destination="@id/feedFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -54,4 +57,22 @@
             android:id="@+id/action_photoFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ru.netology.nmedia.activity.SignInFragment"
+        android:label="SignInFragment" />
+    <fragment
+        android:id="@+id/userRegNewFragment"
+        android:name="ru.netology.nmedia.activity.NewRegUserFragment"
+        android:label="userRegNewFragment" >
+        <action
+            android:id="@+id/action_bar_activity_content"
+            app:destination="@+id/feedFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <dialog android:id="@+id/logoutDialog" android:name="ru.netology.nmedia.activity.LogoutDialog"/>
 </navigation>

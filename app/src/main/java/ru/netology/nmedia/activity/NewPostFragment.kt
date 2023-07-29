@@ -17,7 +17,8 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.model.PhotoModel
-import ru.netology.nmedia.utils.StringArg
+import ru.netology.nmedia.utils.*
+import ru.netology.nmedia.utils.AndroidUtils.hideKeyboard
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class NewPostFragment : Fragment() {
@@ -59,7 +60,6 @@ class NewPostFragment : Fragment() {
         arguments?.textArg
             ?.let(binding.edit::setText)
         binding.edit.requestFocus()
-
 
         binding.gallery.setOnClickListener {
             Log.d("MyAppLog","NewPostFragment * gallery")
@@ -109,6 +109,7 @@ class NewPostFragment : Fragment() {
                 when (menuItem.itemId) {
                     R.id.save -> {
                         val text = binding.edit.text.toString()
+                        Log.d("MyAppLog","NewPostFragment * save: $text")
                         if (text.isNotBlank()) {
                             viewModel.changeContent(text)
                             viewModel.save()
@@ -119,7 +120,7 @@ class NewPostFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                        //AndroidUtils.hideKeyboard(requireView())
+                        hideKeyboard(requireView())
                         true
                     }
                     else -> false

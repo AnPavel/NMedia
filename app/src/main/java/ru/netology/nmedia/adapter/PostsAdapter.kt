@@ -55,6 +55,9 @@ class PostViewHolder(
             imageShare.text = transferToScreen(post.countShare)
             imageRedEye.text = transferToScreen(post.countRedEye)
 
+            //показать меню если я автор
+            imageMenu.isVisible = post.ownedByMe
+
             imageMenu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)
@@ -75,32 +78,32 @@ class PostViewHolder(
             }
 
             linkToVideo.setOnClickListener {
-                Log.d("MyAppLog","PostAdapter * onPlayVideo: $post")
+                Log.d("MyAppLog", "PostAdapter * onPlayVideo: $post")
                 onInteractionListener.onPlayVideo(post)
             }
 
-            textPoleHeading.setOnClickListener(){
-                Log.d("MyAppLog","PostAdapter * onOpenPost: $post")
+            textPoleHeading.setOnClickListener {
+                Log.d("MyAppLog", "PostAdapter * onOpenPost: $post")
                 onInteractionListener.onOpenPost(post)
             }
 
             attachment.setOnClickListener {
-                Log.d("MyAppLog","PostAdapter * onShowAttachment: $post")
+                Log.d("MyAppLog", "PostAdapter * onShowAttachment: $post")
                 onInteractionListener.onShowAttachment(post)
             }
 
             imageFavorite.setOnClickListener {
-                Log.d("MyAppLog","PostAdapter * onLike: $post")
+                Log.d("MyAppLog", "PostAdapter * onLike: $post")
                 onInteractionListener.onLike(post)
             }
 
             imageShare.setOnClickListener {
-                Log.d("MyAppLog","PostAdapter * onShare: $post")
+                Log.d("MyAppLog", "PostAdapter * onShare: $post")
                 onInteractionListener.onShare(post)
             }
 
             imageRedEye.setOnClickListener {
-                Log.d("MyAppLog","PostAdapter * onRedEye: $post")
+                Log.d("MyAppLog", "PostAdapter * onRedEye: $post")
                 onInteractionListener.onRedEye(post)
             }
 
@@ -108,7 +111,6 @@ class PostViewHolder(
     }
 
 }
-
 
 class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {

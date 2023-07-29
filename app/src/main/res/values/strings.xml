@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">NMedia</string>
     <string name="logo_descript">Logo</string>
     <string name="imageView_descript" translatable="false">imageView</string>
@@ -14,7 +14,7 @@
     <string name="menu_save">Save</string>
     <string name="chooser_share_post">Nmedia_share</string>
     <string name="description_post_save">Description post save</string>
-    <string name="simple_description">Smple description</string>
+    <string name="simple_description">Simple description</string>
     <string name="add_post">Add post</string>
     <string name="google_play_unavailable">Google play unavailable</string>
     <string name="channel_remote_name">Channel remote name</string>
@@ -24,14 +24,25 @@
     <string name="error_refresh">Error refresh</string>
     <string name="error_save">Error save</string>
     <string name="error_like">Error likes</string>
+    <string name="error_password_confirm">Error password confirm</string>
     <string name="retry_loading">Retry loading</string>
-    <string name="empty_posts">Empty post</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="empty_posts">Empty post</string>
     <string name="empty_content_warning">Content can not be empty</string>
     <string name="buttom_snackbar_txt">Retry</string>
     <string name="clear">Clear</string>
     <string name="description_photo">Description photo</string>
     <string name="picker_error">Pick error</string>
     <string name="recent_entries">Recent Entries</string>
-
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="logout">Logout</string>
+    <string name="sign_in_error">User name not found or incorrect password/login</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="empty_fields">Fields should not be empty</string>
+    <string name="password_retry">Password confirm</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="are_you_sure">Are you sure?</string>
 </resources>

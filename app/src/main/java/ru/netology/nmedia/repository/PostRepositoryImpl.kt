@@ -136,9 +136,9 @@ class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
     }
 
 
-    private suspend fun uploadMedia(model: PhotoModel): Media {
+    override suspend fun uploadMedia(model: PhotoModel): Media {
         val response = PostApi.service.uploadMedia(
-            MultipartBody.Part.createFormData("file", "file", model.file.asRequestBody())
+            MultipartBody.Part.createFormData("file", "file", model.file!!.asRequestBody())
         )
         if (!response.isSuccessful) {
             throw ApiError(response.code(), response.message())

@@ -1,6 +1,7 @@
 package ru.netology.nmedia.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import ru.netology.nmedia.adapter.PostViewHolder
 import ru.netology.nmedia.databinding.FragmentPostBinding
 import ru.netology.nmedia.listener.OnInteractionListenerImpl
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.utils.OfferToAuthenticate
+import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class PostFragment : Fragment() {
@@ -32,17 +35,18 @@ class PostFragment : Fragment() {
             ownerProducer = ::requireParentFragment
         )
 
+        val authViewModel: AuthViewModel by viewModels(
+            ownerProducer = ::requireParentFragment
+        )
+
+
         val currentPostId = requireArguments().textArg?.toLong()
 
         val interactionListener by lazy {
             object : OnInteractionListenerImpl(this.requireActivity(), viewModel) {
 
-                override fun onRemove(post: Post) {
-                    super.onRemove(post)
-                    findNavController().navigate(R.id.action_postFragment_to_feedFragment)
-                }
-
                 override fun onEdit(post: Post) {
+                    Log.d("MyAppLog", "PostFragment * onEdit: $post")
                     super.onEdit(post)
                     findNavController().navigate(
                         R.id.action_postFragment_to_newPostFragment,
@@ -51,7 +55,14 @@ class PostFragment : Fragment() {
                         })
                 }
 
+                override fun onRemove(post: Post) {
+                    Log.d("MyAppLog", "PostFragment * onRemove: $post")
+                    super.onRemove(post)
+                    findNavController().navigate(R.id.action_postFragment_to_feedFragment)
+                }
+
                 override fun onShowAttachment(post: Post) {
+                    Log.d("MyAppLog", "PostFragment * onShowAttachment: $post")
                     findNavController().navigate(
                         R.id.action_postFragment_to_photoFragment,
                         Bundle().apply {
@@ -59,6 +70,33 @@ class PostFragment : Fragment() {
 
                         })
                 }
+
+                override fun onLike(post: Post) {
+                    Log.d("MyAppLog", "PostFragment * onLike: $post")
+                    if (authViewModel.isAuthorized) {
+                        super.onLike(post)
+                    } else {
+                        OfferToAuthenticate.remind(
+                            binding.root,
+                            "You should sign in to like posts!",
+                            this@PostFragment
+                        )
+                    }
+                }
+
+                override fun onShare(post: Post) {
+                    Log.d("MyAppLog", "PostFragment * onShare: $post")
+                    if (authViewModel.isAuthorized) {
+                        super.onShare(post)
+                    } else {
+                        OfferToAuthenticate.remind(
+                            binding.root,
+                            "You should sign in to share posts!",
+                            this@PostFragment
+                        )
+                    }
+                }
+
             }
         }
 

@@ -33,4 +33,16 @@
     <string name="description_photo">Описание фото</string>
     <string name="picker_error">Ошибка картинки</string>
     <string name="recent_entries">Новые записи</string>
+    <string name="sign_in_error">Не корректный логин или пароль</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">Авторизоваться</string>
+    <string name="logout">Выйти</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="empty_fields">Поля не должны быть пустыми</string>
+    <string name="password_retry">Подтверждение пароля</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="are_you_sure">Вы уверены?</string>
+    <string name="error_password_confirm">Введенные пароли не совпадают</string>
 </resources>
