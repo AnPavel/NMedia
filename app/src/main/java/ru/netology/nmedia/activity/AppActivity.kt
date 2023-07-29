@@ -16,6 +16,9 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.api.AuthApi
+import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.dto.Token
 import ru.netology.nmedia.viewmodel.AuthViewModel
 
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
@@ -78,8 +81,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
                         R.id.sign_up -> {
                             Log.d("MyAppLog","AppActivity * menu sign_up - Ввод данных нового пользователя")
-                            //TODO регистрация нового пользователя сделать
-                            //AppAuth.getInstance().setToken(5, "x-token")
                             findNavController(R.id.activity_app_layout).navigate(R.id.userRegNewFragment)
                             true
                         }

@@ -18,6 +18,7 @@ import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.utils.SingleLiveEvent
+import ru.netology.nmedia.BuildConfig
 
 //пустой пост
 private val empty = Post(
@@ -53,13 +54,14 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     val data: LiveData<FeedModel> = AppAuth.getInstance()
         .authStateFlow
         .flatMapLatest { (myId, _) ->
-        repository.data
-            .map { posts ->
-                posts.map { it.copy(ownedByMe = it.authorId == myId )
+            repository.data
+                .map { posts ->
+                    posts.map {
+                        it.copy(ownedByMe = it.authorId == myId)
+                    }
                 }
-            }
-            .map { FeedModel(it) }
-    }.asLiveData(Dispatchers.Default)
+                .map { FeedModel(it) }
+        }.asLiveData(Dispatchers.Default)
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
@@ -99,6 +101,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getAttachmentUrl(): String? {
+        Log.d("MyAppLog", "PostViewModel * getAttachmentUrl: $${BuildConfig.BASE_URL}media/${edited.value?.attachment?.url}")
+        return if (edited.value?.attachment?.url != null)
+            "${BuildConfig.BASE_URL}media/${edited.value?.attachment?.url}"
+        else null
+    }
+
     fun showHiddenPosts() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
@@ -126,13 +135,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun save() = viewModelScope.launch {
         try {
             edited.value?.let {
-                Log.d("MyAppLog","PostViewModel * save: $it")
+                Log.d("MyAppLog", "PostViewModel * save: $it")
                 when (val photo = _photo.value) {
                     null -> repository.save(it.copy(ownedByMe = true))
                     else -> repository.saveWithAttachment(it.copy(ownedByMe = true), photo)
                 }
             }
-            Log.d("MyAppLog","PostViewModel * save_2: $_postCreated")
+            Log.d("MyAppLog", "PostViewModel * save_2: $_postCreated")
             edited.value = empty
             _postCreated.postValue(Unit)
         } catch (e: Exception) {
@@ -149,7 +158,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         if (edited.value?.content !== text) {
             edited.value = edited.value?.copy(content = text)
         }
-        Log.d("MyAppLog","PostViewModel * changeContent: ${this.edited.value?.content}")
+        Log.d("MyAppLog", "PostViewModel * changeContent: ${this.edited.value?.content}")
     }
 
     fun likeById(id: Long) = viewModelScope.launch {
@@ -188,6 +197,5 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun clearPhoto() {
         _photo.value = null
     }
-
 
 }

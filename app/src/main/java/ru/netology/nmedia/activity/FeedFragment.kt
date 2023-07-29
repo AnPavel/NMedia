@@ -53,6 +53,7 @@ class FeedFragment : Fragment() {
 
             override fun onEdit(post: Post) {
                 Log.d("MyAppLog", "FeedFragment * adapter onEdit: $post")
+                viewModel.getAttachmentUrl()
                 viewModel.edit(post)
                 findNavController().navigate(
                     R.id.action_feedFragment_to_newPostFragment,

@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
+import ru.netology.nmedia.extens.load
 import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.utils.*
 import ru.netology.nmedia.utils.AndroidUtils.hideKeyboard
@@ -61,6 +62,7 @@ class NewPostFragment : Fragment() {
             ?.let(binding.edit::setText)
         binding.edit.requestFocus()
 
+
         binding.gallery.setOnClickListener {
             Log.d("MyAppLog", "NewPostFragment * icon gallery")
             ImagePicker.with(this)
@@ -91,6 +93,11 @@ class NewPostFragment : Fragment() {
         binding.clear.setOnClickListener {
             Log.d("MyAppLog", "NewPostFragment * bottom : clear")
             viewModel.clearPhoto()
+        }
+
+        viewModel.getAttachmentUrl()?.let {
+            Log.d("MyAppLog", "NewPostFragment * getAttachmentUrl")
+            binding.previewPhoto.load(it)
         }
 
         viewModel.photo.observe(viewLifecycleOwner) { photo ->
