@@ -13,6 +13,7 @@ import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.dto.User
 
 //private const val BASE_URL = "http://10.0.2.2:9999/api/slow/"
@@ -106,6 +107,9 @@ interface PostApiService {
         @Part("name") name: RequestBody,
         @Part media: MultipartBody.Part,
     ): Response<User>
+
+    @POST("users/push-token")
+    suspend fun sendPushToken(@Body body: PushToken): Response<Unit>
 
 }
 
