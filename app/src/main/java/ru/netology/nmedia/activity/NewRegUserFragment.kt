@@ -146,8 +146,7 @@ class NewRegUserFragment : Fragment() {
                     binding.incorrect.isVisible = false
                     binding.emptyField.isVisible = false
 
-                    hideKeyboard(requireView())
-                    findNavController().navigateUp()
+                    hideKeyboard(binding.root)
 
                 } else {
                     Log.d("MyAppLog", "NewRegUserFragment * buttom signIn: password NO confirm")

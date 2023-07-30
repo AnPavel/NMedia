@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.dto.User
 import ru.netology.nmedia.model.AuthModelState
@@ -32,8 +33,11 @@ class NewRegUserViewModel : ViewModel() {
 
     fun registerUser(login: String, pass: String, name: String) {
         viewModelScope.launch {
+            _dataState.value = AuthModelState(loading = true)
             try {
                 val user = repository.registerUser(login, pass, name)
+                AppAuth.getInstance().setAuth(user.id, user.token)
+                _dataState.postValue(AuthModelState(success = true))
                 _data.value = user
             } catch (e: Exception) {
                 _dataState.postValue(AuthModelState(error = true))
@@ -44,6 +48,7 @@ class NewRegUserViewModel : ViewModel() {
 
     fun registerUserWithPhoto(login: String, pass: String, name: String, upload: MediaUpload) {
         viewModelScope.launch {
+            _dataState.value = AuthModelState(loading = true)
             try {
                 _avatar.value?.file?.let { file ->
                     val user = repository.registerUserWithPhoto(
@@ -52,6 +57,8 @@ class NewRegUserViewModel : ViewModel() {
                         name = name,
                         upload = MediaUpload(file)
                     )
+                    AppAuth.getInstance().setAuth(user.id, user.token)
+                    _dataState.postValue(AuthModelState(success = true))
                     _data.value = user
                 }
 

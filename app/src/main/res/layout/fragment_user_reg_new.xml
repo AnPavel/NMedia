@@ -14,9 +14,10 @@
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_margin="32dp"
+        android:scaleType="centerInside"
         android:contentDescription="@string/description_photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,6 @@
         android:contentDescription="@string/title_camera"
         app:layout_constraintEnd_toStartOf="@+id/chooseFromGallery"
         app:layout_constraintTop_toBottomOf="@id/avatar"
-
         app:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
 
     <ImageButton
