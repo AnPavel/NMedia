@@ -1,7 +1,8 @@
 package ru.netology.nmedia.auth
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
+import androidx.work.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.CoroutineScope
@@ -13,8 +14,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import ru.netology.nmedia.api.PostApi
 import ru.netology.nmedia.dto.PushToken
+import ru.netology.nmedia.workers.SendPushWorker
 
-class AppAuth private constructor(context: Context) {
+class AppAuth private constructor(private val context: Context) {
 
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
     private val idKey = "id"
@@ -35,7 +37,7 @@ class AppAuth private constructor(context: Context) {
         } else {
             _authStateFlow = MutableStateFlow(AuthState(id, token))
         }
-        sendPushToken()
+        //sendPushToken()
     }
 
     val authStateFlow: StateFlow<AuthState> = _authStateFlow.asStateFlow()
@@ -62,18 +64,28 @@ class AppAuth private constructor(context: Context) {
     }
 
     fun sendPushToken(token: String? = null) {
-        CoroutineScope(Dispatchers.Default).launch {
-            val tokenDto = PushToken(token ?: Firebase.messaging.token.await())
-            Log.d("MyAppLog", "AppAuth * sendPushToken: $tokenDto")
+        //планируем уникальную задачу (не периодическая)
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            SendPushWorker.NAME,
+            ExistingWorkPolicy.REPLACE,  //заменить старую задачу
+            OneTimeWorkRequestBuilder<SendPushWorker>()
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
+                )
+                .setInputData(
+                    Data.Builder()
+                        .putString(SendPushWorker.TOKEN_KEY, token)
+                        .build()
+                )
+                .build()
+        )
 
-            runCatching {
-                PostApi.service.sendPushToken(tokenDto)
-            }
-
-        }
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: AppAuth? = null
 
