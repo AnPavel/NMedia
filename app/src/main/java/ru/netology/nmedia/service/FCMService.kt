@@ -5,11 +5,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import org.json.JSONObject
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
 import kotlin.random.Random
@@ -31,22 +33,51 @@ class FCMService : FirebaseMessagingService() {
                 description = descriptionText
             }
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            Log.d("MyAppLog", "FCMService * onCreate: $channel")
             manager.createNotificationChannel(channel)
         }
     }
 
+    //Вызывается при получении сообщения
     override fun onMessageReceived(message: RemoteMessage) {
 
-        message.data[action]?.let {
-            when (Action.valueOf(it)) {
-                Action.LIKE -> handleLike(gson.fromJson(message.data[content], Like::class.java))
+        val authId = AppAuth.getInstance().authStateFlow.value.id
+        Log.d("MyAppLog", "FCMService * authId: $authId")
+        if (message.data[action] == null) {
+            Log.d("MyAppLog", "FCMService * null: ${message.data[action]} / $action")
+            val pushJson = message.data.values.firstOrNull()?.let { JSONObject(it) }
+            val recipientId: String? = pushJson?.optString("recipientId")
+            val content: String? = pushJson?.optString("content")
+            Log.d("MyAppLog", "FCMService * recipientId: $recipientId / $content / $pushJson")
+
+            when (recipientId) {
+                "null", authId.toString() -> handlePush(content)
+                "0" -> AppAuth.getInstance().sendPushToken()
+                else -> AppAuth.getInstance().sendPushToken()
+            }
+        } else {
+            Log.d("MyAppLog", "FCMService * !null: $action / $content")
+            message.data[action]?.let {
+                when (Action.valueOf(it)) {
+                    Action.LIKE -> handleLike(
+                        gson.fromJson(message.data["content"], Like::class.java)
+                    )
+                }
             }
         }
+
     }
 
-    override fun onNewToken(token: String) {
-        println(token)
-        AppAuth.getInstance().sendPushToken(token)
+    private fun handlePush(content: String?) {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(content)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        Log.d("MyAppLog", "FCMService * handlePush: $content")
+        NotificationManagerCompat.from(this)
+            .notify(Random.nextInt(100_000), notification)
     }
 
     @SuppressLint("StringFormatInvalid")
@@ -56,16 +87,29 @@ class FCMService : FirebaseMessagingService() {
             .setContentTitle(
                 getString(
                     R.string.notification_user_liked,
-                    content.userName,
-                    content.postAuthor,
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
+        Log.d("MyAppLog", "FCMService * handleLike: $content")
         NotificationManagerCompat.from(this)
             .notify(Random.nextInt(100_000), notification)
     }
+
+    //Вызывается при создании нового токена для проекта Firebase по умолчанию
+    override fun onNewToken(token: String) {
+        println(token)
+        AppAuth.getInstance().sendPushToken(token)
+    }
+
+    //исходящее сообщение которое было успешно отправлено на сервер подключения
+    override fun onMessageSent(msgId: String) {
+        Log.d("MyAppLog", "FCMService * onMessageSent: $msgId")
+        println(msgId)
+    }
+
+
 }
 
 enum class Action {

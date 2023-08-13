@@ -19,7 +19,6 @@
     <string name="google_play_unavailable">Google play unavailable</string>
     <string name="channel_remote_name">Channel remote name</string>
     <string name="channel_remote_description">Channel remote description</string>
-    <string name="notification_user_liked">Notification user liked</string>
     <string name="error_loading">Error loading</string>
     <string name="error_refresh">Error refresh</string>
     <string name="error_save">Error save</string>
@@ -40,12 +39,14 @@
     <string name="error_sign_in">User name not found or incorrect password/login</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
-    <string name="empty_fields">Fields should not be empty</string>
     <string name="password_retry">Password confirm</string>
+    <string name="empty_fields">Fields should not be empty</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="clear_photo">Clear photo</string>
     <string name="confirm">Confirm</string>
     <string name="snak_auth">Need to be authorized</string>">
+    <string name="notification_new">New notification</string>
+    <string name="notification_user_liked">User liked the post</string>
 </resources>

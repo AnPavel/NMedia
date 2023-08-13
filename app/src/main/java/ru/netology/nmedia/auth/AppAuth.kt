@@ -1,6 +1,7 @@
 package ru.netology.nmedia.auth
 
 import android.content.Context
+import android.util.Log
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +15,7 @@ import ru.netology.nmedia.api.PostApi
 import ru.netology.nmedia.dto.PushToken
 
 class AppAuth private constructor(context: Context) {
+
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
     private val idKey = "id"
     private val tokenKey = "token"
@@ -62,6 +64,7 @@ class AppAuth private constructor(context: Context) {
     fun sendPushToken(token: String? = null) {
         CoroutineScope(Dispatchers.Default).launch {
             val tokenDto = PushToken(token ?: Firebase.messaging.token.await())
+            Log.d("MyAppLog", "AppAuth * sendPushToken: $tokenDto")
 
             runCatching {
                 PostApi.service.sendPushToken(tokenDto)

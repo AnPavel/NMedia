@@ -108,7 +108,7 @@ interface PostApiService {
         @Part media: MultipartBody.Part,
     ): Response<User>
 
-    @POST("users/push-token")
+    @POST("users/push-tokens")
     suspend fun sendPushToken(@Body body: PushToken): Response<Unit>
 
 }

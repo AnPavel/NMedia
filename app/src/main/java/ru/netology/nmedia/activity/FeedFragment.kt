@@ -15,6 +15,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.ktx.remoteMessage
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
@@ -83,6 +86,7 @@ class FeedFragment : Fragment() {
                 Log.d("MyAppLog", "FeedFragment * adapter onLike: $post")
                 if (authViewModel.isAuthorized) {
                     viewModel.likeById(post.id)
+                    sendUpstream()
                 } else {
                     OfferToAuthenticate.remind(
                         binding.root,
@@ -105,7 +109,10 @@ class FeedFragment : Fragment() {
                         Intent.createChooser(intent, getString(R.string.chooser_share_post))
                     startActivity(shareIntent)
                 } else {
-                    Snackbar.make(binding.root, getString(R.string.snak_auth), BaseTransientBottomBar.LENGTH_SHORT,
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.snak_auth),
+                        BaseTransientBottomBar.LENGTH_SHORT,
                     )
                         .setAction(getString(R.string.confirm)) {
                             findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
@@ -208,4 +215,19 @@ class FeedFragment : Fragment() {
 
         return binding.root
     }
+
+}
+
+fun sendUpstream() {
+    val SENDER_ID = "YOUR_SENDER_ID" //????
+    val messageId = 0 // Increment for each
+    val fm = Firebase.messaging
+    Log.d("MyAppLog", "FeedFragment * sendUpstream: sender_id = $SENDER_ID / messageId = $messageId / fm = $fm")
+    fm.send(
+        remoteMessage("$SENDER_ID@fcm.googleapis.com") {
+            setMessageId(messageId.toString())
+            addData("my_message", "Hello World")
+            addData("my_action", "SAY_HELLO")
+        },
+    )
 }

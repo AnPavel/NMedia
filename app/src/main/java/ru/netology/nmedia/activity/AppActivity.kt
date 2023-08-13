@@ -2,6 +2,9 @@ package ru.netology.nmedia.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -16,9 +19,6 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
-import ru.netology.nmedia.api.AuthApi
-import ru.netology.nmedia.auth.AppAuth
-import ru.netology.nmedia.dto.Token
 import ru.netology.nmedia.viewmodel.AuthViewModel
 
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
@@ -48,6 +48,11 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         }
 
         checkGoogleApiAvailability()
+        //разрешение на выполнение уведомлений
+        requestNotificationsPermission()
+
+        val nomVersionApp = System.getProperty("os.version")
+        Log.d("MyAppLog","AppActivity * OS: $nomVersionApp")
 
         val authViewModel: AuthViewModel by viewModels()
 
@@ -105,12 +110,14 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         with(GoogleApiAvailability.getInstance()) {
             val code = isGooglePlayServicesAvailable(this@AppActivity)
             if (code == ConnectionResult.SUCCESS) {
+                Log.d("MyAppLog", "AppActiviity * checkGoogleApiAvailability (success) code: 0")
                 return@with
             }
             if (isUserResolvableError(code)) {
                 getErrorDialog(this@AppActivity, code, 9000)?.show()
                 return
             }
+            Log.d("MyAppLog", "AppActiviity * checkGoogleApiAvailability (!success) code: $code")
             Toast.makeText(this@AppActivity, R.string.google_play_unavailable, Toast.LENGTH_LONG)
                 .show()
         }
@@ -118,5 +125,21 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
             println(it)
         }
+    }
+
+    private fun requestNotificationsPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Log.d("MyAppLog", "AppActiviity * version_SDK_INT: ${Build.VERSION.SDK_INT} (notifications not allowed)")
+            return
+        }
+
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            Log.d("MyAppLog", "AppActiviity * requestNotificationsPermission: ${checkSelfPermission(permission)}")
+            return
+        }
+
+        requestPermissions(arrayOf(permission), 1)
     }
 }
