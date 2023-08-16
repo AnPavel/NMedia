@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import ru.netology.nmedia.api.PostApi
+import ru.netology.nmedia.api.PostApiService
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Media
@@ -19,9 +20,13 @@ import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.extens.AttachmentType
 import ru.netology.nmedia.error.*
 import java.io.IOException
+import javax.inject.Inject
 
 
-class PostRepositoryImpl(private val postDao: PostDao) : PostRepository {
+class PostRepositoryImpl @Inject constructor(
+    private val postDao: PostDao,
+    private val apiService: PostApiService
+    ) : PostRepository {
     override val data: Flow<List<Post>> = postDao.getAll()
         .map(List<PostEntity>::toDto)
         .flowOn(Dispatchers.Default)

@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.work.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +16,14 @@ import kotlinx.coroutines.tasks.await
 import ru.netology.nmedia.api.PostApi
 import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.workers.SendPushWorker
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppAuth private constructor(private val context: Context) {
+@Singleton
+class AppAuth @Inject constructor(
+    @ApplicationContext
+    private val context: Context
+    ) {
 
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
     private val idKey = "id"
