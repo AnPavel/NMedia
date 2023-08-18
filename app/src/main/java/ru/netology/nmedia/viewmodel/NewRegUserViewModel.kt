@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.MediaUpload
@@ -13,10 +14,13 @@ import ru.netology.nmedia.model.AuthModelState
 import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.repository.AuthRepositoryImpl
 import java.io.File
+import javax.inject.Inject
 
-class NewRegUserViewModel : ViewModel() {
-
-    private val repository = AuthRepositoryImpl()
+@HiltViewModel
+class NewRegUserViewModel @Inject constructor(
+    private val repository: AuthRepositoryImpl,
+    private val appAuth: AppAuth
+): ViewModel() {
 
     private val _data = MutableLiveData<User>()
     val data: LiveData<User>
@@ -36,7 +40,7 @@ class NewRegUserViewModel : ViewModel() {
             _dataState.value = AuthModelState(loading = true)
             try {
                 val user = repository.registerUser(login, pass, name)
-                AppAuth.getInstance().setAuth(user.id, user.token)
+                appAuth.setAuth(user.id, user.token)
                 _dataState.postValue(AuthModelState(success = true))
                 _data.value = user
             } catch (e: Exception) {
@@ -57,7 +61,7 @@ class NewRegUserViewModel : ViewModel() {
                         name = name,
                         upload = MediaUpload(file)
                     )
-                    AppAuth.getInstance().setAuth(user.id, user.token)
+                    appAuth.setAuth(user.id, user.token)
                     _dataState.postValue(AuthModelState(success = true))
                     _data.value = user
                 }

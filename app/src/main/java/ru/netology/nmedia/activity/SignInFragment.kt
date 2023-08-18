@@ -12,20 +12,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.internal.ViewUtils.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.databinding.FragmentSignInBinding
 import ru.netology.nmedia.utils.*
 import ru.netology.nmedia.viewmodel.PostViewModel
 import ru.netology.nmedia.viewmodel.SignInViewModel
 
+@AndroidEntryPoint
 class SignInFragment: Fragment() {
 
-    private val viewModel: SignInViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    //private val viewModel: SignInViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val viewModel: SignInViewModel by viewModels()
 
-    private val postViewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    //private val postViewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val postViewModel: PostViewModel by viewModels()
 
     @SuppressLint("RestrictedApi")
     override fun onCreateView(

@@ -11,17 +11,22 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
 import ru.netology.nmedia.R
 import ru.netology.nmedia.auth.AppAuth
+import javax.inject.Inject
 import kotlin.random.Random
 
-
+@AndroidEntryPoint
 class FCMService : FirebaseMessagingService() {
     private val action = "action"
     private val content = "content"
     private val channelId = "remote"
     private val gson = Gson()
+
+    @Inject
+    lateinit var appAuth: AppAuth
 
     override fun onCreate() {
         super.onCreate()
@@ -41,7 +46,7 @@ class FCMService : FirebaseMessagingService() {
     //Вызывается при получении сообщения
     override fun onMessageReceived(message: RemoteMessage) {
 
-        val authId = AppAuth.getInstance().authStateFlow.value.id
+        val authId = appAuth.authStateFlow.value.id
         Log.d("MyAppLog", "FCMService * authId: $authId")
         if (message.data[action] == null) {
             Log.d("MyAppLog", "FCMService * null: ${message.data[action]} / $action")
@@ -52,8 +57,8 @@ class FCMService : FirebaseMessagingService() {
 
             when (recipientId) {
                 "null", authId.toString() -> handlePush(content)
-                "0" -> AppAuth.getInstance().sendPushToken()
-                else -> AppAuth.getInstance().sendPushToken()
+                "0" -> appAuth.sendPushToken()
+                else -> appAuth.sendPushToken()
             }
         } else {
             Log.d("MyAppLog", "FCMService * !null: $action / $content")
@@ -100,7 +105,7 @@ class FCMService : FirebaseMessagingService() {
     //Вызывается при создании нового токена для проекта Firebase по умолчанию
     override fun onNewToken(token: String) {
         println(token)
-        AppAuth.getInstance().sendPushToken(token)
+        appAuth.sendPushToken(token)
     }
 
     //исходящее сообщение которое было успешно отправлено на сервер подключения

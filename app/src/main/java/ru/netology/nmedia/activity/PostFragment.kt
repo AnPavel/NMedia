@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
@@ -19,6 +20,7 @@ import ru.netology.nmedia.utils.OfferToAuthenticate
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+@AndroidEntryPoint
 class PostFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,14 +33,11 @@ class PostFragment : Fragment() {
             false
         )
 
-        val viewModel: PostViewModel by viewModels(
-            ownerProducer = ::requireParentFragment
-        )
+        //val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+        val viewModel: PostViewModel by viewModels()
 
-        val authViewModel: AuthViewModel by viewModels(
-            ownerProducer = ::requireParentFragment
-        )
-
+        //val authViewModel: AuthViewModel by viewModels(ownerProducer = ::requireParentFragment)
+        val authViewModel: AuthViewModel by viewModels()
 
         val currentPostId = requireArguments().textArg?.toLong()
 

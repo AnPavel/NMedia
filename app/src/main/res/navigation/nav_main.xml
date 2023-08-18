@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/postFragment"
         android:name="ru.netology.nmedia.activity.PostFragment"
-        android:label="PostFragment" >
+        android:label="PostFragment">
         <action
             android:id="@+id/action_postFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/photoFragment"
         android:name="ru.netology.nmedia.activity.PhotoFragment"
-        android:label="PhotoFragment" >
+        android:label="PhotoFragment">
         <action
             android:id="@+id/action_photoFragment_to_postFragment"
             app:destination="@id/postFragment" />
@@ -71,7 +71,7 @@
     <fragment
         android:id="@+id/userRegNewFragment"
         android:name="ru.netology.nmedia.activity.NewRegUserFragment"
-        android:label="userRegNewFragment" >
+        android:label="userRegNewFragment">
         <action
             android:id="@+id/action_bar_activity_content"
             app:destination="@+id/feedFragment"
@@ -81,5 +81,8 @@
             app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
-    <dialog android:id="@+id/logoutDialog" android:name="ru.netology.nmedia.activity.LogoutDialog"/>
+    <dialog
+        android:id="@+id/logoutDialog"
+        android:name="ru.netology.nmedia.activity.LogoutDialog"
+        android:label="logoutDialog" />
 </navigation>

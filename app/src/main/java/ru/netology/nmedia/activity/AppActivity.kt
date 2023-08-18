@@ -18,11 +18,26 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.viewmodel.AuthViewModel
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
+
+    @Inject
+    lateinit var appAuth: AppAuth
+    @Inject
+    lateinit var googleApiAvailability: GoogleApiAvailability
+    @Inject
+    lateinit var repository: PostRepository
+
+    //private val viewModel: AuthViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,10 +95,11 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         val nomVersionApp = System.getProperty("os.version")
         Log.d("MyAppLog", "AppActivity * OS: $nomVersionApp")
 
-        val authViewModel: AuthViewModel by viewModels()
+        //val authViewModel: AuthViewModel by viewModels()
+        //val viewModel: AuthViewModel by viewModels()
 
         var oldMenuProvider: MenuProvider? = null
-        authViewModel.data.observe(this) {
+        viewModel.data.observe(this) {
             oldMenuProvider?.let {
                 removeMenuProvider(it)
             }
@@ -94,8 +110,8 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                     menuInflater.inflate(R.menu.menu_auth, menu)
 
                     menu.let {
-                        it.setGroupVisible(R.id.unauthorized, !authViewModel.isAuthorized)
-                        it.setGroupVisible(R.id.authorized, authViewModel.isAuthorized)
+                        it.setGroupVisible(R.id.unauthorized, !viewModel.isAuthorized)
+                        it.setGroupVisible(R.id.authorized, viewModel.isAuthorized)
                     }
 
                     /* старый вариант больше кода
@@ -127,12 +143,14 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                                 "AppActivity * menu sign_up - Ввод данных нового пользователя"
                             )
                             findNavController(R.id.activity_app_layout).navigate(R.id.userRegNewFragment)
+                            //appAuth.setAuth(5, "x-token")
                             true
                         }
 
                         R.id.logout -> {
                             Log.d("MyAppLog", "AppActivity * menu logout")
-                            findNavController(R.id.activity_app_layout).navigate(R.id.logoutDialog)
+                            //findNavController(R.id.activity_app_layout).navigate(R.id.logoutDialog)
+                            appAuth.removeAuth()
                             true
                         }
 
@@ -148,7 +166,8 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     }
 
     private fun checkGoogleApiAvailability() {
-        with(GoogleApiAvailability.getInstance()) {
+        //with(GoogleApiAvailability.getInstance()) {
+        with(googleApiAvailability) {
             val code = isGooglePlayServicesAvailable(this@AppActivity)
             if (code == ConnectionResult.SUCCESS) {
                 Log.d("MyAppLog", "AppActiviity * checkGoogleApiAvailability (success) code: 0")
@@ -163,12 +182,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                 .show()
         }
 
-        /* 13.08.2023 Firebase -> FirebaseMessaging
-        FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            println("------------------")
-            println(it)
-        }
-        */
     }
 
     private fun requestNotificationsPermission() {

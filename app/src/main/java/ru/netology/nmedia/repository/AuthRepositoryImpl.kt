@@ -4,7 +4,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import ru.netology.nmedia.api.PostApi
+import ru.netology.nmedia.api.ApiService
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.dto.User
@@ -12,15 +12,18 @@ import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownError
 import java.io.IOException
+import javax.inject.Inject
 
-class AuthRepositoryImpl : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(
+    private val apiService: ApiService
+) : AuthRepository {
     override suspend fun authenticateUser(login: String, pass: String): User {
         try {
-            val response = PostApi.service.updateUser(login, pass)
+            val response = apiService.updateUser(login, pass)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            return response.body() ?: throw Exception()
+            return (response.body() ?: throw Exception())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -30,7 +33,7 @@ class AuthRepositoryImpl : AuthRepository {
 
     override suspend fun registerUser(login: String, pass: String, name: String): User {
         try {
-            val response = PostApi.service.registerUser(
+            val response = apiService.registerUser(
                 login = login,
                 pass = pass,
                 name = name
@@ -56,7 +59,7 @@ class AuthRepositoryImpl : AuthRepository {
             val media = MultipartBody.Part.createFormData(
                 "file", upload.file.name, upload.file.asRequestBody()
             )
-            val response = PostApi.service.registerWithPhoto(
+            val response = apiService.registerWithPhoto(
                 login = login.toRequestBody("text/plain".toMediaType()),
                 pass = pass.toRequestBody("text/plain".toMediaType()),
                 name = name.toRequestBody("text/plain".toMediaType()),
@@ -79,7 +82,7 @@ class AuthRepositoryImpl : AuthRepository {
                 "file", upload.file.name, upload.file.asRequestBody()
             )
 
-            val response = PostApi.service.uploadMedia(media)
+            val response = apiService.uploadMedia(media)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

@@ -18,6 +18,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.internal.ViewUtils.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.FragmentUserRegNewBinding
 import ru.netology.nmedia.dto.MediaUpload
@@ -25,15 +26,14 @@ import ru.netology.nmedia.utils.*
 import ru.netology.nmedia.extens.load
 import ru.netology.nmedia.viewmodel.*
 
+@AndroidEntryPoint
 class NewRegUserFragment : Fragment() {
 
-    private val viewModel: NewRegUserViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    //private val viewModel: NewRegUserViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val viewModel: NewRegUserViewModel by viewModels()
 
-    private val postViewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    //private val postViewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val postViewModel: PostViewModel by viewModels()
 
     private val avatarLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

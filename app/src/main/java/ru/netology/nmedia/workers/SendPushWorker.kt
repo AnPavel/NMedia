@@ -7,7 +7,6 @@ import androidx.work.WorkerParameters
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.tasks.await
-import ru.netology.nmedia.api.PostApi
 import ru.netology.nmedia.dto.PushToken
 
 class SendPushWorker(
@@ -28,7 +27,7 @@ class SendPushWorker(
         Log.d("MyAppLog", "SendPushWorker * doWork: $tokenDto")
 
         return runCatching {
-            PostApi.service.sendPushToken(tokenDto)
+            //PostApi.service.sendPushToken(tokenDto)
         }.map {
             Result.success()
         }.getOrElse {

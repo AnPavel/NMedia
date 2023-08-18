@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.messaging.ktx.remoteMessage
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
@@ -29,11 +30,14 @@ import ru.netology.nmedia.listener.OnInteractionListener
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+@AndroidEntryPoint
 class FeedFragment : Fragment() {
 
-    val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    //val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    val viewModel: PostViewModel by viewModels()
 
-    val authViewModel: AuthViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    //val authViewModel: AuthViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    val authViewModel: AuthViewModel by viewModels()
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
