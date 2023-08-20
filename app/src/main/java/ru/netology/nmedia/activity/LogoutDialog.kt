@@ -11,11 +11,11 @@ import ru.netology.nmedia.auth.AppAuth
 import javax.inject.Inject
 
 
-/*
 @AndroidEntryPoint
-class LogoutDialog @Inject constructor(
-    private val appAuth: AppAuth
-): DialogFragment() {
+class LogoutDialog: DialogFragment() {
+
+    @Inject
+    lateinit var appAuth: AppAuth
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireContext())
@@ -26,35 +26,10 @@ class LogoutDialog @Inject constructor(
                 dialog.dismiss()
             }.setNegativeButton(R.string.no) { dialog, _ ->
                 Log.d("MyAppLog", "LogoutDialog * no")
+                //return@setNegativeButton
                 dialog.dismiss()
             }
             .create()
 
-    companion object {
-        const val TAG = "LogoutDialogFragment"
-    }
-
-}
-
- */
-
-
-@AndroidEntryPoint
-class LogoutDialog : DialogFragment() {
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-        AlertDialog.Builder(requireContext())
-            .setMessage(R.string.are_you_sure)
-            .setPositiveButton(R.string.yes) { dialog, _ ->
-                Log.d("MyAppLog", "LogoutDialog * yes")
-                //AppAuth.getInstance().removeAuth()
-                return@setPositiveButton
-                dialog.dismiss()
-            }.setNegativeButton(R.string.no) { dialog, _ ->
-                Log.d("MyAppLog", "LogoutDialog * no")
-                return@setNegativeButton
-                dialog.dismiss()
-            }
-            .create()
 
 }
