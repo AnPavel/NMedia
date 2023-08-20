@@ -29,15 +29,22 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
+    private val viewModel: AuthViewModel by viewModels()
+
     @Inject
     lateinit var appAuth: AppAuth
+
     @Inject
     lateinit var googleApiAvailability: GoogleApiAvailability
+
     @Inject
     lateinit var repository: PostRepository
 
-    //private val viewModel: AuthViewModel by viewModels()
-    private val viewModel: AuthViewModel by viewModels()
+    @Inject
+    lateinit var messageService: FirebaseMessaging
+
+    @Inject
+    lateinit var messageServiceInit: FirebaseInstallations
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +69,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                 )
         }
 
-
-        // 13.08.2023 Firebase -1
-        FirebaseInstallations.getInstance().id.addOnCompleteListener { task ->
+        messageServiceInit.id.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 println(" - some stuff happened: ${task.exception}")
                 return@addOnCompleteListener
@@ -75,7 +80,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             println(token)
         }
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+        messageService.token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 println(" - some stuff happened: ${task.exception}")
                 return@addOnCompleteListener
@@ -85,7 +90,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             Log.d("MyAppLog", "AppActivity * FirebaseMessaging: $token")
             println(token)
         }
-        // 13.08.2023 Firebase -2
 
         //проверка на доступность Google сервисов
         checkGoogleApiAvailability()
@@ -94,9 +98,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
         val nomVersionApp = System.getProperty("os.version")
         Log.d("MyAppLog", "AppActivity * OS: $nomVersionApp")
-
-        //val authViewModel: AuthViewModel by viewModels()
-        //val viewModel: AuthViewModel by viewModels()
 
         var oldMenuProvider: MenuProvider? = null
         viewModel.data.observe(this) {
@@ -149,8 +150,8 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
                         R.id.logout -> {
                             Log.d("MyAppLog", "AppActivity * menu logout")
-                            //findNavController(R.id.activity_app_layout).navigate(R.id.logoutDialog)
-                            appAuth.removeAuth()
+                            findNavController(R.id.activity_app_layout).navigate(R.id.logoutDialog)
+                            //appAuth.removeAuth()
                             true
                         }
 
@@ -186,14 +187,20 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
     private fun requestNotificationsPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            Log.d("MyAppLog", "AppActiviity * version_SDK_INT: ${Build.VERSION.SDK_INT} (notifications not allowed)")
+            Log.d(
+                "MyAppLog",
+                "AppActiviity * version_SDK_INT: ${Build.VERSION.SDK_INT} (notifications not allowed)"
+            )
             return
         }
 
         val permission = Manifest.permission.POST_NOTIFICATIONS
 
         if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-            Log.d("MyAppLog", "AppActiviity * requestNotificationsPermission: ${checkSelfPermission(permission)}")
+            Log.d(
+                "MyAppLog",
+                "AppActiviity * requestNotificationsPermission: ${checkSelfPermission(permission)}"
+            )
             return
         }
 
