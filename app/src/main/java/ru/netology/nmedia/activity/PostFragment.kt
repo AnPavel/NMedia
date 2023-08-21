@@ -99,6 +99,7 @@ class PostFragment : Fragment() {
             }
         }
 
+        /* TODO Architecture Components 1
         binding.post.apply {
             viewModel.data.observe(viewLifecycleOwner) { it ->
                 val viewHolder = PostViewHolder(binding.post, interactionListener)
@@ -106,6 +107,8 @@ class PostFragment : Fragment() {
                 post?.let { viewHolder.bind(post) }
             }
         }
+
+         */
 
         return binding.root
     }

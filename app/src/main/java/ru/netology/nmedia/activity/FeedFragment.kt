@@ -1,45 +1,56 @@
 package ru.netology.nmedia.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.messaging.ktx.remoteMessage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.PostsAdapter
+import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.OfferToAuthenticate
 import ru.netology.nmedia.listener.OnInteractionListener
+import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
 
+    @Inject
+    lateinit var repository: PostRepository
+
+    @Inject
+    lateinit var auth: AppAuth
+
+
     //val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-    val viewModel: PostViewModel by viewModels()
+    val viewModel: PostViewModel by activityViewModels()
 
     //val authViewModel: AuthViewModel by viewModels(ownerProducer = ::requireParentFragment)
     val authViewModel: AuthViewModel by viewModels()
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -163,6 +174,25 @@ class FeedFragment : Fragment() {
             }
         }
 
+        lifecycleScope.launchWhenCreated {
+            Log.d("MyAppLog", "FeedFragment * viewModel.data.collectLatest")
+            Log.d("MyAppLog", "FeedFragment * $viewModel")
+            Log.d("MyAppLog", "FeedFragment * $adapter")
+            viewModel.data.collectLatest(adapter::submitData)
+        }
+
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest { state ->
+                Log.d("MyAppLog", "FeedFragment * adapter.loadStateFlow.collectLatest")
+                binding.swipeRefresh.isRefreshing =
+                    state.refresh is LoadState.Loading ||
+                            state.prepend is LoadState.Loading ||
+                            state.append is LoadState.Loading
+            }
+        }
+
+
+        /*
         viewModel.data.observe(viewLifecycleOwner) { date ->
             Log.d("MyAppLog", "FeedFragment * data:")
             //Log.d("MyAppLog", "FeedFragment * data: $date")
@@ -174,8 +204,13 @@ class FeedFragment : Fragment() {
                     }
                 }
             }
-
         }
+         */
+
+
+        //binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
+
+        //authViewModel.data.observe(viewLifecycleOwner) { adapter.refresh() }
 
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
@@ -201,6 +236,7 @@ class FeedFragment : Fragment() {
             binding.swipeRefresh.isRefreshing = false
         }
 
+        /*
         viewModel.newerCount.observe(viewLifecycleOwner) {
             Log.d("MyAppLog", "FeedFragment * newer count - новых записей: $it")
             if (it > 0) {
@@ -209,6 +245,8 @@ class FeedFragment : Fragment() {
                 binding.newPostsButton.visibility = VISIBLE
             }
         }
+
+        */
 
         binding.newPostsButton.setOnClickListener {
             Log.d("MyAppLog", "FeedFragment * showHiddenPosts - отображение кнопки")

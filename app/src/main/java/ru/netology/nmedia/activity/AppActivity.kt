@@ -144,7 +144,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
                                 "AppActivity * menu sign_up - Ввод данных нового пользователя"
                             )
                             findNavController(R.id.activity_app_layout).navigate(R.id.userRegNewFragment)
-                            //appAuth.setAuth(5, "x-token")
                             true
                         }
 
@@ -171,14 +170,14 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         with(googleApiAvailability) {
             val code = isGooglePlayServicesAvailable(this@AppActivity)
             if (code == ConnectionResult.SUCCESS) {
-                Log.d("MyAppLog", "AppActiviity * checkGoogleApiAvailability (success) code: 0")
+                Log.d("MyAppLog", "AppActivity * checkGoogleApiAvailability (success) code: 0")
                 return@with
             }
             if (isUserResolvableError(code)) {
                 getErrorDialog(this@AppActivity, code, 9000)?.show()
                 return
             }
-            Log.d("MyAppLog", "AppActiviity * checkGoogleApiAvailability (!success) code: $code")
+            Log.d("MyAppLog", "AppActivity * checkGoogleApiAvailability (!success) code: $code")
             Toast.makeText(this@AppActivity, R.string.google_play_unavailable, Toast.LENGTH_LONG)
                 .show()
         }
