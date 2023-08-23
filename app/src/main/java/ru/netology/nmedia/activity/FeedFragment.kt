@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.lifecycle.lifecycleScope
@@ -44,9 +42,8 @@ class FeedFragment : Fragment() {
     @Inject
     lateinit var auth: AppAuth
 
-
     //val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-    val viewModel: PostViewModel by activityViewModels()
+    val viewModel: PostViewModel by viewModels()
 
     //val authViewModel: AuthViewModel by viewModels(ownerProducer = ::requireParentFragment)
     val authViewModel: AuthViewModel by viewModels()
@@ -54,7 +51,7 @@ class FeedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
@@ -144,14 +141,18 @@ class FeedFragment : Fragment() {
             binding.swipeRefresh.isRefreshing = state.refreshing
             if (state.error) {
                 if (state.errStateCodeTxt == "load") {
-                    Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(binding.root,
+                        R.string.error_loading,
+                        Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.buttom_snackbar_txt) {
                             viewModel.loadPosts()
                         }
                         .show()
                 }
                 if (state.errStateCodeTxt == "refresh") {
-                    Snackbar.make(binding.root, R.string.error_refresh, Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(binding.root,
+                        R.string.error_refresh,
+                        Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.buttom_snackbar_txt) {
                             viewModel.refresh()
                         }
@@ -173,14 +174,17 @@ class FeedFragment : Fragment() {
                 }
             }
         }
-
+        //подписка на flow и отправка данных в adapter
         lifecycleScope.launchWhenCreated {
             Log.d("MyAppLog", "FeedFragment * viewModel.data.collectLatest")
             Log.d("MyAppLog", "FeedFragment * $viewModel")
             Log.d("MyAppLog", "FeedFragment * $adapter")
-            viewModel.data.collectLatest(adapter::submitData)
+            viewModel.data.collectLatest { state ->
+                adapter.submitData(state)
+            }
         }
 
+        //индикатор загрузки
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { state ->
                 Log.d("MyAppLog", "FeedFragment * adapter.loadStateFlow.collectLatest")
@@ -191,6 +195,10 @@ class FeedFragment : Fragment() {
             }
         }
 
+        //загрузка новых и очищение старых
+        binding.swipeRefresh.setOnRefreshListener {
+            adapter.refresh()
+        }
 
         /*
         viewModel.data.observe(viewLifecycleOwner) { date ->
@@ -206,9 +214,6 @@ class FeedFragment : Fragment() {
             }
         }
          */
-
-
-        //binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
 
         //authViewModel.data.observe(viewLifecycleOwner) { adapter.refresh() }
 
@@ -229,6 +234,7 @@ class FeedFragment : Fragment() {
             }
         }
 
+        /*
         binding.swipeRefresh.setOnRefreshListener {
             Log.d("MyAppLog", "FeedFragment * swipeRefresh - обновление экрана")
             binding.swipeRefresh.isRefreshing = true
@@ -236,7 +242,6 @@ class FeedFragment : Fragment() {
             binding.swipeRefresh.isRefreshing = false
         }
 
-        /*
         viewModel.newerCount.observe(viewLifecycleOwner) {
             Log.d("MyAppLog", "FeedFragment * newer count - новых записей: $it")
             if (it > 0) {
@@ -246,14 +251,13 @@ class FeedFragment : Fragment() {
             }
         }
 
-        */
-
         binding.newPostsButton.setOnClickListener {
             Log.d("MyAppLog", "FeedFragment * showHiddenPosts - отображение кнопки")
             viewModel.showHiddenPosts()
             binding.list.smoothScrollToPosition(0)
             binding.newPostsButton.visibility = INVISIBLE
         }
+        */
 
         return binding.root
     }
@@ -264,7 +268,8 @@ fun sendUpstream() {
     val SENDER_ID = "YOUR_SENDER_ID" //????
     val messageId = 0 // Increment for each
     val fm = Firebase.messaging
-    Log.d("MyAppLog", "FeedFragment * sendUpstream: sender_id = $SENDER_ID / messageId = $messageId / fm = $fm")
+    Log.d("MyAppLog",
+        "FeedFragment * sendUpstream: sender_id = $SENDER_ID / messageId = $messageId / fm = $fm")
     fm.send(
         remoteMessage("$SENDER_ID@fcm.googleapis.com") {
             setMessageId(messageId.toString())
