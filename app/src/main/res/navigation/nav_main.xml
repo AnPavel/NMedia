@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="ru.netology.nmedia.activity.FeedFragment"
+        android:name="ru.netology.nmedia.ui.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed">
         <action
@@ -36,12 +36,12 @@
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
-        android:name="ru.netology.nmedia.activity.NewPostFragment"
+        android:name="ru.netology.nmedia.ui.NewPostFragment"
         android:label="fragment_new_post"
         tools:layout="@layout/fragment_new_post" />
     <fragment
         android:id="@+id/postFragment"
-        android:name="ru.netology.nmedia.activity.PostFragment"
+        android:name="ru.netology.nmedia.ui.PostFragment"
         android:label="PostFragment">
         <action
             android:id="@+id/action_postFragment_to_newPostFragment"
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/photoFragment"
-        android:name="ru.netology.nmedia.activity.PhotoFragment"
+        android:name="ru.netology.nmedia.ui.PhotoFragment"
         android:label="PhotoFragment">
         <action
             android:id="@+id/action_photoFragment_to_postFragment"
@@ -66,11 +66,11 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="ru.netology.nmedia.activity.SignInFragment"
+        android:name="ru.netology.nmedia.ui.SignInFragment"
         android:label="SignInFragment" />
     <fragment
         android:id="@+id/userRegNewFragment"
-        android:name="ru.netology.nmedia.activity.NewRegUserFragment"
+        android:name="ru.netology.nmedia.ui.NewRegUserFragment"
         android:label="userRegNewFragment">
         <action
             android:id="@+id/action_bar_activity_content"
@@ -83,6 +83,6 @@
 
     <dialog
         android:id="@+id/logoutDialog"
-        android:name="ru.netology.nmedia.activity.LogoutDialog"
+        android:name="ru.netology.nmedia.ui.LogoutDialog"
         android:label="logoutDialog" />
 </navigation>
