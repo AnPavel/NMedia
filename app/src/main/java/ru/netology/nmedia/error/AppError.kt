@@ -11,7 +11,7 @@ sealed class AppError(val code: Int, private val info: String): RuntimeException
             is AppError -> e
             is SQLException -> DbError
             is IOException -> NetworkError
-            is SocketTimeoutException -> SocketTimeoutError
+            is InterruptedException -> SocketTimeoutError
             else -> UnknownError
         }
     }
