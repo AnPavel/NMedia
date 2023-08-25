@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +21,7 @@ import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.messaging.ktx.remoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
 import ru.netology.nmedia.ui.NewPostFragment.Companion.textArg
@@ -26,11 +29,14 @@ import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.error.ApiError
+import ru.netology.nmedia.error.SocketTimeoutError
 import ru.netology.nmedia.utils.OfferToAuthenticate
 import ru.netology.nmedia.listener.OnInteractionListener
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
+import java.io.IOException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -174,11 +180,46 @@ class FeedFragment : Fragment() {
                 }
             }
         }
+
         //подписка на flow и отправка данных в adapter
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                // Корутина будет запущена и будет повторяться только при состоянии CREATED
+                Log.d("MyAppLog", "FeedFragment * viewModel.data.collectLatest")
+                viewModel.data.collectLatest { state ->
+                    adapter.submitData(state)
+                }
+            }
+        }
+        //индикатор загрузки
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest { state ->
+                Log.d("MyAppLog", "FeedFragment * adapter.loadStateFlow.collectLatest")
+                binding.swipeRefresh.isRefreshing =
+                    state.refresh is LoadState.Loading ||
+                            state.prepend is LoadState.Loading ||
+                            state.append is LoadState.Loading
+                //добавлено для ошибки при рестарте приложения и авторизации пользователя
+                if (state.refresh is LoadState.Error) {
+                    val errorState = state.refresh as LoadState.Error
+                    Log.d("MyAppLog", "FeedFragment * LoadState.Error1 ${state.refresh}")
+                    Log.d("MyAppLog", "FeedFragment * LoadState.Error2 ${errorState.error}")
+                    when (errorState.error) {
+                        is IOException -> Log.e("MyAppLog", "IOException")
+                        is SocketTimeoutError -> Log.e("MyAppLog", "SocketTimeoutError")
+                        is ApiError -> {
+                            Log.e("MyAppLog", "ApiError")
+                            auth.removeAuth() //Убираем авторизацию
+                            adapter.refresh()
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+        // вариант выдает - Job’ is deprecated. launchWhenCreated is deprecated
         lifecycleScope.launchWhenCreated {
-            Log.d("MyAppLog", "FeedFragment * viewModel.data.collectLatest")
-            Log.d("MyAppLog", "FeedFragment * $viewModel")
-            Log.d("MyAppLog", "FeedFragment * $adapter")
             viewModel.data.collectLatest { state ->
                 adapter.submitData(state)
             }
@@ -194,6 +235,8 @@ class FeedFragment : Fragment() {
                             state.append is LoadState.Loading
             }
         }
+        */
+
 
         //загрузка новых и очищение старых
         binding.swipeRefresh.setOnRefreshListener {
