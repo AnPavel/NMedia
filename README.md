@@ -10,13 +10,13 @@
 [*Architecture Components. Часть 2 - RemoteMediator*](https://github.com/AnPavel/NMedia/tree/task_arch_comp_two)
 
 #### **"Промышленная разработка под Android"**
-Интеграция с Backend: API, типичные формы интеграции
+*Интеграция с Backend: API, типичные формы интеграции*
 
-Многопоточность: потоки, проблемы общих данных
+*Многопоточность: потоки, проблемы общих данных*
 
 [*Сетевые запросы: Main Thread & Background*](https://github.com/AnPavel/NMedia/tree/task_main_thread)
 
-Примитивы синхронизации и специализированные структуры данных
+*Примитивы синхронизации и специализированные структуры данных*
 
 [*Современные подходы работы с многопоточностью*](https://github.com/AnPavel/NMedia/tree/task_current_enqueue)
 
@@ -24,15 +24,11 @@
 
 [*Retrofit (CRUD)*](https://github.com/AnPavel/NMedia/tree/task_retrofit)
 
-Coroutines: легковесные потоки, Thread Pools & Dispatchers
+[*Coroutines в Android*](https://github.com/AnPavel/NMedia/tree/task_coroutines_android)
 
-Coroutines: Scopes, Cancellation, Supervision
+[*Flow*](https://github.com/AnPavel/NMedia/tree/task_flow)
 
-Coroutines в Android
-
-Flow
-
-Загрузка и отображение изображений
+Загрузка и отображение изображений                                    	
 
 Регистрация, аутентификация и авторизация
 
