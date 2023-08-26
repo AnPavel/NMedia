@@ -41,7 +41,7 @@ data class PostEntity(
     )
 
     companion object {
-        fun fromDto(dto: Post, hiddenEntry: Boolean) =
+        fun fromDto(dto: Post) =
             PostEntity(
                 dto.id,
                 dto.authorId,
@@ -61,4 +61,4 @@ data class PostEntity(
 }
 
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
-fun List<Post>.toEntity(hiddenEntry: Boolean): List<PostEntity> = map{PostEntity.fromDto(it, hiddenEntry)}
+fun List<Post>.toEntity(): List<PostEntity> = map{PostEntity.fromDto(it)}

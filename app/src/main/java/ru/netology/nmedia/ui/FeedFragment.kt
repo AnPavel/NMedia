@@ -143,7 +143,7 @@ class FeedFragment : Fragment() {
         binding.list.adapter = adapter
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             Log.d("MyAppLog", "FeedFragment * data_state: $state")
-            binding.progress.isVisible = state.loading
+            //binding.progress.isVisible = state.loading
             binding.swipeRefresh.isRefreshing = state.refreshing
             if (state.error) {
                 if (state.errStateCodeTxt == "load") {

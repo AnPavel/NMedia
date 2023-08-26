@@ -1,8 +1,6 @@
 package ru.netology.nmedia.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -10,6 +8,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import ru.netology.nmedia.api.ApiService
 import ru.netology.nmedia.dao.PostDao
+import ru.netology.nmedia.dao.PostRemoteKeyDao
+import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
@@ -27,13 +27,19 @@ import javax.inject.Singleton
 
 @Singleton
 class PostRepositoryImpl @Inject constructor(
+    appDb: AppDb,
     private val postDao: PostDao,
+    postRemoteKeyDao: PostRemoteKeyDao,
     private val apiService: ApiService
 ) : PostRepository {
+    @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Post>> = Pager(
-        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-        pagingSourceFactory = { PostPagingSource(apiService) },
-    ).flow
+        config = PagingConfig(pageSize = 25),
+        remoteMediator = PostRemoteMediator(apiService, appDb, postDao, postRemoteKeyDao),
+        pagingSourceFactory = postDao::pagingSource,
+    ).flow.map { pagingData ->
+        pagingData.map(PostEntity::toDto)
+    }
 
 
     override fun getNewerCount(id: Long): Flow<Int> = flow {
@@ -48,7 +54,7 @@ class PostRepositoryImpl @Inject constructor(
             //обработка
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             //вставляем в базу
-            postDao.insert(body.toEntity(hiddenEntry = true))
+            postDao.insert(body.toEntity())
             //выдаем подписчикам кол-во новых постов
             emit(body.size)
         }
@@ -65,7 +71,7 @@ class PostRepositoryImpl @Inject constructor(
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(body.toEntity(hiddenEntry = false))
+            postDao.insert(body.toEntity())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -82,7 +88,7 @@ class PostRepositoryImpl @Inject constructor(
                 throw RuntimeException(response.message())
             }
             val posts = response.body() ?: throw RuntimeException("body is null")
-            postDao.insert(posts.map { PostEntity.fromDto(it, hiddenEntry = false) })
+            postDao.insert(posts.map { PostEntity.fromDto(it) })
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -110,7 +116,7 @@ class PostRepositoryImpl @Inject constructor(
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
+            postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -137,7 +143,7 @@ class PostRepositoryImpl @Inject constructor(
             }
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
+            postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -171,14 +177,14 @@ class PostRepositoryImpl @Inject constructor(
                         likedByMe = false,
                         likes = (response.body())!!.likes - 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
+                    postDao.insert(PostEntity.fromDto(body))
                 } else {
                     apiService.likeById(id)
                     val body = (response.body())?.copy(
                         likedByMe = true,
                         likes = (response.body())!!.likes + 1
                     ) ?: throw ApiError(response.code(), response.message())
-                    postDao.insert(PostEntity.fromDto(body, hiddenEntry = false))
+                    postDao.insert(PostEntity.fromDto(body))
                 }
             }
         } catch (e: IOException) {
