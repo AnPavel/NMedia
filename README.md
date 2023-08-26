@@ -3,8 +3,8 @@
 ## Kotlin
 
 ### "Продвинутая разработка под Android"
-Dependency Injection (Hilt)
-Architecture Components. Часть 1 (PAGING 3)
+[Dependency Injection - Hilt](https://github.com/AnPavel/NMedia/tree/task_di_hilt)
+[Architecture Components. Часть 1 - PAGING 3](https://github.com/AnPavel/NMedia/tree/task_arch_comp_one)
 Architecture Components. Часть 2 (RemoteMediator)
 
 #### "Промышленная разработка под Android"
