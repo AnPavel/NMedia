@@ -14,15 +14,15 @@
 
 Многопоточность: потоки, проблемы общих данных
 
-Сетевые запросы: Main Thread & Background
+[*Сетевые запросы: Main Thread & Background*](https://github.com/AnPavel/NMedia/tree/task_main_thread)
 
 Примитивы синхронизации и специализированные структуры данных
 
-Современные подходы работы с многопоточностью
+[*Современные подходы работы с многопоточностью*](https://github.com/AnPavel/NMedia/tree/task_current_enqueue)
 
-Многопоточность в Android
+[*Многопоточность в Android*](https://github.com/AnPavel/NMedia/tree/task_android_glide)
 
-Retrofit (CRUD)
+[*Retrofit (CRUD)*](https://github.com/AnPavel/NMedia/tree/task_retrofit)
 
 Coroutines: легковесные потоки, Thread Pools & Dispatchers
 
