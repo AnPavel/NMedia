@@ -101,7 +101,7 @@ class PostViewModel @Inject constructor(
         try {
             // Начинаем загрузку
             _dataState.value = FeedModelState(loading = true)
-            repository.getAll()
+            //repository.getAll()  //при использовании page3 не загружаем все
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true, errStateCodeTxt = "load")
@@ -128,7 +128,7 @@ class PostViewModel @Inject constructor(
     fun refresh() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(refreshing = true)
-            //repository.getAll()
+            //repository.getAll()  //при использовании page3 не загружаем все
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true, errStateCodeTxt = "refresh")

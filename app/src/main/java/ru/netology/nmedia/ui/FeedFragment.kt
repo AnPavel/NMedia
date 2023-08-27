@@ -186,9 +186,10 @@ class FeedFragment : Fragment() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 // Корутина будет запущена и будет повторяться только при состоянии CREATED
                 Log.d("MyAppLog", "FeedFragment * viewModel.data.collectLatest")
-                viewModel.data.collectLatest { state ->
-                    adapter.submitData(state)
-                }
+                viewModel.data.collectLatest(adapter::submitData)
+                //viewModel.data.collectLatest { state ->
+                //    adapter.submitData(state)
+                //}
             }
         }
         //индикатор загрузки
@@ -239,9 +240,10 @@ class FeedFragment : Fragment() {
 
 
         //загрузка новых и очищение старых
-        binding.swipeRefresh.setOnRefreshListener {
-            adapter.refresh()
-        }
+        binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
+        //binding.swipeRefresh.setOnRefreshListener {
+        //    adapter.refresh()
+        //}
 
         /*
         viewModel.data.observe(viewLifecycleOwner) { date ->
