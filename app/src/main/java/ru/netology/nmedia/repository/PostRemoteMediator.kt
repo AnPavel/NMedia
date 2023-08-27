@@ -29,6 +29,7 @@ class PostRemoteMediator(
         state: PagingState<Int, PostEntity>
     ): MediatorResult {
         try {
+            Log.d("MyAppLog", "PostRemoteMediator * LoadType ->: $loadType")
             val response = when (loadType) {
                 //LoadType.REFRESH -> apiService.getLatest(state.config.initialLoadSize)
                 LoadType.REFRESH -> postRemoteKeyDao.max()?.let {
