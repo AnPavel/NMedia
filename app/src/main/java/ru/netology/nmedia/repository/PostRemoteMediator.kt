@@ -19,7 +19,7 @@ import ru.netology.nmedia.error.ApiError
 @OptIn(ExperimentalPagingApi::class)
 class PostRemoteMediator(
     private val apiService: ApiService,
-    private val db: AppDb,
+    private val appDb: AppDb,
     private val postDao: PostDao,
     private val postRemoteKeyDao: PostRemoteKeyDao,
     ) : RemoteMediator<Int, PostEntity>() {
@@ -64,18 +64,34 @@ class PostRemoteMediator(
                 response.message(),
             )
 
-            db.withTransaction {
+            appDb.withTransaction {
+                //зпись ключей в БД с использование транзакции
                 when (loadType) {
                     LoadType.REFRESH -> {
-                        //postRemoteKeyDao.removeAll()
+                        postRemoteKeyDao.removeAll()
                         Log.d("MyAppLog", "PostRemoteMediator * LoadType.REFRESH (DB): ${body.first().id} / ${body.last().id}")
                         postRemoteKeyDao.insert(
+                            listOf(
+                                PostRemoteKeyEntity(
+                                    type = PostRemoteKeyEntity.KeyType.AFTER,
+                                    id = body.first().id,
+                                ),
+                                PostRemoteKeyEntity(
+                                    type = PostRemoteKeyEntity.KeyType.BEFORE,
+                                    id = body.last().id,
+                                ),
+                            )
+
+                            /*
                             PostRemoteKeyEntity(
                                 PostRemoteKeyEntity.KeyType.AFTER,
                                 id = body.first().id
                             )
+                            */
                         )
-                            if (postDao.isEmpty()) {
+                        postDao.removeAll()
+                        /*
+                        if (postDao.isEmpty()) {
                                 Log.d("MyAppLog", "PostRemoteMediator * LoadType.REFRESH (postDao.isEmpty()): ${body.first().id} / ${body.last().id}")
                                 postRemoteKeyDao.insert(
                                     PostRemoteKeyEntity(
@@ -84,6 +100,8 @@ class PostRemoteMediator(
                                     ),
                                 )
                             }
+
+                         */
                     }
                     LoadType.PREPEND -> {
                         Log.d("MyAppLog", "PostRemoteMediator * LoadType.PREPEND (DB): ${body.first().id} / ${body.last().id}")

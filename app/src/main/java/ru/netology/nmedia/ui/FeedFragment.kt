@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -245,6 +244,7 @@ class FeedFragment : Fragment() {
         //    adapter.refresh()
         //}
 
+
         /*
         viewModel.data.observe(viewLifecycleOwner) { date ->
             Log.d("MyAppLog", "FeedFragment * data:")
@@ -260,7 +260,7 @@ class FeedFragment : Fragment() {
         }
          */
 
-        //authViewModel.data.observe(viewLifecycleOwner) { adapter.refresh() }
+        authViewModel.data.observe(viewLifecycleOwner) { adapter.refresh() }
 
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
