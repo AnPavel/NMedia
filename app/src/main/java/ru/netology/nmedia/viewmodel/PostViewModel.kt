@@ -18,6 +18,7 @@ import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.utils.SingleLiveEvent
 import ru.netology.nmedia.BuildConfig
+import ru.netology.nmedia.dto.FeedItem
 import javax.inject.Inject
 
 //пустой пост
@@ -55,13 +56,18 @@ class PostViewModel @Inject constructor(
     private val cached = repository
         .data
         .cachedIn(viewModelScope)
+
     //список постов
     // data - только для чтения, посты не изменяются
-    val data: Flow<PagingData<Post>> = appAuth.authStateFlow
+    val data: Flow<PagingData<FeedItem>> = appAuth.authStateFlow
         .flatMapLatest { (myId, _) ->
             cached.map { pagingData ->
                 pagingData.map { post ->
-                    post.copy(ownedByMe = post.authorId == myId)
+                    if (post is Post) {  // если элемент является постом то копирование
+                        post.copy(ownedByMe = post.authorId == myId)
+                    } else {
+                        post
+                    }
                 }
             }
         }
@@ -109,7 +115,10 @@ class PostViewModel @Inject constructor(
     }
 
     fun getAttachmentUrl(): String? {
-        Log.d("MyAppLog", "PostViewModel * getAttachmentUrl: $${BuildConfig.BASE_URL}media/${edited.value?.attachment?.url}")
+        Log.d(
+            "MyAppLog",
+            "PostViewModel * getAttachmentUrl: $${BuildConfig.BASE_URL}media/${edited.value?.attachment?.url}"
+        )
         return if (edited.value?.attachment?.url != null)
             "${BuildConfig.BASE_URL}media/${edited.value?.attachment?.url}"
         else null
