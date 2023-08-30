@@ -8,6 +8,7 @@
     <string name="error_empty_content">The data cannot be empty</string>
     <string name="post_text">Enter a post</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_retry">Retry</string>
     <string name="button_save">Save</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>

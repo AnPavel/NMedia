@@ -31,19 +31,24 @@ class PostRemoteMediator(
         try {
             Log.d("MyAppLog", "PostRemoteMediator * LoadType ->: $loadType")
             val response = when (loadType) {
-                //LoadType.REFRESH -> apiService.getLatest(state.config.initialLoadSize)
-                LoadType.REFRESH -> postRemoteKeyDao.max()?.let {
-                    Log.d("MyAppLog", "PostRemoteMediator * LoadType.REFRESH: ${state.config.initialLoadSize}")
-                    apiService.getAfter(it, state.config.pageSize)
-                } ?: apiService.getLatest(state.config.initialLoadSize)
-
+                //LoadType.REFRESH -> postRemoteKeyDao.max()?.let {
+                //    Log.d("MyAppLog", "PostRemoteMediator * LoadType.REFRESH: ${state.config.initialLoadSize}")
+                //    apiService.getAfter(it, state.config.pageSize)
+                //} ?: apiService.getLatest(state.config.initialLoadSize)
+                LoadType.REFRESH -> {
+                    val max = postRemoteKeyDao.max()
+                    if (max != null) {
+                        apiService.getAfter(max, state.config.pageSize)
+                    } else {
+                        apiService.getLatest(state.config.initialLoadSize)
+                    }
+                }
+                //элементы сверху
                 LoadType.PREPEND -> {
                     Log.d("MyAppLog", "PostRemoteMediator * LoadType.PREPEND:")
-                    return MediatorResult.Success(
-                        endOfPaginationReached = true
-                    )
+                    return MediatorResult.Success(endOfPaginationReached = true)
                 }
-
+                //элементы снизу
                 LoadType.APPEND -> {
                     Log.d("MyAppLog", "PostRemoteMediator * LoadType.APPEND: ${state.config.pageSize}")
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(
@@ -68,41 +73,34 @@ class PostRemoteMediator(
                 //зпись ключей в БД с использование транзакции
                 when (loadType) {
                     LoadType.REFRESH -> {
-                        postRemoteKeyDao.removeAll()
+                        //postRemoteKeyDao.removeAll()
                         Log.d("MyAppLog", "PostRemoteMediator * LoadType.REFRESH (DB): ${body.first().id} / ${body.last().id}")
-                        postRemoteKeyDao.insert(
-                            listOf(
-                                PostRemoteKeyEntity(
-                                    type = PostRemoteKeyEntity.KeyType.AFTER,
-                                    id = body.first().id,
-                                ),
-                                PostRemoteKeyEntity(
-                                    type = PostRemoteKeyEntity.KeyType.BEFORE,
-                                    id = body.last().id,
-                                ),
-                            )
-
-                            /*
-                            PostRemoteKeyEntity(
-                                PostRemoteKeyEntity.KeyType.AFTER,
-                                id = body.first().id
-                            )
-                            */
-                        )
-                        postDao.removeAll()
-                        /*
-                        if (postDao.isEmpty()) {
-                                Log.d("MyAppLog", "PostRemoteMediator * LoadType.REFRESH (postDao.isEmpty()): ${body.first().id} / ${body.last().id}")
-                                postRemoteKeyDao.insert(
+                        if (postRemoteKeyDao.isEmpty()) {
+                            Log.d("MyAppLog", "PostRemoteMediator * KeyType.AFTER / BEFORE (DB): ${body.first().id} / ${body.last().id}")
+                            postRemoteKeyDao.insert(
+                                listOf(
+                                    PostRemoteKeyEntity(
+                                        type = PostRemoteKeyEntity.KeyType.AFTER,
+                                        id = body.first().id,
+                                    ),
                                     PostRemoteKeyEntity(
                                         type = PostRemoteKeyEntity.KeyType.BEFORE,
                                         id = body.last().id,
                                     ),
                                 )
-                            }
-
-                         */
+                            )
+                        } else {
+                                Log.d("MyAppLog", "PostRemoteMediator * KeyType.AFTER (DB): ${body.first().id} / ${body.last().id}")
+                                postRemoteKeyDao.insert(
+                                    PostRemoteKeyEntity(
+                                        type = PostRemoteKeyEntity.KeyType.AFTER,
+                                        id = body.first().id,
+                                    )
+                                )
+                        }
                     }
+                    /* не имеет смысла так как выше блок PREPEND - return MediatorResult.Success(endOfPaginationReached = true)
+                    //элементы сверху
                     LoadType.PREPEND -> {
                         Log.d("MyAppLog", "PostRemoteMediator * LoadType.PREPEND (DB): ${body.first().id} / ${body.last().id}")
                         postRemoteKeyDao.insert(
@@ -112,6 +110,8 @@ class PostRemoteMediator(
                             )
                         )
                     }
+                    */
+                    //элементы снизу
                     LoadType.APPEND -> {
                         Log.d("MyAppLog", "PostRemoteMediator * LoadType.APPEND (DB): ${body.first().id} / ${body.last().id}")
                         postRemoteKeyDao.insert(
@@ -121,6 +121,7 @@ class PostRemoteMediator(
                             )
                         )
                     }
+                    else -> Unit
                 }
                 postDao.insert(body.toEntity())
                 //postDao.insert(body.map(PostEntity::fromDto)) ?? при такой конструкции выделяются отдельные иконки поста

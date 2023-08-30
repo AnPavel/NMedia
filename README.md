@@ -1,6 +1,6 @@
 # Android разработчик
 
-## **Kotlin**
+## **Kotlin - программирование под Android**
 
 ### **"Продвинутая разработка под Android"**
 [*Dependency Injection - Hilt*](https://github.com/AnPavel/NMedia/tree/task_di_hilt) 
@@ -8,6 +8,8 @@
 [*Architecture Components. Часть 1 - PAGING 3*](https://github.com/AnPavel/NMedia/tree/task_arch_comp_one)
 
 [*Architecture Components. Часть 2 - RemoteMediator*](https://github.com/AnPavel/NMedia/tree/task_arch_comp_two)
+
+[*RecyclerView — продвинутое использование - Separators, LoadStateAdapter*](https://github.com/AnPavel/NMedia/tree/task_recyclerview_advanced)
 
 #### **"Промышленная разработка под Android"**
 *Интеграция с Backend: API, типичные формы интеграции*
@@ -33,5 +35,3 @@
 Регистрация, аутентификация и авторизация
 
 Рассылка и приём Push-уведомлений
-
-#### "программирование на Kotlin под Android"

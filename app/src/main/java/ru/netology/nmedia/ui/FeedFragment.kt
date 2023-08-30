@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
+import ru.netology.nmedia.adapter.PostLoadingStateAdapter
 import ru.netology.nmedia.ui.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.auth.AppAuth
@@ -139,7 +140,10 @@ class FeedFragment : Fragment() {
             }
 
         })
-        binding.list.adapter = adapter
+        binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = PostLoadingStateAdapter { adapter.retry() },
+            footer = PostLoadingStateAdapter { adapter.retry() }
+        )
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             Log.d("MyAppLog", "FeedFragment * data_state: $state")
             //binding.progress.isVisible = state.loading
