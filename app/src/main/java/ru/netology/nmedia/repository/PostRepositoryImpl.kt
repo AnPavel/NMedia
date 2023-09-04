@@ -40,7 +40,7 @@ class PostRepositoryImpl @Inject constructor(
         pagingData.map(PostEntity::toDto)
         .insertSeparators { previous, _ ->                           //вставляем рекламу
             if (previous?.id?.rem(5) == 0L) {                   //после каждого 5-го поста (остаток деления на 5)
-                Ad(Random.nextLong(), image = "figma.jpg")            //уникальный идентификатор рекламы + картинка
+                Ad(Random.nextLong(), url = "https://netology.ru", image = "figma.jpg")            //уникальный идентификатор рекламы + картинка
             } else {
                 null
         }

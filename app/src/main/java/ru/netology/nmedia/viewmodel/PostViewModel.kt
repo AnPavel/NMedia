@@ -2,9 +2,7 @@ package ru.netology.nmedia.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
+import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -13,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.dto.*
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.repository.PostRepository
@@ -20,6 +19,8 @@ import ru.netology.nmedia.utils.SingleLiveEvent
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.dto.FeedItem
 import javax.inject.Inject
+import kotlin.random.Random
+
 
 //пустой пост
 private val empty = Post(
@@ -53,9 +54,30 @@ class PostViewModel @Inject constructor(
 
     //private val _data = MutableLiveData(FeedModel())
 
+
     private val cached = repository
         .data
         .cachedIn(viewModelScope)
+
+    /*
+    private val cached: Flow<PagingData<FeedItem>> = repository
+        .data
+        .map { pagingData ->
+            pagingData.insertSeparators(
+                generator = { before, after ->
+                    if (before?.id?.rem(5) != 0L) null else
+                        Ad(
+                            Random.nextLong(),
+                            "https://netology.ru",
+                            "figma.jpg"
+                        )
+                }
+            )
+        }
+        .cachedIn(viewModelScope)
+
+     */
+
 
     //список постов
     // data - только для чтения, посты не изменяются
@@ -68,7 +90,7 @@ class PostViewModel @Inject constructor(
                     } else {
                         post
                     }
-                }
+                 }
             }
         }
 

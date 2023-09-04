@@ -185,8 +185,8 @@ class FeedFragment : Fragment() {
         }
 
         //подписка на flow и отправка данных в adapter
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 // Корутина будет запущена и будет повторяться только при состоянии CREATED
                 Log.d("MyAppLog", "FeedFragment * viewModel.data.collectLatest")
                 viewModel.data.collectLatest(adapter::submitData)
@@ -196,13 +196,10 @@ class FeedFragment : Fragment() {
             }
         }
         //индикатор загрузки
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest { state ->
                 Log.d("MyAppLog", "FeedFragment * adapter.loadStateFlow.collectLatest")
-                binding.swipeRefresh.isRefreshing =
-                    state.refresh is LoadState.Loading ||
-                            state.prepend is LoadState.Loading ||
-                            state.append is LoadState.Loading
+                binding.swipeRefresh.isRefreshing = state.refresh is LoadState.Loading
                 //добавлено для ошибки при рестарте приложения и авторизации пользователя
                 if (state.refresh is LoadState.Error) {
                     val errorState = state.refresh as LoadState.Error
