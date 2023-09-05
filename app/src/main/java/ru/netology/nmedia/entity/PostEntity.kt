@@ -5,6 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Post
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 
 @Entity
 data class PostEntity(
@@ -14,7 +18,7 @@ data class PostEntity(
     val authorAvatar: String,
     val author: String,
     val content: String,
-    val published: String,
+    val published: Long,
     val likedByMe: Boolean,
     val likes: Int = 0,
     val countShare: Int = 0,
@@ -30,7 +34,7 @@ data class PostEntity(
         authorAvatar,
         author,
         content,
-        published,
+        LocalDateTime.ofInstant(Instant.ofEpochSecond(published), ZoneId.systemDefault()),
         likedByMe,
         likes,
         countShare,
@@ -48,7 +52,7 @@ data class PostEntity(
                 dto.authorAvatar,
                 dto.author,
                 dto.content,
-                dto.published,
+                dto.published.atZone(ZoneId.systemDefault()).toEpochSecond(),
                 dto.likedByMe,
                 dto.likes,
                 dto.countShare,

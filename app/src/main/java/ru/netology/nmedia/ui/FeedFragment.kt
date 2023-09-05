@@ -23,16 +23,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.R
+import ru.netology.nmedia.adapter.FeedAdapter
 import ru.netology.nmedia.adapter.PostLoadingStateAdapter
 import ru.netology.nmedia.ui.NewPostFragment.Companion.textArg
-import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.error.ApiError
 import ru.netology.nmedia.error.SocketTimeoutError
 import ru.netology.nmedia.utils.OfferToAuthenticate
-import ru.netology.nmedia.listener.OnInteractionListener
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.viewmodel.AuthViewModel
 import ru.netology.nmedia.viewmodel.PostViewModel
@@ -61,7 +60,8 @@ class FeedFragment : Fragment() {
     ): View {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
-        val adapter = PostsAdapter(object : OnInteractionListener {
+        //val adapter = PostsAdapter(object : OnInteractionListener {
+        val adapter = FeedAdapter(object : FeedAdapter.OnInteractionListener {
 
             override fun onOpenPost(post: Post) {
                 Log.d("MyAppLog", "FeedFragment * adapter onOpenPost: $post")

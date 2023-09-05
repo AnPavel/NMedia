@@ -1,5 +1,14 @@
 package ru.netology.nmedia.api
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,6 +64,25 @@ class ApiModule {
     fun provideRetrofit(
         client: OkHttpClient
     ): Retrofit = Retrofit.Builder()
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder()
+                    .registerTypeAdapter(
+                        LocalDateTime::class.java,
+                        object : TypeAdapter<LocalDateTime>() {
+                            override fun write(out: JsonWriter?, value: LocalDateTime) {
+                                value.atZone(ZoneId.systemDefault()).toInstant()
+                            }
+
+                            override fun read(reader: JsonReader): LocalDateTime =
+                                LocalDateTime.ofInstant(
+                                    Instant.ofEpochSecond(reader.nextLong()),
+                                    ZoneId.systemDefault(),
+                                )
+                        })
+                    .create()
+            )
+        )
         .baseUrl(BASE_URL)
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())

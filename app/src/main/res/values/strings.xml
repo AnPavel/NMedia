@@ -50,4 +50,7 @@
     <string name="snak_auth">Need to be authorized</string>">
     <string name="notification_new">New notification</string>
     <string name="notification_user_liked">User liked the post</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="week_ago">Week ago</string>
 </resources>

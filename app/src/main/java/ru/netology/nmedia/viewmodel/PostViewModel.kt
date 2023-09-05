@@ -10,14 +10,17 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
+import ru.netology.nmedia.dto.Ad
+import ru.netology.nmedia.dto.DateSeparator
+import ru.netology.nmedia.dto.FeedItem
+import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.dto.*
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.utils.SingleLiveEvent
 import ru.netology.nmedia.BuildConfig
-import ru.netology.nmedia.dto.FeedItem
+import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -29,7 +32,7 @@ private val empty = Post(
     authorAvatar = "",
     author = "",
     content = "",
-    published = "",
+    published = LocalDateTime.now(),
     likedByMe = false,
     likes = 0,
     countShare = 0,
@@ -38,6 +41,33 @@ private val empty = Post(
     hiddenEntry = false,
     //ownedByMe = false,
 )
+
+private val today = LocalDateTime.now()
+private val yesterday = today.minusDays(1)
+private val weekAgo = today.minusWeeks(2)
+
+
+fun Post?.isToday(): Boolean {
+    Log.d("MyAppLog", "PostViewModel * isToday: TODAY = $today / $this")
+    if (this == null) return false
+
+    return published > yesterday
+}
+
+fun Post?.isYesterday(): Boolean {
+    Log.d("MyAppLog", "PostViewModel * isYesterday: Published = ${this?.published?.dayOfYear} / Today = ${today.dayOfYear} / $this")
+    if (this == null) return false
+
+    return today.year == published.year && published.dayOfYear == yesterday.dayOfYear
+}
+
+fun Post?.isWeekAgo(): Boolean {
+    Log.d("MyAppLog", "PostViewModel * isWeekAgo: Published = ${this?.published?.dayOfYear} / Today = ${today.dayOfYear} / $this")
+    if (this == null) return false
+
+    return published < weekAgo
+}
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -55,28 +85,69 @@ class PostViewModel @Inject constructor(
     //private val _data = MutableLiveData(FeedModel())
 
 
-    private val cached = repository
-        .data
-        .cachedIn(viewModelScope)
-
-    /*
     private val cached: Flow<PagingData<FeedItem>> = repository
         .data
         .map { pagingData ->
             pagingData.insertSeparators(
+                terminalSeparatorType = TerminalSeparatorType.SOURCE_COMPLETE,
                 generator = { before, after ->
+
+                    when {
+                        before == null && after.isToday() -> {
+                            DateSeparator(DateSeparator.Type.TODAY)
+                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 1: ${after.isToday()}")
+                        }
+
+                        (before == null && after.isYesterday()) || (before.isToday() && after.isYesterday()) -> {
+                            DateSeparator(DateSeparator.Type.YESTERDAY)
+                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 2: ${after.isYesterday()}")
+                        }
+
+                        before.isYesterday() && after.isWeekAgo() -> {
+                            DateSeparator(DateSeparator.Type.WEEK_AGO)
+                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 3: ${after.isWeekAgo()}")
+                        }
+
+                        else -> {
+                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 4: ")
+                            DateSeparator(DateSeparator.Type.WEEK_AGO)
+                        }
+
+                    }
+
                     if (before?.id?.rem(5) != 0L) null else
                         Ad(
                             Random.nextLong(),
                             "https://netology.ru",
                             "figma.jpg"
                         )
+
                 }
             )
         }
         .cachedIn(viewModelScope)
 
-     */
+
+    private fun insertDateSeparators(before: Post?, after: Post?): DateSeparator? {
+        Log.d("MyAppLog", "PostViewModel * insertDateSeparators: $before / $after")
+        return when {
+            before == null && after.isToday() -> {
+                DateSeparator(DateSeparator.Type.TODAY)
+            }
+
+            (before == null && after.isYesterday()) || (before.isToday() && after.isYesterday()) -> {
+                DateSeparator(DateSeparator.Type.YESTERDAY)
+            }
+
+            before.isYesterday() && after.isWeekAgo() -> {
+                DateSeparator(DateSeparator.Type.WEEK_AGO)
+            }
+
+            else -> {
+                null
+            }
+        }
+    }
 
 
     //список постов
@@ -84,13 +155,9 @@ class PostViewModel @Inject constructor(
     val data: Flow<PagingData<FeedItem>> = appAuth.authStateFlow
         .flatMapLatest { (myId, _) ->
             cached.map { pagingData ->
-                pagingData.map { post ->
-                    if (post is Post) {  // если элемент является постом то копирование
-                        post.copy(ownedByMe = post.authorId == myId)
-                    } else {
-                        post
-                    }
-                 }
+                pagingData.map { item ->
+                    if (item !is Post) item else item.copy(ownedByMe = item.authorId == myId)
+                }
             }
         }
 
