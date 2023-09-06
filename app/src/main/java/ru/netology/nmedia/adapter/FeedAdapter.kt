@@ -87,7 +87,7 @@ class FeedAdapter(
             is Ad -> (holder as? AdViewHolder)?.bind(item)
             is Post -> (holder as? PostViewHolder)?.bind(item)
             is DateSeparator -> (holder as? DateViewHolder)?.bind(item)
-            null -> error("unknown item type")
+            null -> error("unknown item type: $item")
         }
     }
 

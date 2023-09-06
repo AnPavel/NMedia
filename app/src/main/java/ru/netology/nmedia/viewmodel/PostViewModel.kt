@@ -44,7 +44,7 @@ private val empty = Post(
 
 private val today = LocalDateTime.now()
 private val yesterday = today.minusDays(1)
-private val weekAgo = today.minusWeeks(2)
+private val weekAgo = today.minusDays(3)
 
 
 fun Post?.isToday(): Boolean {
@@ -92,31 +92,21 @@ class PostViewModel @Inject constructor(
                 terminalSeparatorType = TerminalSeparatorType.SOURCE_COMPLETE,
                 generator = { before, after ->
 
-                    when {
-                        before == null && after.isToday() -> {
-                            DateSeparator(DateSeparator.Type.TODAY)
-                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 1: ${after.isToday()}")
-                        }
-
-                        (before == null && after.isYesterday()) || (before.isToday() && after.isYesterday()) -> {
-                            DateSeparator(DateSeparator.Type.YESTERDAY)
-                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 2: ${after.isYesterday()}")
-                        }
-
-                        before.isYesterday() && after.isWeekAgo() -> {
-                            DateSeparator(DateSeparator.Type.WEEK_AGO)
-                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 3: ${after.isWeekAgo()}")
-                        }
-
-                        else -> {
-                            Log.d("MyAppLog", "PostViewModel * insertDateSeparators 4: ")
-                            DateSeparator(DateSeparator.Type.WEEK_AGO)
-                        }
-
+                    if (before == null && after.isToday()) {
+                        DateSeparator.Type.YESTERDAY
+                        Log.d("MyAppLog", "PostViewModel * insertDateSeparators 1: ${after.isToday()}")
                     }
 
+                    if ((before == null && after.isYesterday()) || (before.isToday() && after.isYesterday())) {
+                        DateSeparator.Type.YESTERDAY
+                        Log.d("MyAppLog", "PostViewModel * insertDateSeparators 2: ${after.isYesterday()}")
+                    }
 
-                    //insertDateSeparators(before, after)
+                    if (before.isYesterday() && after.isWeekAgo()) {
+                        DateSeparator.Type.WEEK_AGO
+                        Log.d("MyAppLog", "PostViewModel * insertDateSeparators 3: ${after.isWeekAgo()}")
+                    }
+
                     if (before?.id?.rem(5) != 0L) null else
                         Ad(
                             Random.nextLong(),
@@ -129,7 +119,7 @@ class PostViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
-
+/*
     private fun insertDateSeparators(before: Post?, after: Post?): DateSeparator? {
         Log.d("MyAppLog", "PostViewModel * insertDateSeparators: $before / $after")
         return when {
@@ -150,6 +140,8 @@ class PostViewModel @Inject constructor(
             }
         }
     }
+
+ */
 
 
     //список постов
