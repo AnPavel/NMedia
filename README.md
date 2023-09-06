@@ -11,6 +11,10 @@
 
 [*RecyclerView — продвинутое использование - Separators, LoadStateAdapter*](https://github.com/AnPavel/NMedia/tree/task_recyclerview_advanced)
 
+[*Custom Views - разработка собственных элементов интерфейса*]()
+
+[*Animations - создание анимаций. Часть 1*]()
+
 #### **"Промышленная разработка под Android"**
 *Интеграция с Backend: API, типичные формы интеграции*
 
@@ -30,8 +34,8 @@
 
 [*Flow*](https://github.com/AnPavel/NMedia/tree/task_flow)
 
-Загрузка и отображение изображений                                    	
+[*Загрузка и отображение изображений*](https://github.com/AnPavel/NMedia/tree/task_images)                                   	
 
-Регистрация, аутентификация и авторизация
+[*Регистрация, аутентификация и авторизация*](https://github.com/AnPavel/NMedia/tree/task_auth)
 
-Рассылка и приём Push-уведомлений
+[*Рассылка и приём Push-уведомлений*](https://github.com/AnPavel/NMedia/tree/task_pushes)
