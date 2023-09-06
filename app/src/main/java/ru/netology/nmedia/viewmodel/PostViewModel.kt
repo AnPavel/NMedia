@@ -115,6 +115,8 @@ class PostViewModel @Inject constructor(
 
                     }
 
+
+                    //insertDateSeparators(before, after)
                     if (before?.id?.rem(5) != 0L) null else
                         Ad(
                             Random.nextLong(),
