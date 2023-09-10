@@ -93,18 +93,18 @@ class PostViewModel @Inject constructor(
                 generator = { before, after ->
 
                     if (before == null && after.isToday()) {
-                        DateSeparator.Type.YESTERDAY
                         Log.d("MyAppLog", "PostViewModel * insertDateSeparators 1: ${after.isToday()}")
+                        return@insertSeparators DateSeparator(DateSeparator.Type.TODAY)
                     }
 
                     if ((before == null && after.isYesterday()) || (before.isToday() && after.isYesterday())) {
-                        DateSeparator.Type.YESTERDAY
                         Log.d("MyAppLog", "PostViewModel * insertDateSeparators 2: ${after.isYesterday()}")
+                        return@insertSeparators DateSeparator(DateSeparator.Type.YESTERDAY)
                     }
 
-                    if (before.isYesterday() && after.isWeekAgo()) {
-                        DateSeparator.Type.WEEK_AGO
+                    if (!before.isWeekAgo() && after.isWeekAgo()) {
                         Log.d("MyAppLog", "PostViewModel * insertDateSeparators 3: ${after.isWeekAgo()}")
+                        return@insertSeparators DateSeparator(DateSeparator.Type.WEEK_AGO)
                     }
 
                     if (before?.id?.rem(5) != 0L) null else
