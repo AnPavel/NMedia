@@ -1,4 +1,4 @@
-# Android разработчик
+# ![Логотип](https://github.com/AnPavel/netology.svg "Логотип") Android разработчик
 
 ## **Kotlin - программирование под Android**
 
@@ -11,7 +11,7 @@
 
 [*RecyclerView — продвинутое использование - Separators, LoadStateAdapter*](https://github.com/AnPavel/NMedia/tree/task_recyclerview_advanced)
 
-[*Custom Views - разработка собственных элементов интерфейса*]()
+[*Custom Views - разработка собственных элементов интерфейса*](https://github.com/AnPavel/CustomViews)
 
 [*Animations - создание анимаций. Часть 1*]()
 
