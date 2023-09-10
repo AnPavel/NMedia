@@ -1,4 +1,4 @@
-# ![Логотип](https://github.com/AnPavel/netology.svg "Логотип") Android разработчик
+# ![Логотип](https://github.com/AnPavel/NMedia/blob/main/netology.svg "Логотип") Android разработчик
 
 ## **Kotlin - программирование под Android**
 
