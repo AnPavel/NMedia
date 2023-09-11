@@ -1,4 +1,4 @@
-# ![Логотип](https://github.com/AnPavel/NMedia/blob/main/netology.svg "Логотип Нетология") Android разработчик
+# ![Логотип](https://github.com/AnPavel/NMedia/blob/main/netology.png "Логотип Нетология") Android разработчик
 
 ## ![Логотип](https://github.com/AnPavel/NMedia/blob/main/kotlin.png "Логотип Котлин") **Kotlin - программирование под Android**
 
@@ -40,3 +40,10 @@
 [*Регистрация, аутентификация и авторизация*](https://github.com/AnPavel/NMedia/tree/task_auth)
 
 [*Рассылка и приём Push-уведомлений*](https://github.com/AnPavel/NMedia/tree/task_pushes)
+
+
+[*«Fragments, FragmentManager»*](https://github.com/AnPavel/NMedia/tree/task_fragments)
+
+[*«SQL и SQLite»*](https://github.com/AnPavel/NMedia/tree/task_sqlite)
+
+[*«Библиотека Room»*](https://github.com/AnPavel/NMedia/tree/task_room)
