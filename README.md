@@ -1,7 +1,6 @@
-# ![Логотип](https://github.com/AnPavel/NMedia/blob/main/netology.png "Логотип Нетология") Android разработчик
+# <img src="https://github.com/AnPavel/NMedia/blob/main/netology.svg" width="32" height="32"> Android разработчик
 
-## ![Логотип](https://github.com/AnPavel/NMedia/blob/main/kotlin.png "Логотип Котлин") **Kotlin - программирование под Android**
-
+## <img src="https://github.com/AnPavel/NMedia/blob/main/kotlin.png" width="24" height="24"> **Kotlin - программирование под Android**
 
 ### **"Продвинутая разработка под Android"**
 [*Dependency Injection - Hilt*](https://github.com/AnPavel/NMedia/tree/task_di_hilt) 
